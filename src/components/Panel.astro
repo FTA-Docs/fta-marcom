@@ -1,0 +1,46 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+  background?: 'default' | 'surface' | 'raised' | 'dark';
+  size?: 'sm' | 'md' | 'lg';
+  fullBleed?: boolean;
+  tag?: 'section' | 'div' | 'article';
+}
+
+const {
+  id,
+  class: className,
+  background = 'default',
+  size = 'md',
+  fullBleed = false,
+  tag: Tag = 'section',
+} = Astro.props;
+
+const bgClass: Record<string, string> = {
+  default: '',
+  surface: 'section--bg-surface',
+  raised: 'section--bg-raised',
+  dark: 'section--bg-dark',
+};
+
+const sizeClass: Record<string, string> = {
+  sm: 'section--sm',
+  md: '',
+  lg: 'section--lg',
+};
+
+const combinedClass = ['section', bgClass[background], sizeClass[size], className]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<Tag id={id} class={combinedClass}>
+  {fullBleed ? (
+    <slot />
+  ) : (
+    <div class="container">
+      <slot />
+    </div>
+  )}
+</Tag>

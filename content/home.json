@@ -1,0 +1,141 @@
+{
+  "hero": {
+    "headline": "You're not powerless. Your child's relationship with technology can change.",
+    "subheadline": "Get a personalized, evidence-based behavior change plan made to minimize concerning behaviors, reduce conflict and align you and your child on a shared vision of digital health.",
+    "cta": { "label": "Watch Video", "href": "#" },
+    "cta2": { "label": "View Plans & Pricing", "href": "#pricing" }
+  },
+  "problem": {
+    "heading": "Sound Familiar?",
+    "panels": [
+      { "quote": "I've tried setting screen time limits, but she just finds workarounds." },
+      { "quote": "I feel like he's missing out on real life." },
+      { "quote": "Conversations about devices keep turning into arguments." },
+      { "quote": "Parental controls aren't enough, and therapy feels out of reach." },
+      { "quote": "I don't know where to draw the line between normal and concerning." },
+      { "quote": "She gets so angry when I try to set limits." },
+      { "quote": "He's glued to his screen from the moment he wakes up." },
+      { "quote": "I worry about what she's watching but I can't monitor everything." },
+      { "quote": "We've tried everything. Nothing sticks." },
+      { "quote": "I feel like I'm competing with his phone for his attention." }
+    ],
+    "bubbles": [
+      { "row": 1, "type": "empty", "size": "sm" },
+      { "row": 1, "type": "quote", "size": "lg", "text": "I've tried setting screen time limits, but she just finds workarounds." },
+      { "row": 1, "type": "empty", "size": "md" },
+      { "row": 1, "type": "quote", "size": "md", "text": "Every conversation about devices turns into a fight." },
+      { "row": 1, "type": "empty", "size": "sm" },
+      { "row": 1, "type": "quote", "size": "lg", "text": "I feel like I'm competing with his phone for his attention." },
+      { "row": 1, "type": "empty", "size": "sm" },
+      { "row": 2, "type": "quote", "size": "md", "text": "I feel like he's missing out on real life." },
+      { "row": 2, "type": "empty", "size": "sm" },
+      { "row": 2, "type": "quote", "size": "lg", "text": "She gets so angry when I try to set limits." },
+      { "row": 2, "type": "empty", "size": "md" },
+      { "row": 2, "type": "quote", "size": "md", "text": "He's glued to his screen from the moment he wakes up." },
+      { "row": 2, "type": "empty", "size": "sm" },
+      { "row": 3, "type": "empty", "size": "md" },
+      { "row": 3, "type": "quote", "size": "lg", "text": "I don't know where to draw the line between normal and concerning." },
+      { "row": 3, "type": "empty", "size": "sm" },
+      { "row": 3, "type": "quote", "size": "md", "text": "I worry about what she's watching but I can't monitor everything." },
+      { "row": 3, "type": "empty", "size": "sm" },
+      { "row": 3, "type": "quote", "size": "lg", "text": "We've tried everything. Nothing sticks." },
+      { "row": 4, "type": "empty", "size": "sm" },
+      { "row": 4, "type": "quote", "size": "md", "text": "Parental controls aren't enough, and therapy feels out of reach." },
+      { "row": 4, "type": "empty", "size": "md" },
+      { "row": 4, "type": "quote", "size": "lg", "text": "I don't know where the line is between discipline and control." },
+      { "row": 4, "type": "empty", "size": "sm" },
+      { "row": 4, "type": "quote", "size": "md", "text": "She shuts down whenever I bring it up." }
+    ]
+  },
+  "solution": {
+    "sections": [
+      {
+        "title": "A Plan for You & Your Child",
+        "body": "We combine our team's leading pediatric digital health expertise with AI‑powered personalization to create 8-week plans designed to drive measurable change.",
+        "phones": 3
+      },
+      {
+        "title": "Share What Matters",
+        "body": "Tell us about your child's current relationship with technology, your family's goals, and what you've already tried. The more we know, the better we can tailor a plan that actually fits your family.",
+        "phones": 2
+      },
+      {
+        "title": "Use & Tune",
+        "body": "Work through your personalized 8-week plan week by week, completing structured tasks at your own pace. Quick check-in surveys along the way help us refine your guidance as your situation evolves.",
+        "phones": 2
+      },
+      {
+        "title": "Always Be Supported",
+        "body": "Ali, our AI assistant, is available any time to answer questions or help you navigate a difficult moment. When you need a human, our coaching team is a message away.",
+        "phones": 3
+      }
+    ]
+  },
+  "science": {
+    "eyebrow": "Always Evidence-Based",
+    "heading": "Grounded in Science",
+    "panels": [
+      {
+        "title": "Clinical Experience",
+        "body": "Our plans are grounded in 30 years of pediatric digital health research and care led by Dr. Michael Rich, founding director of the Digital Wellness Lab at Boston Children's Hospital. His clinical experience — built from the thousands of families with whom he's worked — is at the heart of the guidance we provide.",
+        "cta": { "label": "Learn More", "href": "/about" }
+      },
+      {
+        "title": "A Proven Approach",
+        "body": "Our plans are built on COM-B, a proven behavior change framework that looks at three things: Does your child have the skills to manage technology? Does their environment make healthy choices realistic? Do they have reasons to change? By addressing all three — not just setting rules — we help families make changes that actually stick.",
+        "cta": { "label": "Learn More", "href": "/about#com-b" }
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "Plans & Pricing",
+    "subheading": "Start with a plan. Stay as long as you need.",
+    "plans": [
+      {
+        "name": "Initial 8-Week Plan",
+        "price": "$149",
+        "period": "one-time payment",
+        "description": "A personalized digital wellness plan built around your child's habits and your family's goals — delivered in eight structured weeks with AI coaching and expert guidance every step of the way.",
+        "cta": { "label": "Get Started", "href": "#" },
+        "primary": true
+      },
+      {
+        "name": "Monthly Planning & Support",
+        "price": "$15",
+        "period": "/month",
+        "note": "cancel anytime",
+        "description": "Keep the momentum going. For less than the cost of a single coaching session, continue accessing Ali, your coaching team, and ongoing micro-plans as your child grows and your situation evolves.",
+        "cta": { "label": "Get Started", "href": "#" },
+        "primary": false
+      }
+    ],
+    "valueHighlights": [
+      "24/7 AI coaching available any time via chat",
+      "Unlimited coaching team messaging (async)",
+      "Weekly check-ins that adapt to your plan",
+      "Plan updates based on your progress"
+    ],
+    "comparison": {
+      "eyebrow": "How we compare",
+      "heading": "Traditional Coaching vs. alignd",
+      "cols": ["Traditional Coaching", "alignd"],
+      "rows": [
+        { "label": "Cost", "traditional": "$150–$300/session; 8–12 sessions minimum ($1,200–$3,600+)", "alignd": "$149 one-time + optional $15/month" },
+        { "label": "Time commitment", "traditional": "Weekly 60-min sessions, fixed schedule, often months-long", "alignd": "Work at your own pace; check-ins adapt to your progress" },
+        { "label": "Availability", "traditional": "Appointment-only; 1–2 week wait times typical", "alignd": "Start today; AI coaching available any time, day or night" },
+        { "label": "Personalization", "traditional": "Coach's general approach applied to your situation", "alignd": "Plan built specifically around your child's age, habits, and your family's goals" },
+        { "label": "Family involvement", "traditional": "Typically parent-only in sessions", "alignd": "Whole-family approach built into every plan" },
+        { "label": "Evidence base", "traditional": "Varies by practitioner", "alignd": "Grounded in the COM-B behavioral science framework" }
+      ]
+    }
+  },
+  "socialProof": {
+    "heading": "What Customers Are Saying",
+    "panels": [
+      { "quote": "For the first time, my son actually agreed to some limits. The plan gave us a shared framework instead of a fight.", "attribution": "Parent of a 14-year-old" },
+      { "quote": "We'd tried apps, rules, everything. Alignd helped us understand why he was struggling — not just restrict the behavior.", "attribution": "Mother of two" },
+      { "quote": "Ali answered my questions at 11pm when I was spiraling. Having that support available made all the difference.", "attribution": "Parent" },
+      { "quote": "After 8 weeks I actually feel like I have tools, not just restrictions. My daughter's relationship with her phone is genuinely different.", "attribution": "Parent of a 13-year-old" }
+    ]
+  }
+}

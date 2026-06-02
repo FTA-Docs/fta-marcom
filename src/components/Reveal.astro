@@ -1,0 +1,57 @@
+---
+interface Props {
+  delay?: number;
+  class?: string;
+  tag?: string;
+}
+
+const {
+  delay = 0,
+  class: className,
+  tag: Tag = 'div',
+} = Astro.props;
+
+const combinedClass = ['reveal', className].filter(Boolean).join(' ');
+const styleAttr = delay ? `--reveal-delay: ${delay}ms` : '';
+---
+
+<Tag class={combinedClass} data-reveal style={styleAttr}>
+  <slot />
+</Tag>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal]:not(.is-revealed) {
+      opacity: 0;
+      transform: translateY(1.5rem);
+      transition:
+        opacity var(--transition-slow) var(--reveal-delay, 0ms),
+        transform var(--transition-slow) var(--reveal-delay, 0ms);
+    }
+
+    [data-reveal].is-revealed {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  if (!(window as any).gsapActive) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    document.querySelectorAll('[data-reveal]').forEach((el) => {
+      observer.observe(el);
+    });
+  }
+</script>

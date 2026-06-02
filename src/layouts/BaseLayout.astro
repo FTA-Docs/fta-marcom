@@ -1,0 +1,113 @@
+---
+import '../styles/global.css';
+import Masthead from '../components/Masthead.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonical?: string;
+  loadGSAP?: boolean;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = 'alignd helps families navigate care coordination across education, health, and development.',
+  ogImage = '/og-default.jpg',
+  canonical,
+  loadGSAP = false,
+  bodyClass = '',
+} = Astro.props;
+
+const siteUrl = 'https://alignd.care';
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
+const fullTitle = title === 'alignd' ? title : title + ' | alignd';
+const jsonLd = JSON.stringify([
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Family Technology Advisors, Inc.',
+    alternateName: 'alignd',
+    url: siteUrl,
+    logo: siteUrl + '/logo.svg',
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        email: 'support@alignd.care',
+        contactType: 'customer support',
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    url: siteUrl,
+    name: 'alignd',
+  },
+]);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="alignd" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={jsonLd} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <Masthead />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  main {
+    padding-top: var(--masthead-h);
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: var(--space-4);
+    background: var(--color-accent);
+    color: var(--color-accent-text);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    font-weight: var(--weight-semibold);
+    z-index: calc(var(--z-masthead) + 10);
+    transition: top var(--transition-fast);
+  }
+
+  .skip-link:focus {
+    top: var(--space-4);
+  }
+</style>

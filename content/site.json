@@ -1,0 +1,33 @@
+{
+  "company": "Family Technology Advisors, Inc.",
+  "brand": "alignd",
+  "tagline": "Care coordination made simple.",
+  "siteUrl": "https://alignd.care",
+  "nav": [
+    { "label": "How It Works", "href": "/#solution" },
+    { "label": "Plans & Pricing", "href": "/#pricing" },
+    { "label": "About", "href": "/about" },
+    { "label": "Support & FAQs", "href": "/support-faqs" }
+  ],
+  "cta": {
+    "signIn": { "label": "Sign In", "href": "/signin" },
+    "getStarted": { "label": "Get Started", "href": "/signup" }
+  },
+  "footer": {
+    "copyright": "Copyright 2026. All rights reserved. Patents pending. Family Technology Advisors, Inc.",
+    "links": [
+      { "label": "How It Works", "href": "/#solution" },
+      { "label": "Plans & Pricing", "href": "/#pricing" },
+      { "label": "About", "href": "/about" },
+      { "label": "Support & FAQs", "href": "/support-faqs" },
+      { "label": "Terms & Conditions", "href": "/terms" },
+      { "label": "Privacy Policy", "href": "/privacy-policy" }
+    ],
+    "contacts": [
+      { "label": "General", "email": "hello@alignd.care" },
+      { "label": "Customer service", "email": "support@alignd.care" },
+      { "label": "Media", "email": "press@alignd.care" },
+      { "label": "Employment", "email": "jobs@alignd.care" }
+    ]
+  }
+}

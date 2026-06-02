@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import TermsContent from '../../content/legal/terms.md';
+---
+
+<BaseLayout title="Terms of Service" description="Terms of Service for Alignd. Family Technology Advisors, Inc.">
+
+  <Panel size="sm">
+    <h1>Terms of Service</h1>
+    <p class="text-muted">Last updated: June 1, 2026</p>
+  </Panel>
+
+  <Panel background="default" size="sm" class="legal-panel">
+    <div class="legal-content">
+      <TermsContent />
+    </div>
+  </Panel>
+
+</BaseLayout>
+
+<style>
+  :global(.legal-panel) {
+    padding-block-start: var(--space-4);
+  }
+
+  .legal-content {
+  }
+
+  .legal-content :global(h2) {
+    font-size: var(--text-2xl);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+
+  .legal-content :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .legal-content :global(p) {
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-4);
+  }
+
+  .legal-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .legal-content :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .legal-content :global(a:hover) {
+    opacity: 0.8;
+  }
+</style>

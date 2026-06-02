@@ -1,0 +1,1 @@
+Most families can see that their child's relationship with screens has shifted — but they don't know what to do about it, or where to start. alignd exists to change that. We give families a clear, structured path to rebuilding healthier digital habits, built on behavioral science and real clinical expertise.

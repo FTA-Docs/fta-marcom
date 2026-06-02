@@ -1,0 +1,372 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import Reveal from '../components/Reveal.astro';
+import MissionContent from '../../content/about/mission.md';
+import ClinicalContent from '../../content/about/clinical.md';
+import ComBContent from '../../content/about/com-b.md';
+import TechnologyContent from '../../content/about/technology.md';
+import FoundingTeamContent from '../../content/about/founding-team.md';
+import teamData from '../../content/about/team.json';
+---
+
+<BaseLayout
+  title="About"
+  description="Learn about alignd's mission, coaching team, and the behavioral science behind our approach to family digital wellness."
+>
+
+  <!-- Hero -->
+  <Panel size="sm">
+    <Reveal>
+      <h1>About alignd</h1>
+      <p class="lead">We believe every family deserves access to expert care coordination — not just those who can afford private case managers.</p>
+    </Reveal>
+  </Panel>
+
+  <!-- Our Mission -->
+  <Panel background="default" size="sm" class="about-first-panel">
+    <div class="about-section grid">
+      <div class="col-8">
+        <Reveal><h2>Our Mission</h2></Reveal>
+        <Reveal delay={100}>
+          <div class="prose">
+            <MissionContent />
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </Panel>
+
+  <!-- Clinical Experience -->
+  <Panel background="surface">
+    <div class="about-section grid">
+      <div class="col-8">
+        <Reveal><h2>Clinical Experience</h2></Reveal>
+        <Reveal delay={100}>
+          <div class="prose">
+            <ClinicalContent />
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </Panel>
+
+  <!-- About Com-B -->
+  <Panel background="default">
+    <div class="about-section grid">
+      <div class="col-8">
+        <Reveal><h2>About Com-B</h2></Reveal>
+        <Reveal delay={100}>
+          <div class="prose">
+            <ComBContent />
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </Panel>
+
+  <!-- Our Technology -->
+  <Panel background="surface">
+    <div class="about-section grid">
+      <div class="col-8">
+        <Reveal><h2>Our Technology</h2></Reveal>
+        <Reveal delay={100}>
+          <div class="prose">
+            <TechnologyContent />
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </Panel>
+
+  <!-- Founding Team -->
+  <Panel background="default">
+    <div class="about-section">
+      <Reveal><h2>Founding Team</h2></Reveal>
+      <Reveal delay={100}>
+        <div class="prose team-intro">
+          <FoundingTeamContent />
+        </div>
+      </Reveal>
+      <div class="team-grid">
+        {teamData.map((member, i) => (
+          <Reveal delay={i * 80}>
+            <div class="team-card">
+              <div class="team-avatar" aria-hidden="true">
+                {member.headshot && <img src={member.headshot} alt={member.name} />}
+              </div>
+              <span class="team-name">{member.name}</span>
+              <span class="team-title">{member.title}</span>
+              <button
+                class="team-bio-btn"
+                data-id={member.id}
+                aria-label={`View bio for ${member.name}`}
+              >View Bio</button>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      <!-- Bio Modal -->
+      <div class="bio-modal" id="bio-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="bio-modal-name">
+        <div class="bio-modal__backdrop"></div>
+        <div class="bio-modal__panel">
+          <button class="bio-modal__close" aria-label="Close bio">&times;</button>
+          <div class="bio-modal__avatar"></div>
+          <h3 class="bio-modal__name" id="bio-modal-name"></h3>
+          <p class="bio-modal__title"></p>
+          <p class="bio-modal__bio"></p>
+          <a class="bio-modal__linkedin" href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </Panel>
+
+</BaseLayout>
+
+<style>
+  :global(.about-first-panel) {
+    padding-block-start: var(--space-4);
+  }
+
+  /* .lead font-size comes from the global system (typography.css) */
+  .lead {
+    color: var(--color-text-muted);
+    max-width: 56ch;
+    margin-top: var(--space-4);
+  }
+
+  .about-section {
+    align-items: start;
+  }
+
+  .about-section h2 {
+    margin-top: 0;
+    margin-bottom: var(--space-5);
+  }
+
+  .prose :global(p) {
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-4);
+  }
+
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(strong) {
+    color: var(--color-text);
+    font-weight: var(--weight-semibold);
+  }
+
+  .team-intro {
+    max-width: 64ch;
+    margin-bottom: var(--space-10);
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+
+  .team-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .team-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-full);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    aspect-ratio: 1;
+    overflow: hidden;
+    margin-bottom: var(--space-2);
+  }
+
+  .team-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .team-name {
+    font-weight: var(--weight-bold);
+    font-size: var(--text-lg);
+  }
+
+  .team-title {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .team-bio-btn {
+    margin-top: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .team-bio-btn:hover {
+    opacity: 0.7;
+  }
+
+  .team-bio-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Bio Modal */
+  .bio-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal, 100);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bio-modal[aria-hidden="false"] {
+    display: flex;
+  }
+
+  .bio-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .bio-modal__panel {
+    position: relative;
+    background: var(--color-surface, #fff);
+    border-radius: var(--radius-lg);
+    padding: var(--space-10);
+    max-width: 480px;
+    width: calc(100% - var(--space-8));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-3);
+  }
+
+  .bio-modal__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    background: none;
+    border: none;
+    font-size: var(--text-xl);
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-text-muted);
+  }
+
+  .bio-modal__close:hover {
+    color: var(--color-text);
+  }
+
+  .bio-modal__avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: var(--radius-full);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .bio-modal__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .bio-modal__name {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    margin: 0;
+  }
+
+  .bio-modal__title {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .bio-modal__bio {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    margin: 0;
+    text-align: left;
+  }
+
+  .bio-modal__linkedin {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .bio-modal__linkedin:hover {
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .team-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+
+<script define:vars={{ teamData }}>
+  const modal = document.getElementById('bio-modal');
+  const modalName = modal.querySelector('.bio-modal__name');
+  const modalTitle = modal.querySelector('.bio-modal__title');
+  const modalBio = modal.querySelector('.bio-modal__bio');
+  const modalAvatar = modal.querySelector('.bio-modal__avatar');
+  const modalLinkedin = modal.querySelector('.bio-modal__linkedin');
+
+  function openModal(id) {
+    const member = teamData.find(m => m.id === id);
+    if (!member) return;
+    modalName.textContent = member.name;
+    modalTitle.textContent = member.title;
+    modalBio.textContent = member.bio;
+    modalAvatar.innerHTML = member.headshot
+      ? `<img src="${member.headshot}" alt="${member.name}" />`
+      : '';
+    modalLinkedin.href = member.linkedin || '#';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.team-bio-btn').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.id));
+  });
+
+  modal.querySelector('.bio-modal__close').addEventListener('click', closeModal);
+  modal.querySelector('.bio-modal__backdrop').addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
+  });
+</script>

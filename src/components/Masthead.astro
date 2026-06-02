@@ -1,0 +1,222 @@
+---
+import siteData from '../../content/site.json';
+---
+
+<header class="masthead" role="banner">
+  <div class="masthead__inner container">
+    <a href="/" class="masthead__logo" aria-label="alignd — go to homepage">
+      <span class="masthead__logo-text">alignd</span>
+    </a>
+
+    <button
+      class="masthead__hamburger"
+      aria-expanded="false"
+      aria-controls="masthead-nav"
+      aria-label="Open navigation menu"
+    >
+      <span class="hamburger-bar" aria-hidden="true"></span>
+      <span class="hamburger-bar" aria-hidden="true"></span>
+      <span class="hamburger-bar" aria-hidden="true"></span>
+    </button>
+
+    <nav id="masthead-nav" class="masthead__nav" aria-label="Main navigation">
+      <ul role="list" class="masthead__nav-list">
+        {siteData.nav.map((item) => (
+          <li>
+            <a href={item.href} class="masthead__nav-link">{item.label}</a>
+          </li>
+        ))}
+      </ul>
+      <div class="masthead__actions">
+        <a href={siteData.cta.signIn.href} class="btn btn--ghost">Sign In</a>
+        <a href={siteData.cta.getStarted.href} class="btn btn--primary">Get Started</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .masthead {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-masthead);
+    height: var(--masthead-h);
+    background-color: var(--masthead-bg);
+    border-bottom: 1px solid var(--masthead-border);
+    backdrop-filter: blur(8px);
+  }
+
+  .masthead__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    gap: var(--space-6);
+  }
+
+  .masthead__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .masthead__logo-text {
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    color: var(--masthead-text);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .masthead__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .masthead__nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .masthead__nav-link {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--masthead-text);
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .masthead__nav-link:hover {
+    opacity: 0.7;
+  }
+
+  .masthead__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .masthead__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .hamburger-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--masthead-text);
+    border-radius: 1px;
+    transition:
+      transform var(--transition-fast),
+      opacity var(--transition-fast);
+  }
+
+  @media (max-width: 767px) {
+    .masthead__hamburger {
+      display: flex;
+    }
+
+    .masthead__nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--masthead-bg);
+      border-bottom: 1px solid var(--masthead-border);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      padding: var(--space-4);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .masthead__nav.is-open {
+      display: flex;
+    }
+
+    .masthead__nav-list {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-1);
+      width: 100%;
+    }
+
+    .masthead__nav-link {
+      display: block;
+      padding: var(--space-3) var(--space-2);
+      font-size: var(--text-base);
+      width: 100%;
+    }
+
+    .masthead__actions {
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border);
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .masthead__actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  const hamburger = document.querySelector<HTMLButtonElement>('.masthead__hamburger');
+  const nav = document.querySelector<HTMLElement>('#masthead-nav');
+
+  function openNav() {
+    if (!nav || !hamburger) return;
+    nav.classList.add('is-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
+  }
+
+  function closeNav() {
+    if (!nav || !hamburger) return;
+    nav.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
+  }
+
+  hamburger?.addEventListener('click', () => {
+    const isOpen = nav?.classList.contains('is-open');
+    if (isOpen) {
+      closeNav();
+    } else {
+      openNav();
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!nav || !hamburger) return;
+    const target = event.target as Node;
+    if (!hamburger.contains(target) && !nav.contains(target)) {
+      closeNav();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && nav?.classList.contains('is-open')) {
+      closeNav();
+      hamburger?.focus();
+    }
+  });
+</script>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://alignd.care/sitemap-index.xml

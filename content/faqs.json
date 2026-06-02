@@ -1,0 +1,41 @@
+{
+  "intro": "We're here to help.",
+  "contactNote": "For non-plan related questions, contact us at",
+  "contactEmail": "support@alignd.care",
+  "responseTime": "Our team typically responds in 1–2 days.",
+  "categories": [
+    {
+      "category": "Frequently Asked Questions",
+      "faqs": [
+        {
+          "q": "How does alignd work?",
+          "a": "alignd builds a personalized 8-week plan based on your child's digital habits, well-being, and your family's goals. You work through structured weekly tasks, check in regularly, and get support from our clinician-led team along the way."
+        },
+        {
+          "q": "What age range is alignd designed for?",
+          "a": "alignd is designed for parents and caregivers of children ages 6–17. Our intake and planning tools are calibrated to different developmental stages, so the guidance you receive is relevant to your child's age and situation."
+        },
+        {
+          "q": "Can I update my plan if things change?",
+          "a": "Yes. Life changes, and your plan can too. Use the chat to let Ali know about new developments — changes in behavior, school, or home dynamics — and your plan can be adjusted to reflect your current situation."
+        },
+        {
+          "q": "What happens after my 8-week plan ends?",
+          "a": "At the end of your 8-week plan, you can extend with a monthly subscription at $15/month. You'll continue to have access to your plan history, the chat, and your clinician-led team for ongoing support."
+        },
+        {
+          "q": "How is alignd different from screen time blocking apps?",
+          "a": "Screen time blockers restrict access, but they don't change behavior. alignd takes a family-based approach rooted in behavioral science — helping you understand the why behind your child's habits and build sustainable strategies that stick long after the plan ends."
+        },
+        {
+          "q": "Who is behind the alignd clinical team?",
+          "a": "Our team includes licensed clinicians with backgrounds in child psychology, family therapy, and digital wellness. They inform the structure of every plan and review cases that require a higher level of care."
+        },
+        {
+          "q": "Is my information kept private?",
+          "a": "Absolutely. Your data is encrypted and never sold to third parties. You can review our full privacy practices anytime under Account → Terms & Privacy. You may also request deletion of your data at any time."
+        }
+      ]
+    }
+  ]
+}

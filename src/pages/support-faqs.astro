@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import Accordion from '../components/Accordion.astro';
+import Reveal from '../components/Reveal.astro';
+import faqData from '../../content/faqs.json';
+---
+
+<BaseLayout title="Support & FAQs" description="Get answers to common questions about alignd care coordination. Contact our support team at support@alignd.care.">
+
+  <Panel size="sm">
+    <h1>Support & FAQs</h1>
+    <p class="lead text-muted">{faqData.intro} {faqData.contactNote} <a href={`mailto:${faqData.contactEmail}`}>{faqData.contactEmail}</a>. {faqData.responseTime}</p>
+  </Panel>
+
+  <Panel background="default" size="sm" class="faqs-panel">
+    <div class="faqs-layout">
+      {faqData.categories.map((category) => (
+        <div class="faq-category">
+          <div class="faq-list" role="list">
+            {category.faqs.map((faq, i) => (
+              <Reveal delay={i * 50}>
+                <Accordion question={faq.q} answer={faq.a} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </Panel>
+
+</BaseLayout>
+
+<style>
+  .lead {
+    max-width: 56ch;
+    margin-top: var(--space-4);
+  }
+
+  :global(.faqs-panel) {
+    padding-block-start: var(--space-4);
+  }
+
+  .faqs-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .faq-category {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--color-border);
+  }
+</style>
+

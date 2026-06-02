@@ -1,0 +1,55 @@
+/* ─── 12-Column Grid ─────────────────────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--grid-gap);
+}
+
+/* ── Column spans (desktop-first) ── */
+
+.col-1  { grid-column: span 1; }
+.col-2  { grid-column: span 2; }
+.col-3  { grid-column: span 3; }
+.col-4  { grid-column: span 4; }
+.col-5  { grid-column: span 5; }
+.col-6  { grid-column: span 6; }
+.col-7  { grid-column: span 7; }
+.col-8  { grid-column: span 8; }
+.col-9  { grid-column: span 9; }
+.col-10 { grid-column: span 10; }
+.col-11 { grid-column: span 11; }
+.col-12 { grid-column: span 12; }
+
+/* ── Tablet: 768px–1023px ── */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .col-1,
+  .col-2,
+  .col-3  { grid-column: span 4; }
+
+  .col-4,
+  .col-5,
+  .col-6  { grid-column: span 6; }
+
+  .col-7,
+  .col-8  { grid-column: span 8; }
+
+  .col-9,
+  .col-10 { grid-column: span 10; }
+
+  .col-11,
+  .col-12 { grid-column: span 12; }
+}
+
+/* ── Mobile: below 768px ── */
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  [class*="col-"] {
+    grid-column: span 1;
+  }
+}

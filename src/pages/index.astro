@@ -1,0 +1,1096 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import PricingBlock from '../components/PricingBlock.astro';
+import Reveal from '../components/Reveal.astro';
+import homeData from '../../content/home.json';
+---
+
+<BaseLayout title="alignd" loadGSAP={true} bodyClass="page-home">
+
+  <!-- HERO — sticky z-index:1, CSS handles stacking -->
+  <Panel id="hero" class="panel-page" background="default">
+    <div class="hero">
+      <Reveal><h1>{homeData.hero.headline}</h1></Reveal>
+      <Reveal delay={150}><p class="lead hero__sub">{homeData.hero.subheadline}</p></Reveal>
+      <Reveal delay={300}>
+        <div class="hero__actions">
+          <button id="watch-video-btn" class="btn btn--primary btn--lg" type="button">
+            {homeData.hero.cta.label}
+          </button>
+          <a href={homeData.hero.cta2.href} class="btn btn--secondary btn--lg">
+            {homeData.hero.cta2.label}
+          </a>
+        </div>
+      </Reveal>
+    </div>
+  </Panel>
+
+  <!-- PROBLEM — scroll zone lets GSAP animate bubble rows while panel stays sticky -->
+  <div id="problem-scroll-zone" class="problem-scroll-zone">
+    <Panel id="problem" class="panel-page" background="surface" fullBleed={true}>
+      <!-- SR-only heading + quotes for accessibility -->
+      <h2 class="sr-only">{homeData.problem.heading}</h2>
+      <ul class="sr-only" aria-label="Parent quotes">
+        {homeData.problem.panels.map(p => <li>{p.quote}</li>)}
+      </ul>
+
+      <div class="bubble-stage" aria-hidden="true">
+        <div class="bubble-stage__headline">
+          <span class="panel-heading">{homeData.problem.heading}</span>
+        </div>
+
+        {[1, 2, 3, 4].map(row => (
+          <div class={`bubble-row bubble-row--${row}`}>
+            {homeData.problem.bubbles.filter(b => b.row === row && b.type === 'quote').map(b => (
+              <div class={`thought-bubble thought-bubble--${b.size}`}>
+                <p class="thought-bubble__text">"{b.text}"</p>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </Panel>
+  </div>
+
+  <!-- SOLUTION — 4 inner sections, scroll-driven; z-index:3 -->
+  <div
+    id="solution-scroll-zone"
+    class="solution-scroll-zone"
+    style={`--sol-count: ${homeData.solution.sections.length}`}
+  >
+    <Panel id="solution" class="panel-page" background="default" fullBleed={true}>
+      <h2 class="sr-only">A Plan for You &amp; Your Child</h2>
+
+      <div class="sol-stage">
+
+        <!-- Left: text blocks, cross-fade per section -->
+        <div class="sol-texts">
+          {homeData.solution.sections.map((section, i) => (
+            <div class={`sol-text sol-text--${i}`} aria-hidden={i > 0 ? 'true' : 'false'}>
+              <p class="eyebrow">What you've been missing</p>
+              <h2 class="panel-heading">{section.title}</h2>
+              <p class="sol-body">{section.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Right: horizontal filmstrip, shifts on scroll -->
+        <div class="sol-filmstrip-wrap" aria-hidden="true">
+          <div class="sol-filmstrip" id="sol-filmstrip">
+            {homeData.solution.sections.map((_, i) => (
+              <div class={`sol-phone-item sol-phone-item--${i}`}>
+                <div class="sol-phone-device"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sol-dots" role="tablist" aria-label="Section navigation">
+        {homeData.solution.sections.map((_, i) => (
+          <button
+            class={`sol-dot${i === 0 ? ' is-active' : ''}`}
+            role="tab"
+            aria-label={`Go to section ${i + 1}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            data-index={String(i)}
+          />
+        ))}
+      </div>
+    </Panel>
+  </div>
+
+  <!-- SCIENCE — sticky z-index:4 -->
+  <Panel id="science" class="panel-page" background="surface">
+    <div class="panel-header">
+      <Reveal><p class="eyebrow">{homeData.science.eyebrow}</p></Reveal>
+      <Reveal delay={100}><h2 class="panel-heading">{homeData.science.heading}</h2></Reveal>
+    </div>
+    <div class="science-grid">
+      {homeData.science.panels.map((panel, i) => (
+        <Reveal delay={i * 100}>
+          <article class="science-card">
+            <h3>{panel.title}</h3>
+            <p>{panel.body}</p>
+            {panel.cta && (
+              <a href={panel.cta.href} class="btn btn--secondary">{panel.cta.label}</a>
+            )}
+          </article>
+        </Reveal>
+      ))}
+    </div>
+  </Panel>
+
+  <!-- PRICING — sticky z-index:5 -->
+  <Panel id="pricing" class="panel-page" background="raised">
+    <div class="panel-header">
+      <Reveal><h2 class="panel-heading">{homeData.pricing.heading}</h2></Reveal>
+      <Reveal delay={100}><p class="panel-sub">{homeData.pricing.subheading}</p></Reveal>
+    </div>
+    <PricingBlock pricing={homeData.pricing} />
+  </Panel>
+
+  <!-- SOCIAL PROOF — scroll zone gives GSAP room to cycle quotes -->
+  <!-- Zone height = quotes × panel height so panel stays sticky throughout -->
+  <div
+    class="social-scroll-zone"
+    id="social-scroll-zone"
+    style={`--quote-count: ${homeData.socialProof.panels.length}`}
+  >
+    <section
+      id="social-proof"
+      class="panel-page"
+      aria-label={homeData.socialProof.heading}
+    >
+      <!-- sp-content constrains to container-max without using .container
+           (which would trigger the global flex:1 rule and break stage height) -->
+      <div class="sp-content">
+
+        <div class="panel-header sp-header">
+          <h2 class="eyebrow">{homeData.socialProof.heading}</h2>
+        </div>
+
+        <div class="sp-stage" aria-live="polite" aria-atomic="true">
+          {homeData.socialProof.panels.map((panel, i) => (
+            <div
+              class="sp-quote"
+              role="group"
+              aria-label={`Quote ${i + 1} of ${homeData.socialProof.panels.length}`}
+              aria-hidden={i !== 0 ? 'true' : 'false'}
+            >
+              <blockquote class="sp-quote__text">
+                <p>"{panel.quote}"</p>
+                {panel.attribution && (
+                  <footer>
+                    <cite class="sp-quote__attr">— {panel.attribution}</cite>
+                  </footer>
+                )}
+              </blockquote>
+            </div>
+          ))}
+        </div>
+
+        <div class="sp-dots" role="tablist" aria-label="Quote navigation">
+          {homeData.socialProof.panels.map((_, i) => (
+            <button
+              class={`sp-dot${i === 0 ? ' is-active' : ''}`}
+              role="tab"
+              aria-label={`Go to quote ${i + 1}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              data-index={String(i)}
+            />
+          ))}
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- Video modal -->
+  <div class="video-modal" id="video-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Watch video">
+    <div class="video-modal__backdrop"></div>
+    <div class="video-modal__panel">
+      <button class="video-modal__close" aria-label="Close video">&times;</button>
+      <div class="video-modal__screen" aria-hidden="true">
+        <svg class="video-modal__play" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="31" stroke="currentColor" stroke-width="2"/>
+          <path d="M26 22l20 10-20 10V22z" fill="currentColor"/>
+        </svg>
+        <p>Video coming soon</p>
+      </div>
+    </div>
+  </div>
+
+</BaseLayout>
+
+<style>
+  /* ── Panel stacking ──────────────────────────────────── */
+  /* Non-GSAP panels stick at the masthead bottom.          */
+  /* GSAP-pinned panels (problem, solution, social-proof)   */
+  /* don't use CSS sticky — GSAP manages their position.    */
+
+  /* All panels stick at the masthead bottom — CSS guarantees the slide-over  */
+  :global(#hero),
+  :global(#problem),
+  :global(#solution),
+  :global(#science),
+  :global(#pricing),
+  :global(#social-proof) {
+    position: sticky;
+    top: var(--masthead-h);
+  }
+
+  /* Mobile: non-animated panels revert to normal flow so taller content
+     is never obscured by a higher-z-index panel sliding over it early. */
+  @media (max-width: 767px) {
+    :global(#hero),
+    :global(#science),
+    :global(#pricing) {
+      position: relative;
+      top: 0;
+    }
+
+    /* Problem, Solution, and Social Proof stay sticky and need explicit
+       heights so their flex children resolve correctly.
+       panel-page resets to height:auto on mobile, which collapses
+       absolutely/percentage-sized children to 0 and exposes the
+       scroll-zone background as blank white space. */
+    :global(#problem),
+    :global(#solution),
+    :global(#social-proof) {
+      height: calc(100svh - var(--masthead-h));
+      overflow: hidden;
+    }
+  }
+
+  /* Ascending z-index so each incoming panel covers the previous */
+  :global(#hero)         { z-index: 1; background-color: var(--color-bg); }
+  :global(#problem)      { z-index: 2; background-color: var(--color-surface); }
+  :global(#solution)     { z-index: 3; background-color: var(--color-bg); }
+  :global(#science)      { z-index: 4; background-color: var(--color-surface); }
+  :global(#pricing)      { z-index: 5; background-color: var(--color-surface-raised); height: auto; min-height: calc(100svh - var(--masthead-h)); overflow: visible; padding-block: var(--space-10); }
+  :global(#social-proof) { z-index: 6; background-color: var(--color-bg); }
+
+  /* ── Shared panel header ─────────────────────────────── */
+  /* Used at the top of every panel for eyebrow + heading  */
+  .panel-header {
+    text-align: center;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-6);
+    flex-shrink: 0; /* don't compress in flex column */
+  }
+
+  /* The main headline — identical across all 6 panels */
+  .panel-heading {
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .panel-sub {
+    max-width: 60ch;
+    margin-inline: auto;
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  /* ── Eyebrow (optional label above heading) ──────────── */
+  .eyebrow {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3);
+  }
+
+  /* ── Hero ────────────────────────────────────────────── */
+  .hero {
+    max-width: 72ch;
+    text-align: left;
+    padding: var(--space-8) var(--container-pad);
+  }
+
+  .hero h1 {
+    font-size: var(--text-5xl);
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__sub {
+    margin-bottom: var(--space-8);
+    color: var(--color-text-muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  /* ── Problem: bubble stage ───────────────────────────── */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0;
+    margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border: 0;
+  }
+
+  .problem-scroll-zone {
+    height: calc(3 * (100vh  - var(--masthead-h)));
+    height: calc(3 * (100svh - var(--masthead-h)));
+  }
+
+  .bubble-stage {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .bubble-stage__headline {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .bubble-row {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: var(--space-10);
+  }
+
+  /* Rows intentionally overlap for depth */
+  .bubble-row--1 { top:  6%; }
+  .bubble-row--2 { top: 16%; }
+  .bubble-row--3 { top: 59%; }
+  .bubble-row--4 { top: 71%; }
+
+  /* Base thought bubble — pillowy oval */
+  .thought-bubble {
+    flex-shrink: 0;
+    background: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+    border-radius: 999px;
+    position: relative;
+  }
+
+  /* Quote bubbles — rounded rectangle with generous padding */
+  .thought-bubble {
+    border-radius: 20px;
+    padding: var(--space-6) var(--space-8);
+    margin-bottom: 28px; /* space for pip trail below */
+  }
+
+  .thought-bubble--md { max-width: 260px; }
+  .thought-bubble--lg { max-width: 340px; }
+
+  .thought-bubble__text {
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* Pip trail — two circles stepping down-left from bubble */
+  .thought-bubble--quote::before,
+  .thought-bubble--quote::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+  }
+
+  .thought-bubble--quote::before {
+    width: 14px; height: 14px;
+    bottom: -18px; left: 28px;
+  }
+
+  .thought-bubble--quote::after {
+    width: 8px; height: 8px;
+    bottom: -30px; left: 18px;
+  }
+
+
+  /* ── Solution: 4-section inner carousel ─────────────── */
+  .solution-scroll-zone {
+    height: calc(var(--sol-count) * (100vh  - var(--masthead-h)));
+    height: calc(var(--sol-count) * (100svh - var(--masthead-h)));
+  }
+
+  .sol-stage {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    max-width: var(--container-max);
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  /* ── Left half: text blocks ── */
+  .sol-texts {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: var(--container-pad);
+    width: calc(50% - var(--container-pad));
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* clips sliding text so sections never visually overlap */
+  }
+
+  .sol-text {
+    position: absolute;
+    inset: 0;
+    padding-inline: var(--container-pad);
+    padding-right: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-5);
+  }
+
+  .sol-text[aria-hidden="true"] { pointer-events: none; }
+
+  /* Only the content (heading + body) slides — eyebrow stays put */
+  .sol-text__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .sol-body {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    max-width: 46ch;
+  }
+
+  /* ── Right half: phone filmstrip ── */
+  .sol-filmstrip-wrap {
+    position: absolute;
+    top: 0; bottom: 0; right: 0;
+    width: 55%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .sol-filmstrip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    /* GSAP sets initial x and animates shifts */
+  }
+
+  .sol-phone-item {
+    flex-shrink: 0;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sol-phone-device {
+    width: 188px;
+    height: 376px;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 28px;
+    position: relative;
+    /* GSAP manages scale + opacity */
+  }
+
+  .sol-phone-device::before {
+    content: '';
+    position: absolute;
+    top: 10px; left: 50%;
+    transform: translateX(-50%);
+    width: 52px; height: 13px;
+    background: var(--color-bg);
+    border-radius: 7px;
+  }
+
+  .sol-phone-device::after {
+    content: '';
+    position: absolute;
+    bottom: 8px; left: 50%;
+    transform: translateX(-50%);
+    width: 52px; height: 4px;
+    background: var(--color-border);
+    border-radius: 2px;
+  }
+
+  /* Indicator dots */
+  .sol-dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3);
+    padding-block: var(--space-6);
+    flex-shrink: 0;
+    max-width: var(--container-max);
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .sol-dot {
+    width: 8px; height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--color-border-strong);
+    border: none; padding: 0;
+    cursor: pointer;
+    transition: background var(--transition-base), transform var(--transition-base);
+  }
+
+  .sol-dot.is-active {
+    background: var(--color-accent);
+    transform: scale(1.4);
+  }
+
+  .sol-dot:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* ── Science cards ───────────────────────────────────── */
+  :global(#science .panel-header) {
+    padding-block: var(--space-5);
+  }
+
+  .science-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+
+  .science-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    height: 100%;
+  }
+
+  .science-card h3 { font-size: var(--text-2xl); }
+
+  .science-card p {
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    flex: 1;
+    margin: 0;
+  }
+
+  @media (max-width: 767px) {
+    .science-grid { grid-template-columns: 1fr; }
+
+    /* ── Solution: stack text above, phones below ── */
+    .sol-stage {
+      display: flex;
+      flex-direction: column;
+      flex: 1; /* fill #solution's explicit height so 45%/flex:1 children resolve */
+    }
+
+    /* Text block: top 50% of the stage */
+    .sol-texts {
+      position: relative;
+      left: auto;
+      width: 100%;
+      height: 50%;
+      flex-shrink: 0;
+    }
+
+    .sol-text {
+      position: absolute;
+      inset: 0;
+      justify-content: flex-start;
+      padding-top: var(--space-5);
+      padding-inline: var(--container-pad);
+      padding-right: var(--space-4);
+    }
+
+    /* Phone filmstrip: bottom 55%, re-enabled.
+       No justify-content — GSAP owns the horizontal x position. */
+    .sol-filmstrip-wrap {
+      position: relative;
+      left: auto; right: auto; top: auto; bottom: auto;
+      width: 100%;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Smaller phones on mobile */
+    .sol-phone-item { width: 155px; }
+    .sol-phone-device {
+      width: 143px;
+      height: 286px;
+      border-radius: 24px;
+    }
+    .sol-phone-device::before { width: 44px; height: 11px; }
+    .sol-phone-device::after  { width: 44px; }
+
+  }
+
+  /* ── Social proof: scroll-zone + quote cycling ───────── */
+
+  /* Zone is N× panel height — gives sticky panel room to cycle quotes */
+  .social-scroll-zone {
+    height: calc(var(--quote-count) * (100vh - var(--masthead-h)));
+    height: calc(var(--quote-count) * (100svh - var(--masthead-h)));
+  }
+
+  /* sp-content: container-constrained wrapper, vertically centers group */
+  .sp-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-5);
+    max-width: var(--container-max);
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .sp-header {
+    padding-inline: var(--container-pad);
+    padding-block: 0;
+  }
+
+  /* Stage clips the sliding quotes; height sized to quote content */
+  .sp-stage {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: clamp(200px, 32vh, 300px);
+  }
+
+  /* Each quote fills the stage; JS drives transform */
+  .sp-quote {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--container-pad);
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .sp-quote:first-child {
+    transform: translateX(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sp-quote { transition: none; }
+  }
+
+  .sp-quote__text {
+    max-width: 48ch;
+    text-align: center;
+    border: none;
+    padding: 0;
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text);
+  }
+
+  .sp-quote__text p {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    line-height: inherit;
+    margin-bottom: var(--space-4);
+  }
+
+  .sp-quote__attr {
+    display: block;
+    font-size: var(--text-sm);
+    font-style: normal;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* Indicator dots */
+  .sp-dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3);
+    padding-block: 0;
+    padding-top: var(--space-4);
+    flex-shrink: 0;
+  }
+
+  .sp-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--color-border-strong);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background var(--transition-base), transform var(--transition-base);
+  }
+
+  .sp-dot.is-active {
+    background: var(--color-accent);
+    transform: scale(1.4);
+  }
+
+  .sp-dot:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* ── Video modal ─────────────────────────────────────── */
+  .video-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal, 200);
+    align-items: center;
+    justify-content: center;
+  }
+  .video-modal[aria-hidden="false"] { display: flex; }
+
+  .video-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+  }
+
+  .video-modal__panel {
+    position: relative;
+    width: min(900px, calc(100% - var(--space-8)));
+    aspect-ratio: 16 / 9;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .video-modal__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    z-index: 2;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-size: var(--text-xl);
+    line-height: 1;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+  }
+  .video-modal__close:hover { background: rgba(0, 0, 0, 0.7); }
+
+  .video-modal__screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-5);
+    color: var(--color-text-muted);
+  }
+
+  .video-modal__play {
+    width: 64px;
+    height: 64px;
+    opacity: 0.4;
+  }
+
+  .video-modal__screen p {
+    font-size: var(--text-sm);
+    margin: 0;
+  }
+
+  /* ── Social proof: mobile overrides (must come after base rules) ── */
+  @media (max-width: 767px) {
+    .sp-quote__text {
+      font-size: var(--text-xl);
+    }
+
+    /* Panel now has an explicit height (see :global(#social-proof) above).
+       Switch from centred layout to top-anchored: header at top, stage
+       fills remaining space so the quote is centred in a tall area,
+       dots sit flush at the bottom. */
+    .sp-content {
+      justify-content: flex-start;
+      padding-top: var(--space-6);
+      padding-bottom: var(--space-4);
+    }
+
+    .sp-stage {
+      flex: 1;              /* fill available height between header and dots */
+      height: auto;         /* override the desktop fixed clamp */
+      max-height: 480px;    /* cap so the quote stays near vertical centre */
+    }
+  }
+</style>
+
+<script>
+  // ── Shared setup ──────────────────────────────────────────
+  const mastheadH = (document.querySelector('.masthead') as HTMLElement)?.offsetHeight ?? 64;
+  const panelH = () => window.innerHeight - mastheadH;
+
+  // ── Video modal ───────────────────────────────────────────────
+  const videoModal = document.getElementById('video-modal');
+  // Move to body to escape any stacking context
+  if (videoModal) document.body.appendChild(videoModal);
+
+  const videoBtn = document.getElementById('watch-video-btn');
+  const closeVideoBtn = videoModal?.querySelector('.video-modal__close');
+  const videoBackdrop = videoModal?.querySelector('.video-modal__backdrop');
+
+  function openVideoModal() {
+    videoModal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeVideoModal() {
+    videoModal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  videoBtn?.addEventListener('click', openVideoModal);
+  closeVideoBtn?.addEventListener('click', closeVideoModal);
+  videoBackdrop?.addEventListener('click', closeVideoModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && videoModal?.getAttribute('aria-hidden') === 'false') closeVideoModal();
+  });
+
+  // ── Anchor nav fix for sticky panels ─────────────────────────
+  // sticky elements' offsetTop reflects their current VISUAL position
+  // (mastheadH + scrollY), not their natural flow position. We temporarily
+  // un-stick to read the true layout offset, then restore.
+  const getFlowTop = (el: HTMLElement): number => {
+    const prev = el.style.position;
+    el.style.position = 'static';
+    const top = el.offsetTop;
+    el.style.position = prev;
+    return top;
+  };
+
+  document.querySelectorAll<HTMLAnchorElement>('a[href*="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const hash = link.getAttribute('href')?.split('#')[1];
+      if (!hash) return;
+      const target = document.getElementById(hash);
+      if (!target) return;
+      e.preventDefault();
+      window.scrollTo({ top: Math.max(0, getFlowTop(target) - mastheadH), behavior: 'smooth' });
+    });
+  });
+
+  // ── Social proof carousel (independent of GSAP) ───────────
+  const spZone   = document.getElementById('social-scroll-zone');
+  const spQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sp-quote'));
+  const spDots   = Array.from(document.querySelectorAll<HTMLElement>('.sp-dot'));
+
+  if (spZone && spQuotes.length > 1) {
+    const quoteCount = spQuotes.length;
+
+    // Place quotes in a horizontal train without triggering CSS transition
+    spQuotes.forEach((q, i) => {
+      q.style.transition = 'none';
+      q.style.transform  = `translateX(${i * 100}%)`;
+    });
+    // Re-enable transition after initial paint
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      spQuotes.forEach(q => q.style.removeProperty('transition'));
+    }));
+
+    function showQuote(idx: number) {
+      idx = Math.max(0, Math.min(Math.round(idx), quoteCount - 1));
+      spQuotes.forEach((q, i) => {
+        q.style.transform = `translateX(${(i - idx) * 100}%)`;
+        q.setAttribute('aria-hidden', String(i !== idx));
+      });
+      spDots.forEach((dot, i) => {
+        const active = i === idx;
+        dot.classList.toggle('is-active', active);
+        dot.setAttribute('aria-selected', String(active));
+      });
+    }
+
+    // Scroll-driven switching
+    function onScroll() {
+      const rect = spZone!.getBoundingClientRect();
+      const scrolledIn = mastheadH - rect.top;
+      showQuote(scrolledIn / panelH());
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // sync on load
+
+    // Dot clicks: scroll to quote's position in the zone
+    spDots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        const zoneAbsTop = spZone!.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: zoneAbsTop - mastheadH + i * panelH(), behavior: 'smooth' });
+      });
+    });
+  }
+
+  // ── GSAP: hero parallax + reveal fade-ins ─────────────────
+  (window as any).gsapActive = true;
+
+  (async () => {
+    try {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        (window as any).gsapActive = false;
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => {
+            if (e.isIntersecting) {
+              (e.target as HTMLElement).classList.add('is-revealed');
+              io.unobserve(e.target);
+            }
+          }),
+          { threshold: 0.12 }
+        );
+        document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+        return;
+      }
+
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ── Parallax depth: hero content recedes as problem slides over it ──
+      gsap.to('#hero .hero', {
+        y: '-6%',
+        opacity: 0.4,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#problem',
+          start: `top top+=${mastheadH}`,
+          end: `+=${window.innerHeight * 0.6}`,
+          scrub: 1,
+        },
+      });
+
+      // ── Solution: scroll-driven inner section cycling ────
+      const solZone     = document.getElementById('solution-scroll-zone');
+      const solTexts    = Array.from(document.querySelectorAll<HTMLElement>('.sol-text'));
+      const solDots     = Array.from(document.querySelectorAll<HTMLElement>('.sol-dot'));
+      const filmstrip   = document.getElementById('sol-filmstrip') as HTMLElement | null;
+      const filmstripWrap = filmstrip?.parentElement as HTMLElement | null;
+      const phoneDivs   = Array.from(document.querySelectorAll<HTMLElement>('.sol-phone-device'));
+      const phoneItems  = Array.from(document.querySelectorAll<HTMLElement>('.sol-phone-item'));
+
+      if (solZone && solTexts.length > 1 && filmstrip && filmstripWrap) {
+        const solCount = solTexts.length;
+
+        // Compute step from rendered positions (handles any gap/size)
+        const STEP = phoneItems.length > 1
+          ? phoneItems[1].getBoundingClientRect().left - phoneItems[0].getBoundingClientRect().left
+          : 180;
+
+        // Center phone 0 in the wrap
+        const wrapW   = filmstripWrap.offsetWidth;
+        const phoneW  = phoneItems[0]?.offsetWidth ?? 160;
+        const initX   = wrapW / 2 - phoneW / 2;
+
+        // Initialize positions
+        gsap.set(filmstrip, { x: initX });
+        // Slide the whole sol-text — since all eyebrows are identical,
+        // the outgoing one slides out while the incoming slides in
+        // at the same position, giving the visual effect of staying put.
+        gsap.set(solTexts.slice(1), { xPercent: 100 });
+        phoneDivs.forEach((p, i) => gsap.set(p,
+          i === 0 ? { scale: 1.18, opacity: 1 } : { scale: 0.76, opacity: 0.45 }
+        ));
+
+        const TRANS = 0.28;
+        const solTl = gsap.timeline({ paused: true });
+
+        for (let i = 0; i < solCount - 1; i++) {
+          const t = i + 1 - TRANS;
+
+          // Slide the full text block — identical eyebrows create a "stays put" illusion
+          solTl.to(solTexts[i],     { xPercent: -100, ease: 'power2.inOut', duration: TRANS }, t);
+          solTl.to(solTexts[i + 1], { xPercent:    0, ease: 'power2.inOut', duration: TRANS }, t);
+
+          // Filmstrip slides left
+          solTl.to(filmstrip, { x: initX - (i + 1) * STEP, ease: 'power2.inOut', duration: TRANS }, t);
+
+          // Phone scales: active grows, outgoing shrinks
+          solTl.to(phoneDivs[i],     { scale: 0.76, opacity: 0.45, ease: 'power1.in',    duration: TRANS * 0.9 }, t);
+          solTl.to(phoneDivs[i + 1], { scale: 1.18, opacity: 1,    ease: 'back.out(1.2)', duration: TRANS * 0.9 }, t);
+        }
+
+        ScrollTrigger.create({
+          trigger: solZone,
+          start: `top top+=${mastheadH}`,
+          end: () => `+=${(solCount - 1) * panelH()}`,
+          scrub: 1,
+          invalidateOnRefresh: true,
+          animation: solTl,
+          onUpdate(self) {
+            const idx = Math.round(self.progress * (solCount - 1));
+            solDots.forEach((dot, i) => {
+              const active = i === idx;
+              dot.classList.toggle('is-active', active);
+              dot.setAttribute('aria-selected', String(active));
+            });
+            solTexts.forEach((s, i) => {
+              s.setAttribute('aria-hidden', String(i !== idx));
+            });
+          },
+        });
+
+        solDots.forEach((dot, i) => {
+          dot.addEventListener('click', () => {
+            const zoneTop = getFlowTop(solZone);
+            window.scrollTo({
+              top: Math.max(0, zoneTop - mastheadH + i * panelH()),
+              behavior: 'smooth',
+            });
+          });
+        });
+      }
+
+      // ── Problem: scroll-driven thought bubble rows ────────
+      const problemZone = document.getElementById('problem-scroll-zone');
+      const bubbleRows = Array.from(document.querySelectorAll<HTMLElement>('.bubble-row'));
+
+      if (problemZone && bubbleRows.length) {
+        // Each row has a different speed to create parallax depth
+        const rowSpeeds    = [1.0, 1.5, 0.7, 1.3];
+        // Staggered start positions so the initial composition is varied
+        const rowStartFrac = [0.25, 0.55, 0.1, 0.45];
+
+        bubbleRows.forEach((row, i) => {
+          const speed     = rowSpeeds[i]    ?? 1;
+          const startFrac = rowStartFrac[i] ?? 0.3;
+          const dir       = i % 2 === 0 ? 1 : -1; // alternate direction per row
+
+          gsap.fromTo(row,
+            { x: dir * window.innerWidth * startFrac },
+            {
+              x: -dir * (row.scrollWidth * speed * 0.55),
+              ease: 'none',
+              scrollTrigger: {
+                trigger: problemZone,
+                start: 'top 85%',
+                end:   () => `+=${2 * panelH()}`,
+                scrub: 1,
+              },
+            }
+          );
+        });
+      }
+
+      // ── Reveal fade-ins ──────────────────────────────────────
+      document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top bottom-=80',
+          onEnter: () => el.classList.add('is-revealed'),
+          once: true,
+        });
+      });
+
+    } catch (err) {
+      console.warn('[alignd] GSAP initialization failed — skipping animations.', err);
+    }
+  })();
+</script>

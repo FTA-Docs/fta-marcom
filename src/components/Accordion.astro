@@ -1,0 +1,145 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+  open?: boolean;
+}
+
+const { question, answer, open = false } = Astro.props;
+
+const id = question
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/, '');
+---
+
+<div class="accordion-item">
+  <h3 class="accordion-item__heading">
+    <button
+      class="accordion-item__trigger"
+      aria-expanded={open ? 'true' : 'false'}
+      aria-controls={'answer-' + id}
+      id={'question-' + id}
+    >
+      <span class="accordion-item__question">{question}</span>
+      <span class="accordion-item__icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </button>
+  </h3>
+  <div
+    id={'answer-' + id}
+    class="accordion-item__body"
+    role="region"
+    aria-labelledby={'question-' + id}
+    hidden={!open}
+  >
+    <div class="accordion-item__body__inner">
+      <p class="accordion-item__answer">{answer}</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .accordion-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .accordion-item__heading {
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+  }
+
+  .accordion-item__trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: var(--space-4) 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: var(--space-4);
+    color: var(--color-text);
+  }
+
+  .accordion-item__trigger:hover {
+    opacity: 0.75;
+  }
+
+  .accordion-item__trigger:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  .accordion-item__question {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  .accordion-item__icon {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform var(--transition-base);
+  }
+
+  .accordion-item__trigger[aria-expanded="true"] .accordion-item__icon {
+    transform: rotate(180deg);
+  }
+
+  /* Animated open/close via CSS grid trick */
+  .accordion-item__body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--transition-base);
+    overflow: hidden;
+  }
+
+  /* Override UA display:none so CSS transition can run */
+  .accordion-item__body[hidden] {
+    display: grid;
+  }
+
+  .accordion-item__body:not([hidden]) {
+    grid-template-rows: 1fr;
+  }
+
+  /* No padding here — padding on the inner div leaks through 0fr grid rows */
+  .accordion-item__body__inner {
+    overflow: hidden;
+  }
+
+  .accordion-item__answer {
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-5);
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    margin: 0;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.accordion-item__trigger').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      const bodyId = trigger.getAttribute('aria-controls');
+      if (bodyId) {
+        const body = document.getElementById(bodyId);
+        if (body) {
+          if (expanded) {
+            body.setAttribute('hidden', '');
+          } else {
+            body.removeAttribute('hidden');
+          }
+        }
+      }
+    });
+  });
+</script>

@@ -1,0 +1,1 @@
+Our founders bring experience across health technology, behavioral science, and clinical practice. They built alignd because they saw firsthand how families were struggling — and how much better the tools should be.

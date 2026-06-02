@@ -59,8 +59,8 @@
   --footer-link-hover: var(--gray-0);
 
   /* ── Font families — PLACEHOLDER: system fonts ─────── */
-  --font-body:    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-heading: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:    'Figtree', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Lora', Georgia, serif;
   --font-mono:    ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
 
   /* ── Font weights ────────────────────────────────────── */
@@ -69,6 +69,7 @@
   --weight-semibold: 600;
   --weight-bold:     700;
   --weight-black:    900;
+  --weight-heading:  500; /* matches Lora Medium — change when swapping heading font */
 
   /* ── Type scale (fluid via clamp) ───────────────────── */
   --text-xs:   clamp(0.694rem, 0.7rem  + 0.1vw,  0.75rem);

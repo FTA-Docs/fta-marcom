@@ -1,5 +1,10 @@
 ---
 import siteData from '../../content/site.json';
+
+const buildTime = new Date().toLocaleString('en-US', {
+  year: 'numeric', month: 'short', day: 'numeric',
+  hour: '2-digit', minute: '2-digit', timeZoneName: 'short',
+});
 ---
 
 <footer class="footer" role="contentinfo">
@@ -36,6 +41,8 @@ import siteData from '../../content/site.json';
   <div class="footer__bottom">
     <div class="container">
       <p class="footer__copyright">{siteData.footer.copyright}</p>
+      <!-- TODO: remove before launch -->
+      <p class="footer__build-time">Last updated: {buildTime}</p>
     </div>
   </div>
 </footer>
@@ -132,6 +139,14 @@ import siteData from '../../content/site.json';
     color: var(--footer-text-muted);
     text-align: center;
     margin: 0;
+  }
+
+  .footer__build-time {
+    font-size: var(--text-xs);
+    color: var(--footer-text-muted);
+    text-align: center;
+    margin: var(--space-2) 0 0;
+    opacity: 0.6;
   }
 
   @media (max-width: 767px) {

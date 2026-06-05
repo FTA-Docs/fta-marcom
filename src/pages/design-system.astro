@@ -1,0 +1,564 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Enumerate the token names per group. Values are read LIVE from the CSS at
+// runtime (var() for specimens, getComputedStyle for the spec labels), so this
+// page reflects the skin automatically — change a token and it updates here.
+
+const palette = [
+  '--gray-0', '--gray-50', '--gray-100', '--gray-200', '--gray-300', '--gray-400',
+  '--gray-500', '--gray-600', '--gray-700', '--gray-800', '--gray-900', '--gray-950', '--gray-1000',
+];
+
+const colorGroups = [
+  ['Surfaces',       ['--color-bg', '--color-surface', '--color-surface-raised', '--color-surface-overlay']],
+  ['Text',           ['--color-text', '--color-text-muted', '--color-text-subtle', '--color-text-inverse']],
+  ['Borders',        ['--color-border', '--color-border-strong']],
+  ['Accent · primary', ['--color-accent', '--color-accent-hover', '--color-accent-text']],
+  ['Secondary',      ['--color-secondary', '--color-secondary-hover', '--color-secondary-text']],
+  ['Status',         ['--color-status-error', '--color-status-warning', '--color-status-caution', '--color-status-success']],
+  ['Masthead',       ['--masthead-bg', '--masthead-text', '--masthead-border']],
+  ['Footer',         ['--footer-bg', '--footer-text', '--footer-text-muted', '--footer-border', '--footer-link', '--footer-link-hover']],
+];
+
+const fonts = [
+  ['--font-heading', 'Lora — headings'],
+  ['--font-body', 'Figtree — body & UI'],
+  ['--font-mono', 'Monospace — code'],
+];
+
+const typeScale = [
+  '--text-xs', '--text-sm', '--text-base', '--text-lg', '--text-xl',
+  '--text-2xl', '--text-3xl', '--text-4xl', '--text-5xl', '--text-6xl',
+];
+
+const weights = [
+  '--weight-normal', '--weight-medium', '--weight-semibold', '--weight-bold', '--weight-black', '--weight-heading',
+];
+
+const leadings = ['--leading-tight', '--leading-snug', '--leading-normal', '--leading-loose'];
+const trackings = ['--tracking-tight', '--tracking-snug', '--tracking-normal', '--tracking-wide', '--tracking-wider'];
+
+const spacing = [
+  '--space-1', '--space-2', '--space-3', '--space-4', '--space-5', '--space-6', '--space-7',
+  '--space-8', '--space-9', '--space-10', '--space-11', '--space-12', '--space-14', '--space-16', '--space-20', '--space-24',
+];
+
+const radii = ['--radius-sm', '--radius-md', '--radius-lg', '--radius-xl', '--radius-full'];
+const shadows = ['--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl'];
+const zindex = ['--z-below', '--z-base', '--z-raised', '--z-overlay', '--z-masthead', '--z-modal'];
+const transitions = ['--transition-fast', '--transition-base', '--transition-slow'];
+
+const toc = [
+  ['colors', 'Colors'], ['type', 'Typography'], ['spacing', 'Spacing'],
+  ['radius', 'Radius'], ['shadow', 'Shadow'], ['system', 'Z-index & motion'],
+  ['buttons', 'Buttons'], ['elements', 'Text elements'], ['patterns', 'Patterns'],
+];
+---
+
+<BaseLayout
+  title="Design System"
+  description="Living reference for alignd's design tokens and components."
+>
+  <div class="ds">
+    <header class="ds-hero">
+      <p class="ds-kicker">Internal · living reference</p>
+      <h1>Design System</h1>
+      <p class="ds-intro">
+        Every value below is read live from the CSS tokens. When you apply the
+        brand skin (<code>skin.css</code> / <code>structure.css</code>), this page
+        updates automatically — the swatches and specimens use <code>var()</code>,
+        and the spec labels are resolved at runtime.
+      </p>
+      <nav class="ds-toc" aria-label="Sections">
+        {toc.map(([id, label]) => <a href={`#${id}`} class="ds-toc__link">{label}</a>)}
+      </nav>
+    </header>
+
+    <!-- ── COLORS ── -->
+    <section id="colors" class="ds-section">
+      <div class="ds-section__head"><h2>Colors</h2></div>
+
+      {colorGroups.map(([title, tokens]) => (
+        <div class="ds-group">
+          <h3 class="ds-group__title">{title}</h3>
+          <div class="ds-swatches">
+            {tokens.map(t => (
+              <figure class="ds-swatch" data-var={t} data-kind="color">
+                <div class="ds-swatch__chip" style={`background: var(${t})`}></div>
+                <figcaption>
+                  <code class="ds-name">{t}</code>
+                  <code class="ds-val" data-hex></code>
+                  <code class="ds-ref" data-raw></code>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Raw palette</h3>
+        <div class="ds-swatches ds-swatches--palette">
+          {palette.map(t => (
+            <figure class="ds-swatch" data-var={t} data-kind="color">
+              <div class="ds-swatch__chip" style={`background: var(${t})`}></div>
+              <figcaption>
+                <code class="ds-name">{t}</code>
+                <code class="ds-val" data-hex></code>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TYPOGRAPHY ── -->
+    <section id="type" class="ds-section">
+      <div class="ds-section__head"><h2>Typography</h2></div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Font families</h3>
+        {fonts.map(([t, label]) => (
+          <div class="ds-font-row" data-var={t}>
+            <p class="ds-font-sample" style={`font-family: var(${t})`}>Healthy habits, aligned</p>
+            <div class="ds-meta">
+              <code class="ds-name">{t}</code>
+              <span class="ds-label">{label}</span>
+              <code class="ds-ref" data-raw></code>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Type scale</h3>
+        {typeScale.map(t => (
+          <div class="ds-type-row" data-var={t} data-kind="size" data-pxprop="font-size">
+            <div class="ds-type-meta">
+              <code class="ds-name">{t}</code>
+              <code class="ds-val"><span data-px></span></code>
+              <code class="ds-ref" data-raw></code>
+            </div>
+            <p class="ds-type-sample" style={`font-size: var(${t})`}>Healthy habits</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Weights</h3>
+        {weights.map(t => (
+          <div class="ds-line-row" data-var={t}>
+            <p class="ds-weight-sample" style={`font-weight: var(${t})`}>Aligned · the quick brown fox</p>
+            <div class="ds-meta"><code class="ds-name">{t}</code><code class="ds-val" data-raw></code></div>
+          </div>
+        ))}
+      </div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Line height</h3>
+        {leadings.map(t => (
+          <div class="ds-leading-row" data-var={t}>
+            <div class="ds-meta"><code class="ds-name">{t}</code><code class="ds-val" data-raw></code></div>
+            <p class="ds-leading-sample" style={`line-height: var(${t})`}>
+              Most families can see that their child's relationship with screens has
+              shifted — but they don't always know what to do about it, or where to start.
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Letter spacing</h3>
+        {trackings.map(t => (
+          <div class="ds-line-row" data-var={t}>
+            <p class="ds-track-sample" style={`letter-spacing: var(${t})`}>Aligned digital wellness</p>
+            <div class="ds-meta"><code class="ds-name">{t}</code><code class="ds-val" data-raw></code></div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── SPACING ── -->
+    <section id="spacing" class="ds-section">
+      <div class="ds-section__head"><h2>Spacing</h2></div>
+      <div class="ds-group">
+        {spacing.map(t => (
+          <div class="ds-space-row" data-var={t} data-kind="size" data-pxprop="width">
+            <code class="ds-name">{t}</code>
+            <div class="ds-space-track"><div class="ds-space-bar" style={`width: var(${t})`}></div></div>
+            <code class="ds-val"><span data-px></span></code>
+            <code class="ds-ref" data-raw></code>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── RADIUS ── -->
+    <section id="radius" class="ds-section">
+      <div class="ds-section__head"><h2>Radius</h2></div>
+      <div class="ds-tiles">
+        {radii.map(t => (
+          <figure class="ds-tile" data-var={t}>
+            <div class="ds-radius-box" style={`border-radius: var(${t})`}></div>
+            <figcaption><code class="ds-name">{t}</code><code class="ds-val" data-raw></code></figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── SHADOW ── -->
+    <section id="shadow" class="ds-section">
+      <div class="ds-section__head"><h2>Shadow</h2></div>
+      <div class="ds-tiles">
+        {shadows.map(t => (
+          <figure class="ds-tile" data-var={t}>
+            <div class="ds-shadow-box" style={`box-shadow: var(${t})`}></div>
+            <figcaption><code class="ds-name">{t}</code></figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── Z-INDEX & MOTION ── -->
+    <section id="system" class="ds-section">
+      <div class="ds-section__head"><h2>Z-index &amp; motion</h2></div>
+      <div class="ds-group">
+        <h3 class="ds-group__title">Z-index</h3>
+        <dl class="ds-defs">
+          {zindex.map(t => (
+            <div class="ds-def" data-var={t}><dt><code class="ds-name">{t}</code></dt><dd><code class="ds-val" data-raw></code></dd></div>
+          ))}
+        </dl>
+      </div>
+      <div class="ds-group">
+        <h3 class="ds-group__title">Transitions</h3>
+        <dl class="ds-defs">
+          {transitions.map(t => (
+            <div class="ds-def" data-var={t}><dt><code class="ds-name">{t}</code></dt><dd><code class="ds-val" data-raw></code></dd></div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- ── BUTTONS ── -->
+    <section id="buttons" class="ds-section">
+      <div class="ds-section__head"><h2>Buttons</h2><p class="ds-note">Global <code>.btn</code> classes — fully token-driven.</p></div>
+      <div class="ds-buttons">
+        <button class="btn btn--primary" type="button">Primary</button>
+        <button class="btn btn--secondary" type="button">Secondary</button>
+        <button class="btn btn--ghost" type="button">Ghost</button>
+        <button class="btn btn--primary btn--lg" type="button">Primary · large</button>
+        <button class="btn btn--secondary btn--lg" type="button">Secondary · large</button>
+      </div>
+    </section>
+
+    <!-- ── TEXT ELEMENTS ── -->
+    <section id="elements" class="ds-section">
+      <div class="ds-section__head"><h2>Text elements</h2><p class="ds-note">Base HTML elements from <code>typography.css</code>.</p></div>
+      <div class="ds-elements">
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+        <h3>Heading 3</h3>
+        <h4>Heading 4</h4>
+        <h5>Heading 5</h5>
+        <h6>Heading 6</h6>
+        <p class="lead">This is a lead paragraph — it steps up from body size to introduce a section with a little more presence.</p>
+        <p>This is a standard body paragraph. We give families a clear, structured path to rebuilding healthier digital habits, with <strong>emphasis</strong> shown inline and an <a href="#elements">inline link</a> for reference.</p>
+        <blockquote>A blockquote — used for the testimonial quotes, set in italic serif.</blockquote>
+        <p>Inline <code>code</code> sample.</p>
+      </div>
+    </section>
+
+    <!-- ── PATTERNS ── -->
+    <section id="patterns" class="ds-section">
+      <div class="ds-section__head"><h2>Patterns</h2><p class="ds-note">Composed from tokens — these mirror the site's recurring building blocks.</p></div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Eyebrow tag</h3>
+        <span class="ds-eyebrow">How it works</span>
+      </div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Card</h3>
+        <article class="ds-card">
+          <h3>Clinical Experience</h3>
+          <p>A card surface using <code>--color-bg</code>, <code>--color-border</code>, <code>--radius-lg</code> and <code>--space-8</code> padding.</p>
+          <button class="btn btn--secondary" type="button">Learn more</button>
+        </article>
+      </div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Section header</h3>
+        <div class="ds-pattern-header">
+          <span class="ds-eyebrow">Always evidence-based</span>
+          <h2 class="ds-pattern-heading">Grounded in science</h2>
+          <p class="ds-pattern-sub">A subheading at the lead size, sitting under a display heading.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .ds {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding: var(--space-12) var(--container-pad) var(--space-20);
+  }
+
+  /* ── Hero ── */
+  .ds-hero { margin-bottom: var(--space-14); }
+  .ds-kicker {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-3);
+  }
+  .ds-intro {
+    max-width: 60ch;
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+  .ds-toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-8);
+  }
+  .ds-toc__link {
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    padding: var(--space-1) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-surface-raised);
+    transition: background var(--transition-fast);
+  }
+  .ds-toc__link:hover { background: var(--color-surface-overlay); }
+
+  /* ── Sections ── */
+  .ds-section {
+    padding-top: var(--space-12);
+    margin-top: var(--space-12);
+    border-top: 1px solid var(--color-border);
+    scroll-margin-top: calc(var(--masthead-h) + var(--space-4));
+  }
+  .ds-section__head { margin-bottom: var(--space-8); }
+  .ds-section__head h2 { margin: 0; }
+  .ds-note { margin-top: var(--space-2); color: var(--color-text-muted); font-size: var(--text-sm); }
+
+  .ds-group { margin-bottom: var(--space-10); }
+  .ds-group__title {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-5);
+  }
+
+  /* Shared code/label styling */
+  .ds-name, .ds-val, .ds-ref {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    display: block;
+  }
+  .ds-name { color: var(--color-text); }
+  .ds-val { color: var(--color-text-muted); }
+  .ds-ref { color: var(--color-text-subtle); }
+  .ds-label { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+  /* ── Color swatches ── */
+  .ds-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-5);
+  }
+  .ds-swatches--palette {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  .ds-swatch { margin: 0; }
+  .ds-swatch__chip {
+    height: 72px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--space-2);
+  }
+  .ds-swatch figcaption { display: flex; flex-direction: column; gap: 2px; }
+
+  /* ── Type ── */
+  .ds-font-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .ds-font-sample { font-size: var(--text-2xl); color: var(--color-text); margin: 0; }
+  .ds-meta { display: flex; flex-direction: column; gap: 2px; text-align: right; align-items: flex-end; }
+
+  .ds-type-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-6);
+    align-items: baseline;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .ds-type-meta { display: flex; flex-direction: column; gap: 2px; }
+  .ds-type-sample {
+    font-family: var(--font-heading);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ds-line-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .ds-weight-sample { font-size: var(--text-xl); margin: 0; color: var(--color-text); }
+  .ds-track-sample { font-size: var(--text-xl); font-family: var(--font-heading); margin: 0; color: var(--color-text); text-transform: uppercase; }
+
+  .ds-leading-row {
+    padding-block: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .ds-leading-row .ds-meta { flex-direction: row; gap: var(--space-3); text-align: left; align-items: baseline; margin-bottom: var(--space-2); }
+  .ds-leading-sample { max-width: 60ch; color: var(--color-text); margin: 0; }
+
+  /* ── Spacing ── */
+  .ds-space-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 80px 1fr;
+    gap: var(--space-4);
+    align-items: center;
+    padding-block: var(--space-2);
+  }
+  .ds-space-track { background: var(--color-surface-raised); border-radius: var(--radius-sm); }
+  .ds-space-bar { height: 18px; background: var(--color-accent); border-radius: var(--radius-sm); }
+  .ds-space-row .ds-ref { color: var(--color-text-subtle); }
+
+  /* ── Tiles (radius / shadow) ── */
+  .ds-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-6);
+  }
+  .ds-tile { margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+  .ds-tile figcaption { display: flex; flex-direction: column; gap: 2px; }
+  .ds-radius-box {
+    height: 96px;
+    background: var(--color-accent);
+  }
+  .ds-shadow-box {
+    height: 96px;
+    background: var(--color-bg);
+    border-radius: var(--radius-lg);
+  }
+
+  /* ── Defs (z-index / transitions) ── */
+  .ds-defs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-3); margin: 0; }
+  .ds-def { display: flex; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) var(--space-4); background: var(--color-surface-raised); border-radius: var(--radius-md); }
+  .ds-def dt, .ds-def dd { margin: 0; }
+
+  /* ── Buttons ── */
+  .ds-buttons { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
+
+  /* ── Text elements ── */
+  .ds-elements > * { margin-bottom: var(--space-5); }
+  .ds-elements > *:last-child { margin-bottom: 0; }
+
+  /* ── Patterns ── */
+  .ds-eyebrow {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-surface-raised);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .ds-card {
+    max-width: 380px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: flex-start;
+    box-shadow: var(--shadow-sm);
+  }
+  .ds-card h3 { font-size: var(--text-2xl); letter-spacing: var(--tracking-normal); line-height: var(--leading-snug); margin: 0; }
+  .ds-card p { margin: 0; }
+  .ds-pattern-header { text-align: center; max-width: 42rem; margin-inline: auto; }
+  .ds-pattern-heading { font-size: var(--text-4xl); letter-spacing: var(--tracking-snug); margin: var(--space-3) 0 0; }
+  .ds-pattern-sub { font-size: var(--text-lg); color: var(--color-text-muted); margin-top: var(--space-4); }
+
+  @media (max-width: 640px) {
+    .ds-type-row { grid-template-columns: 1fr; gap: var(--space-2); }
+    .ds-space-row { grid-template-columns: 90px 1fr 70px; }
+    .ds-space-row .ds-ref { display: none; }
+  }
+</style>
+
+<script>
+  const root = getComputedStyle(document.documentElement);
+  const raw = (n: string) => root.getPropertyValue(n).trim();
+
+  function rgbToHex(rgb: string): string {
+    const m = rgb.match(/[\d.]+/g);
+    if (!m) return rgb;
+    const [r, g, b, a] = m.map(Number);
+    const hex = '#' + [r, g, b].map(x => Math.round(x).toString(16).padStart(2, '0')).join('');
+    return a !== undefined && a < 1 ? `${hex} · ${Math.round(a * 100)}%` : hex;
+  }
+
+  // Resolve a token to its used value by applying it to an off-screen probe.
+  function resolve(name: string, prop: string): string {
+    const probe = document.createElement('div');
+    probe.style.position = 'absolute';
+    probe.style.visibility = 'hidden';
+    probe.style.setProperty(prop, `var(${name})`);
+    document.body.appendChild(probe);
+    const v = getComputedStyle(probe).getPropertyValue(prop);
+    probe.remove();
+    return v;
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-var]').forEach(el => {
+    const name = el.dataset.var!;
+    const kind = el.dataset.kind;
+
+    const rawEl = el.querySelector('[data-raw]');
+    if (rawEl) rawEl.textContent = raw(name);
+
+    if (kind === 'color') {
+      const hexEl = el.querySelector('[data-hex]');
+      if (hexEl) hexEl.textContent = rgbToHex(resolve(name, 'color'));
+    }
+
+    if (kind === 'size') {
+      const pxEl = el.querySelector('[data-px]');
+      const prop = el.dataset.pxprop || 'width';
+      if (pxEl) pxEl.textContent = resolve(name, prop);
+    }
+  });
+</script>

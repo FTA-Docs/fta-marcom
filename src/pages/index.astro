@@ -312,6 +312,15 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     position: relative;
   }
 
+  /* Desktop dwell: hold the comparison panel back ~0.8 of a screen so the
+     pricing cards get read time on BOTH sides of the card-2 swap — card 1
+     dwells on entry, then card 2 dwells before the comparison rises. The
+     margin sits behind the pinned pricing panel, so it's invisible — it just
+     delays the comparison's arrival. */
+  @media (min-width: 768px) {
+    :global(#comparison) { margin-top: 80svh; }
+  }
+
   /* Mobile: non-animated panels revert to normal flow so taller content
      is never obscured by a higher-z-index panel sliding over it early. */
   @media (max-width: 767px) {

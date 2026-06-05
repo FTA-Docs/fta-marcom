@@ -71,6 +71,7 @@
         "name": "Initial 8-Week Plan",
         "price": "$149",
         "period": "one-time payment",
+        "linkPhrase": "eight structured weeks",
         "description": "A personalized digital wellness plan built around your child's habits and your family's goals — delivered in eight structured weeks with AI coaching and expert guidance every step of the way.",
         "cta": { "label": "Get Started", "href": "#" },
         "primary": true

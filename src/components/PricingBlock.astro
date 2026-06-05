@@ -5,6 +5,7 @@ interface Plan {
   period: string;
   note?: string;
   description: string;
+  linkPhrase?: string;
   cta: { label: string; href: string };
   primary?: boolean;
 }
@@ -40,7 +41,15 @@ const { plans, valueHighlights } = pricing;
               {plan.note && <span class="plan-card__note">{plan.note}</span>}
             </div>
           </div>
-          <p class="plan-card__description">{plan.description}</p>
+          <p class="plan-card__description">
+            {plan.linkPhrase && plan.description.includes(plan.linkPhrase) ? (
+              <Fragment>
+                {plan.description.split(plan.linkPhrase)[0]}
+                <button type="button" class="plan-inline-link" data-open-plan>{plan.linkPhrase}</button>
+                {plan.description.split(plan.linkPhrase)[1]}
+              </Fragment>
+            ) : plan.description}
+          </p>
           <a
             href={plan.cta.href}
             class={`btn ${i === 0 ? 'btn--primary' : 'btn--secondary'} plan-card__cta`}
@@ -133,11 +142,6 @@ const { plans, valueHighlights } = pricing;
     z-index: 1;
     opacity: 0.8;
     transform: rotate(1.5deg);
-    cursor: pointer;
-  }
-
-  .plan-card[data-position="back"]:hover {
-    opacity: 0.95;
   }
 
   .plan-card__header {
@@ -184,6 +188,19 @@ const { plans, valueHighlights } = pricing;
     margin: 0;
     flex: 1;
   }
+
+  .plan-inline-link {
+    font: inherit;
+    color: var(--color-text);
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+  }
+  .plan-inline-link:hover { opacity: 0.65; }
 
   .plan-card__cta {
     align-self: flex-start;
@@ -285,33 +302,34 @@ const { plans, valueHighlights } = pricing;
       });
     }
 
-    // ── Card swap (click the back card to bring it forward) ────
-    function swapCards() {
-      cards.forEach(card => {
-        card.dataset.position = card.dataset.position === 'front' ? 'back' : 'front';
+    // Put card 2 (the second plan) on top, or restore card 1 — driven by
+    // scroll position in updateFan. Toggling data-position lets the CSS
+    // transition animate the z-swap (front ↔ back offsets).
+    function setCard2OnTop(onTop: boolean) {
+      const card2OnTop = cards[1].dataset.position === 'front';
+      if (onTop === card2OnTop) return;
+      cards.forEach(c => {
+        c.dataset.position = c.dataset.position === 'front' ? 'back' : 'front';
       });
-      applyFan(); // keep transforms in sync with the new positions
     }
 
-    stack.addEventListener('click', (e) => {
-      const card = (e.target as Element).closest<HTMLElement>('.plan-card');
-      if (!card || card.dataset.position === 'front') return;
-      // Let CTA links through — only swap on non-link clicks
-      if ((e.target as Element).closest('a')) return;
-      swapCards();
-    });
-
-    // ── Scroll-linked fan ─────────────────────────────────────
+    // ── Scroll-linked fan + z-swap ────────────────────────────
     // Driven by viewport-relative rects (robust — unlike offset math, these
-    // stay correct through the sticky/GSAP-pinned panels above). The fan:
-    //   • ramps 0 → 1 as the pricing panel slides up and pins (`reveal`)
-    //   • holds while pricing is the focus
-    //   • ramps 1 → 0 as the comparison panel rises to cover it (`cover`)
-    // so the cards fan apart as you arrive at the plans and re-stack as you
-    // scroll on — revealing the second plan without a click.
+    // stay correct through the sticky/GSAP-pinned panels above):
+    //   • the cards fan apart as the panel pins (`reveal` in) and re-stack as
+    //     the comparison panel rises to cover it (`cover` out), and
+    //   • card 1 is on top by default; once the panel is in view and the user
+    //     scrolls past SWAP_AT, card 2 swaps to the top (and back on scroll up).
     const comp = document.getElementById('comparison');
     const masthead =
       parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--masthead-h')) || 0;
+    // The swap is keyed to the UNCLAMPED comparison position (coverRaw, in
+    // viewport-heights): ~1 + dwell at the pin, dropping past 1 as it rises.
+    // Swapping above 1 fires the swap while the comparison is still a screen
+    // below the fold — held back by the dwell margin on #comparison — so card
+    // 2 gets a moment on top before the comparison panel rises over the cards.
+    const SWAP_AT = 1.35;   // swap when the comparison is ~1.35 screens away
+    const SWAP_HYST = 0.06; // hysteresis so it doesn't flicker at the threshold
 
     let ticking = false;
 
@@ -325,12 +343,20 @@ const { plans, valueHighlights } = pricing;
       const span = Math.max(1, vh - masthead);
       const pricingTop = panelEl.getBoundingClientRect().top;
       const reveal = Math.min(1, Math.max(0, (vh - pricingTop) / span));
-      let cover = 1;
-      if (comp) {
-        const compTop = comp.getBoundingClientRect().top;
-        cover = Math.min(1, Math.max(0, compTop / vh));
-      }
+      let coverRaw = 99; // comparison position in viewport-heights (unclamped)
+      if (comp) coverRaw = comp.getBoundingClientRect().top / vh;
+      const cover = Math.min(1, Math.max(0, coverRaw));
       fan = reveal * cover;
+
+      // Scroll-driven z-swap — only once the panel is actually in view.
+      const card2OnTop = cards[1].dataset.position === 'front';
+      if (reveal > 0.5) {
+        if (!card2OnTop && coverRaw < SWAP_AT) setCard2OnTop(true);
+        else if (card2OnTop && coverRaw > SWAP_AT + SWAP_HYST) setCard2OnTop(false);
+      } else if (card2OnTop) {
+        setCard2OnTop(false); // restore the default before the panel is in view
+      }
+
       applyFan();
     }
 

@@ -1,0 +1,132 @@
+---
+interface ComparisonRow {
+  label: string;
+  alignd: string;
+  traditional: string;
+  parentalTech: string;
+}
+
+interface Props {
+  comparison: {
+    eyebrow: string;
+    heading: string;
+    subheading?: string;
+    cols: string[];
+    rows: ComparisonRow[];
+  };
+}
+
+const { comparison } = Astro.props;
+const { cols, rows } = comparison;
+---
+
+<div class="comparison-block">
+  <div class="cmp-table-wrap">
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col" class="cmp-table__alignd">{cols[0]}</th>
+          <th scope="col">{cols[1]}</th>
+          <th scope="col">{cols[2]}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(row => (
+          <tr>
+            <th scope="row">{row.label}</th>
+            <td class="cmp-table__alignd">{row.alignd}</td>
+            <td>{row.traditional}</td>
+            <td>{row.parentalTech}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .comparison-block {
+    padding-bottom: var(--space-10);
+  }
+
+  .cmp-table-wrap {
+    overflow-x: auto;
+  }
+
+  .cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    min-width: 720px;
+  }
+
+  .cmp-table th,
+  .cmp-table td {
+    padding: var(--space-4) var(--space-5);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+    line-height: var(--leading-normal);
+    width: 25%;
+  }
+
+  .cmp-table thead th {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    border-bottom-width: 2px;
+  }
+
+  .cmp-table tbody th {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text);
+  }
+
+  .cmp-table td {
+    color: var(--color-text-muted);
+  }
+
+  /* Highlighted alignd column */
+  .cmp-table__alignd {
+    color: var(--color-text) !important;
+    font-weight: var(--weight-medium);
+    background: var(--color-surface-raised);
+  }
+
+  .cmp-table thead th.cmp-table__alignd {
+    color: var(--color-text) !important;
+  }
+
+  /* Mobile: fit the whole comparison within the viewport — no horizontal
+     scroll. Shrink type + padding so all four columns sit side by side. */
+  @media (max-width: 767px) {
+    .cmp-table-wrap { overflow-x: visible; }
+
+    .cmp-table {
+      min-width: 0;
+      font-size: var(--text-xs);
+      table-layout: fixed;
+    }
+
+    .cmp-table th,
+    .cmp-table td {
+      padding: var(--space-3) var(--space-2);
+      line-height: var(--leading-snug);
+      overflow-wrap: break-word;
+    }
+
+    .cmp-table thead th {
+      letter-spacing: var(--tracking-normal);
+    }
+
+    /* Row-label column gets a bit more room; split the rest across options */
+    .cmp-table thead th:first-child { width: 26%; }
+    .cmp-table thead th:not(:first-child) { width: 24.6%; }
+
+    /* Hyphenate cleanly if a long label/word must break */
+    .cmp-table tbody th { hyphens: auto; }
+  }
+</style>

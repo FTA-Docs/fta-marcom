@@ -7,64 +7,40 @@
   },
   "problem": {
     "heading": "Sound Familiar?",
-    "panels": [
-      { "quote": "I've tried setting screen time limits, but she just finds workarounds." },
-      { "quote": "I feel like he's missing out on real life." },
-      { "quote": "Conversations about devices keep turning into arguments." },
-      { "quote": "Parental controls aren't enough, and therapy feels out of reach." },
-      { "quote": "I don't know where to draw the line between normal and concerning." },
-      { "quote": "She gets so angry when I try to set limits." },
-      { "quote": "He's glued to his screen from the moment he wakes up." },
-      { "quote": "I worry about what she's watching but I can't monitor everything." },
-      { "quote": "We've tried everything. Nothing sticks." },
-      { "quote": "I feel like I'm competing with his phone for his attention." }
-    ],
-    "bubbles": [
-      { "row": 1, "type": "empty", "size": "sm" },
-      { "row": 1, "type": "quote", "size": "lg", "text": "I've tried setting screen time limits, but she just finds workarounds." },
-      { "row": 1, "type": "empty", "size": "md" },
-      { "row": 1, "type": "quote", "size": "md", "text": "Every conversation about devices turns into a fight." },
-      { "row": 1, "type": "empty", "size": "sm" },
-      { "row": 1, "type": "quote", "size": "lg", "text": "I feel like I'm competing with his phone for his attention." },
-      { "row": 1, "type": "empty", "size": "sm" },
-      { "row": 2, "type": "quote", "size": "md", "text": "I feel like he's missing out on real life." },
-      { "row": 2, "type": "empty", "size": "sm" },
-      { "row": 2, "type": "quote", "size": "lg", "text": "She gets so angry when I try to set limits." },
-      { "row": 2, "type": "empty", "size": "md" },
-      { "row": 2, "type": "quote", "size": "md", "text": "He's glued to his screen from the moment he wakes up." },
-      { "row": 2, "type": "empty", "size": "sm" },
-      { "row": 3, "type": "empty", "size": "md" },
-      { "row": 3, "type": "quote", "size": "lg", "text": "I don't know where to draw the line between normal and concerning." },
-      { "row": 3, "type": "empty", "size": "sm" },
-      { "row": 3, "type": "quote", "size": "md", "text": "I worry about what she's watching but I can't monitor everything." },
-      { "row": 3, "type": "empty", "size": "sm" },
-      { "row": 3, "type": "quote", "size": "lg", "text": "We've tried everything. Nothing sticks." },
-      { "row": 4, "type": "empty", "size": "sm" },
-      { "row": 4, "type": "quote", "size": "md", "text": "Parental controls aren't enough, and therapy feels out of reach." },
-      { "row": 4, "type": "empty", "size": "md" },
-      { "row": 4, "type": "quote", "size": "lg", "text": "I don't know where the line is between discipline and control." },
-      { "row": 4, "type": "empty", "size": "sm" },
-      { "row": 4, "type": "quote", "size": "md", "text": "She shuts down whenever I bring it up." }
+    "subheading": "You're not alone — these are the worries we hear from families every day.",
+    "quotes": [
+      "I've tried setting screen time limits, but she just finds workarounds.",
+      "I feel like he's missing out on real life.",
+      "Conversations about devices keep turning into arguments.",
+      "Parental controls aren't enough, and therapy feels out of reach.",
+      "He's glued to his screen from the moment he wakes up.",
+      "We've tried everything. Nothing sticks.",
+      "I worry about what she's watching, but I can't monitor everything."
     ]
   },
   "solution": {
     "sections": [
       {
+        "eyebrow": "Personalized from day one",
         "title": "A Plan for You & Your Child",
+        "linkPhrase": "8-week plans",
         "body": "We combine our team's leading pediatric digital health expertise with AI‑powered personalization to create 8-week plans designed to drive measurable change.",
         "phones": 3
       },
       {
+        "eyebrow": "It starts with you",
         "title": "Share What Matters",
         "body": "Tell us about your child's current relationship with technology, your family's goals, and what you've already tried. The more we know, the better we can tailor a plan that actually fits your family.",
         "phones": 2
       },
       {
+        "eyebrow": "At your own pace",
         "title": "Use & Tune",
         "body": "Work through your personalized 8-week plan week by week, completing structured tasks at your own pace. Quick check-in surveys along the way help us refine your guidance as your situation evolves.",
         "phones": 2
       },
       {
+        "eyebrow": "Never on your own",
         "title": "Always Be Supported",
         "body": "Ali, our AI assistant, is available any time to answer questions or help you navigate a difficult moment. When you need a human, our coaching team is a message away.",
         "phones": 3
@@ -114,20 +90,22 @@
       "Unlimited coaching team messaging (async)",
       "Weekly check-ins that adapt to your plan",
       "Plan updates based on your progress"
-    ],
-    "comparison": {
-      "eyebrow": "How we compare",
-      "heading": "Traditional Coaching vs. alignd",
-      "cols": ["Traditional Coaching", "alignd"],
-      "rows": [
-        { "label": "Cost", "traditional": "$150–$300/session; 8–12 sessions minimum ($1,200–$3,600+)", "alignd": "$149 one-time + optional $15/month" },
-        { "label": "Time commitment", "traditional": "Weekly 60-min sessions, fixed schedule, often months-long", "alignd": "Work at your own pace; check-ins adapt to your progress" },
-        { "label": "Availability", "traditional": "Appointment-only; 1–2 week wait times typical", "alignd": "Start today; AI coaching available any time, day or night" },
-        { "label": "Personalization", "traditional": "Coach's general approach applied to your situation", "alignd": "Plan built specifically around your child's age, habits, and your family's goals" },
-        { "label": "Family involvement", "traditional": "Typically parent-only in sessions", "alignd": "Whole-family approach built into every plan" },
-        { "label": "Evidence base", "traditional": "Varies by practitioner", "alignd": "Grounded in the COM-B behavioral science framework" }
-      ]
-    }
+    ]
+  },
+  "comparison": {
+    "eyebrow": "How we compare",
+    "heading": "How alignd compares",
+    "subheading": "Coaching that builds lasting habits — not another session to schedule or app to police.",
+    "cols": ["alignd", "Traditional Coaching", "Parental Control Tech"],
+    "rows": [
+      { "label": "Goal", "alignd": "Build lasting digital habits and a healthier relationship with tech", "traditional": "Address issues through periodic conversation", "parentalTech": "Restrict and monitor screen access" },
+      { "label": "Cost", "alignd": "$149 one-time + optional $15/month", "traditional": "$150–$300/session; 8–12 sessions minimum ($1,200–$3,600+)", "parentalTech": "$50–$160/year per family, billed indefinitely" },
+      { "label": "Time commitment", "alignd": "Work at your own pace; check-ins adapt to your progress", "traditional": "Weekly 60-min sessions, fixed schedule, often months-long", "parentalTech": "Quick to install; ongoing monitoring and rule-tweaking falls on you" },
+      { "label": "Availability", "alignd": "Start today; AI coaching available any time, day or night", "traditional": "Appointment-only; 1–2 week wait times typical", "parentalTech": "Instant setup, but no human guidance when issues come up" },
+      { "label": "Personalization", "alignd": "Plan built specifically around your child's age, habits, and your family's goals", "traditional": "Coach's general approach applied to your situation", "parentalTech": "One-size-fits-all filters and time limits" },
+      { "label": "Family involvement", "alignd": "Whole-family approach built into every plan", "traditional": "Typically parent-only in sessions", "parentalTech": "Parent-controlled; often feels like surveillance to kids" },
+      { "label": "Evidence base", "alignd": "Grounded in the COM-B behavioral science framework", "traditional": "Varies by practitioner", "parentalTech": "Built for blocking, not behavior change" }
+    ]
   },
   "socialProof": {
     "heading": "What Customers Are Saying",

@@ -1,1 +1,3 @@
-alignd delivers a personalized 8-week plan through a simple, guided app experience. Families work through structured weekly tasks, check in with Ali — our AI coaching assistant — and track progress over time. Everything is designed to reduce friction and keep the whole family oriented around the same goals.
+alignd pairs clinical expertise with AI to deliver guidance that's genuinely personal. Every plan is shaped by what you tell us about your family, the science behind behavior change, and the lessons drawn from families like yours.
+
+The result is a system that adapts as you go — turning a rich set of inputs into a personalized plan, timely updates, and in-the-moment support whenever you need it.

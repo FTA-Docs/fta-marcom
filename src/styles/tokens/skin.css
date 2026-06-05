@@ -72,16 +72,18 @@
   --weight-heading:  500; /* matches Lora Medium — change when swapping heading font */
 
   /* ── Type scale (fluid via clamp) ───────────────────── */
-  --text-xs:   clamp(0.694rem, 0.7rem  + 0.1vw,  0.75rem);
-  --text-sm:   clamp(0.833rem, 0.85rem + 0.15vw, 0.875rem);
-  --text-base: clamp(1rem,     1rem    + 0.25vw, 1.125rem);
-  --text-lg:   clamp(1.125rem, 1.1rem  + 0.5vw,  1.25rem);
-  --text-xl:   clamp(1.25rem,  1.2rem  + 0.75vw, 1.5rem);
-  --text-2xl:  clamp(1.5rem,   1.4rem  + 1vw,    2rem);
-  --text-3xl:  clamp(1.875rem, 1.7rem  + 1.5vw,  2.5rem);
-  --text-4xl:  clamp(2.25rem,  2rem    + 2vw,    3.25rem);
-  --text-5xl:  clamp(2.75rem,  2.5rem  + 2.5vw,  4rem);
-  --text-6xl:  clamp(3.5rem,   3rem    + 3vw,    5.5rem);
+  /* Two-tier modular scale: text tier (xs–lg) ~1.15, display tier (xl–6xl)  */
+  /* ~1.25. Min = mobile (≈375px), max = desktop (≈1280px).                   */
+  --text-xs:   clamp(0.75rem,   0.72rem + 0.11vw, 0.8125rem);
+  --text-sm:   clamp(0.875rem,  0.85rem + 0.11vw, 0.9375rem);
+  --text-base: clamp(1rem,      0.95rem + 0.22vw, 1.125rem);
+  --text-lg:   clamp(1.125rem,  1.05rem + 0.33vw, 1.3125rem);
+  --text-xl:   clamp(1.3125rem, 1.21rem + 0.44vw, 1.5625rem);
+  --text-2xl:  clamp(1.5625rem, 1.41rem + 0.66vw, 1.9375rem);
+  --text-3xl:  clamp(1.875rem,  1.64rem + 0.99vw, 2.4375rem);
+  --text-4xl:  clamp(2.1875rem, 1.83rem + 1.55vw, 3.0625rem);
+  --text-5xl:  clamp(2.625rem,  2.13rem + 2.1vw,  3.8125rem);
+  --text-6xl:  clamp(3.125rem,  2.45rem + 2.87vw, 4.75rem);
 
   /* ── Line height ─────────────────────────────────────── */
   --leading-tight:  1.2;
@@ -91,6 +93,7 @@
 
   /* ── Letter spacing ──────────────────────────────────── */
   --tracking-tight:  -0.02em;
+  --tracking-snug:   -0.01em; /* gentle — warm serif headings */
   --tracking-normal:  0;
   --tracking-wide:    0.05em;
   --tracking-wider:   0.1em;

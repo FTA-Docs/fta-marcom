@@ -1,0 +1,18 @@
+{
+  "engineLabel": "alignd",
+  "engineSub": "behavioral AI",
+  "inputs": [
+    "Parent-provided profile & feedback",
+    "Clinical research & intelligence",
+    "Anonymized member experiences",
+    "Safety rules & guardrails",
+    "Clinical team input, when needed",
+    "COM-B behavioral framework"
+  ],
+  "outputs": [
+    "Personalized 8-week plans",
+    "Plan updates as you progress",
+    "Ad-hoc guidance",
+    "In-the-moment situation triage"
+  ]
+}

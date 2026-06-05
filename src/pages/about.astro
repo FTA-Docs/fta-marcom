@@ -8,6 +8,8 @@ import ComBContent from '../../content/about/com-b.md';
 import TechnologyContent from '../../content/about/technology.md';
 import FoundingTeamContent from '../../content/about/founding-team.md';
 import teamData from '../../content/about/team.json';
+import combData from '../../content/about/com-b.json';
+import techData from '../../content/about/technology.json';
 ---
 
 <BaseLayout
@@ -15,32 +17,22 @@ import teamData from '../../content/about/team.json';
   description="Learn about alignd's mission, coaching team, and the behavioral science behind our approach to family digital wellness."
 >
 
-  <!-- Hero -->
+  <!-- Hero / Our Mission -->
   <Panel size="sm">
-    <Reveal>
-      <h1>About alignd</h1>
-      <p class="lead">We believe every family deserves access to expert care coordination — not just those who can afford private case managers.</p>
-    </Reveal>
-  </Panel>
-
-  <!-- Our Mission -->
-  <Panel background="default" size="sm" class="about-first-panel">
-    <div class="about-section grid">
-      <div class="col-8">
-        <Reveal><h2>Our Mission</h2></Reveal>
-        <Reveal delay={100}>
-          <div class="prose">
-            <MissionContent />
-          </div>
-        </Reveal>
-      </div>
+    <div class="about-hero">
+      <Reveal><h1>Our Mission</h1></Reveal>
+      <Reveal delay={100}>
+        <div class="prose about-hero__prose">
+          <MissionContent />
+        </div>
+      </Reveal>
     </div>
   </Panel>
 
-  <!-- Clinical Experience -->
-  <Panel background="surface">
-    <div class="about-section grid">
-      <div class="col-8">
+  <!-- Clinical Experience — text + photo -->
+  <Panel background="surface" class="about-pad">
+    <div class="about-split">
+      <div class="about-split__text">
         <Reveal><h2>Clinical Experience</h2></Reveal>
         <Reveal delay={100}>
           <div class="prose">
@@ -48,39 +40,108 @@ import teamData from '../../content/about/team.json';
           </div>
         </Reveal>
       </div>
+      <Reveal delay={150} class="about-split__visual">
+        <figure class="about-figure">
+          <div class="about-figure__frame">
+            <span class="about-figure__placeholder">Photo</span>
+          </div>
+          <figcaption class="about-figure__caption">Dr. Michael Rich, in clinic</figcaption>
+        </figure>
+      </Reveal>
     </div>
   </Panel>
 
-  <!-- About Com-B -->
-  <Panel background="default">
-    <div class="about-section grid">
-      <div class="col-8">
-        <Reveal><h2>About Com-B</h2></Reveal>
+  <!-- About COM-B — text + coded Venn diagram -->
+  <Panel background="default" class="about-pad">
+    <div class="about-split about-split--reverse">
+      <div class="about-split__text">
+        <Reveal><h2>About COM-B</h2></Reveal>
         <Reveal delay={100}>
           <div class="prose">
             <ComBContent />
           </div>
         </Reveal>
       </div>
+      <Reveal delay={150} class="about-split__visual">
+        <div
+          class="comb"
+          role="img"
+          aria-label="The COM-B model: Capability, Opportunity, and Motivation overlap to drive Behaviour."
+        >
+          <span class="comb__circle comb__circle--cap"></span>
+          <span class="comb__circle comb__circle--opp"></span>
+          <span class="comb__circle comb__circle--mot"></span>
+
+          <div class="comb__label comb__label--cap">
+            <svg class="comb__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/>
+            </svg>
+            <span class="comb__title">{combData.nodes[0].label}</span>
+            <span class="comb__desc">{combData.nodes[0].desc}</span>
+          </div>
+
+          <div class="comb__label comb__label--opp">
+            <svg class="comb__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3zM4 7.5 12 12m0 0 8-4.5M12 12v9"/>
+            </svg>
+            <span class="comb__title">{combData.nodes[1].label}</span>
+            <span class="comb__desc">{combData.nodes[1].desc}</span>
+          </div>
+
+          <div class="comb__label comb__label--mot">
+            <svg class="comb__icon comb__icon--fill" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 20s-6.5-4.3-9-8.1C1.2 9 2.6 5.6 6 5.6c2 0 3.1 1.2 4 2.3.9-1.1 2-2.3 4-2.3 3.4 0 4.8 3.4 3 6.3-2.5 3.8-9 8.1-9 8.1z"/>
+            </svg>
+            <span class="comb__title">{combData.nodes[2].label}</span>
+            <span class="comb__desc">{combData.nodes[2].desc}</span>
+          </div>
+
+          <span class="comb__center">{combData.center}</span>
+        </div>
+      </Reveal>
     </div>
   </Panel>
 
-  <!-- Our Technology -->
-  <Panel background="surface">
-    <div class="about-section grid">
-      <div class="col-8">
-        <Reveal><h2>Our Technology</h2></Reveal>
-        <Reveal delay={100}>
-          <div class="prose">
-            <TechnologyContent />
+  <!-- Our Technology — text + coded inputs → AI → outputs schematic -->
+  <Panel background="surface" class="about-pad">
+    <div class="about-section">
+      <Reveal><h2>Our Technology</h2></Reveal>
+      <Reveal delay={100}>
+        <div class="prose about-prose-narrow">
+          <TechnologyContent />
+        </div>
+      </Reveal>
+      <Reveal delay={150}>
+        <div class="tech-flow">
+          <div class="tech-col">
+            <span class="tech-col__head">Inputs</span>
+            {techData.inputs.map(i => <span class="tech-chip">{i}</span>)}
           </div>
-        </Reveal>
-      </div>
+
+          <svg class="tech-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 12h15M13 6l6 6-6 6"/>
+          </svg>
+
+          <div class="tech-engine">
+            <span class="tech-engine__label">{techData.engineLabel}</span>
+            <span class="tech-engine__sub">{techData.engineSub}</span>
+          </div>
+
+          <svg class="tech-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 12h15M13 6l6 6-6 6"/>
+          </svg>
+
+          <div class="tech-col">
+            <span class="tech-col__head">Outputs</span>
+            {techData.outputs.map(o => <span class="tech-chip">{o}</span>)}
+          </div>
+        </div>
+      </Reveal>
     </div>
   </Panel>
 
   <!-- Founding Team -->
-  <Panel background="default">
+  <Panel background="default" class="about-pad">
     <div class="about-section">
       <Reveal><h2>Founding Team</h2></Reveal>
       <Reveal delay={100}>
@@ -125,15 +186,20 @@ import teamData from '../../content/about/team.json';
 </BaseLayout>
 
 <style>
-  :global(.about-first-panel) {
-    padding-block-start: var(--space-4);
+  /* Content sections: tighter than the default section padding so the
+     page reads at a density closer to the rest of the site */
+  :global(.about-pad) {
+    padding-block: var(--space-12);
   }
 
-  /* .lead font-size comes from the global system (typography.css) */
-  .lead {
-    color: var(--color-text-muted);
-    max-width: 56ch;
-    margin-top: var(--space-4);
+  .about-hero__prose {
+    max-width: 60ch;
+    margin-top: var(--space-5);
+  }
+
+  /* Lead-sized paragraphs for the mission hero */
+  .about-hero__prose :global(p) {
+    font-size: var(--text-lg);
   }
 
   .about-section {
@@ -160,6 +226,211 @@ import teamData from '../../content/about/team.json';
     font-weight: var(--weight-semibold);
   }
 
+  /* ── Two-column split (text + visual) ── */
+  .about-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .about-split__text h2 {
+    margin-top: 0;
+    margin-bottom: var(--space-5);
+  }
+
+  .about-split--reverse .about-split__text { order: 2; }
+  .about-split--reverse .about-split__visual { order: 1; }
+
+  .about-prose-narrow { max-width: 64ch; }
+
+  /* ── Photo figure (placeholder) ── */
+  .about-figure { margin: 0; }
+
+  .about-figure__frame {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-figure__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about-figure__placeholder {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-subtle);
+  }
+
+  .about-figure__caption {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  /* ── COM-B Venn (coded, not an image) ── */
+  .comb {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Translucent fills so overlaps darken into the classic Venn shape */
+  .comb__circle {
+    position: absolute;
+    width: 64%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+    opacity: 0.12;
+  }
+
+  .comb__circle--cap { top: 0; left: 50%; transform: translateX(-50%); }
+  .comb__circle--opp { bottom: 0; left: 0; }
+  .comb__circle--mot { bottom: 0; right: 0; }
+
+  .comb__label {
+    position: absolute;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-1);
+    pointer-events: none;
+  }
+
+  .comb__label--cap { top: 9%;  left: 50%; transform: translateX(-50%); }
+  .comb__label--opp { bottom: 13%; left: 0; }
+  .comb__label--mot { bottom: 13%; right: 0; }
+
+  .comb__icon {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .comb__icon--fill {
+    fill: var(--color-accent);
+    stroke: none;
+  }
+
+  .comb__title {
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  .comb__desc {
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+    color: var(--color-text-muted);
+  }
+
+  .comb__center {
+    position: absolute;
+    top: 57%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text);
+  }
+
+  /* ── Technology schematic (coded): inputs → AI → outputs ── */
+  .tech-flow {
+    margin-top: var(--space-10);
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .tech-col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .tech-col__head {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: var(--space-1);
+  }
+
+  .tech-chip {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text);
+    text-align: center;
+  }
+
+  .tech-arrow {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: var(--color-text-subtle);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tech-engine {
+    flex: 0 0 auto;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--space-1);
+    background: var(--color-accent);
+    color: var(--color-accent-text);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6) var(--space-5);
+    min-width: 8.5rem;
+  }
+
+  .tech-engine__label {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    font-size: var(--text-2xl);
+    line-height: 1;
+  }
+
+  .tech-engine__sub {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    opacity: 0.85;
+  }
+
   .team-intro {
     max-width: 64ch;
     margin-bottom: var(--space-10);
@@ -180,8 +451,8 @@ import teamData from '../../content/about/team.json';
   }
 
   .team-avatar {
-    width: 120px;
-    height: 120px;
+    width: clamp(150px, 15vw, 196px);
+    height: clamp(150px, 15vw, 196px);
     border-radius: var(--radius-full);
     background: var(--color-surface-raised);
     border: 1px solid var(--color-border);
@@ -323,6 +594,31 @@ import teamData from '../../content/about/team.json';
 
   .bio-modal__linkedin:hover {
     opacity: 0.7;
+  }
+
+  @media (max-width: 768px) {
+    .about-split {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+
+    /* Always show text above the visual when stacked */
+    .about-split--reverse .about-split__text { order: 0; }
+    .about-split--reverse .about-split__visual { order: 0; }
+
+    .about-figure__frame { aspect-ratio: 3 / 2; }
+
+    .tech-flow {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .tech-arrow {
+      align-self: center;
+      transform: rotate(90deg);
+    }
+
+    .tech-engine { align-self: center; }
   }
 
   @media (max-width: 640px) {

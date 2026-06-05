@@ -1,1 +1,3 @@
-Our approach is grounded in the Com-B model, a behavioral science framework developed at University College London. Com-B holds that lasting behavior change requires three things: **Capability** (knowing how), **Opportunity** (having the conditions to act), and **Motivation** (the desire to follow through). alignd is designed to address all three — closing knowledge gaps, reducing friction, and helping families build habits that hold long after the plan ends.
+Our approach is grounded in **COM-B**, a behavioral science model developed at University College London. It holds that lasting change requires three things working together — Capability, Opportunity, and Motivation.
+
+alignd is designed to support all three: closing knowledge gaps, reducing everyday friction, and building the motivation to follow through — so new habits hold long after the plan ends.

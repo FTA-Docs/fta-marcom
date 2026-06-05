@@ -1,0 +1,47 @@
+{
+  "eyebrow": "How it unfolds",
+  "heading": "Your 8-week plan, week by week",
+  "intro": "Every plan is personalized to your family, but here's the arc most families move through — building awareness first, then shaping habits that last.",
+  "weeks": [
+    {
+      "week": 1,
+      "title": "Awareness & Co-Design",
+      "body": "Start by understanding your child's relationship with screens — together. You'll map habits, triggers, and goals, and co-design a plan everyone feels part of."
+    },
+    {
+      "week": 2,
+      "title": "Environment Shaping",
+      "body": "Small changes to the spaces and routines around devices, so the healthier choice quietly becomes the easier, more natural one."
+    },
+    {
+      "week": 3,
+      "title": "Introduce Replacement Routines",
+      "body": "Screen time rarely just disappears — it gets replaced. This week brings in appealing alternatives that meet the same needs screens were filling."
+    },
+    {
+      "week": 4,
+      "title": "Introduce Social Motivation",
+      "body": "Change is easier with others. We add connection, shared activities, and social reinforcement so new habits feel rewarding, not restrictive."
+    },
+    {
+      "week": 5,
+      "title": "Set Limits & Increase Autonomy",
+      "body": "Now we set clear, agreed-upon boundaries — while handing your child more ownership of their choices, building self-regulation instead of control."
+    },
+    {
+      "week": 6,
+      "title": "Problem-Solve & Sustain",
+      "body": "Real life brings setbacks. This week is about troubleshooting what isn't working and reinforcing the routines that are starting to stick."
+    },
+    {
+      "week": 7,
+      "title": "Further Reduce Screen Time",
+      "body": "With a foundation in place, we gently lower screen time further — consolidating progress and stretching toward your family's goals."
+    },
+    {
+      "week": 8,
+      "title": "Reflection & Maintenance",
+      "body": "Look back on how far you've come and lock in what works, leaving with a durable plan to maintain healthy habits long after week eight."
+    }
+  ]
+}

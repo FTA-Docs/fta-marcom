@@ -2,8 +2,26 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Panel from '../components/Panel.astro';
 import PricingBlock from '../components/PricingBlock.astro';
+import ComparisonBlock from '../components/ComparisonBlock.astro';
 import Reveal from '../components/Reveal.astro';
 import homeData from '../../content/home.json';
+import planTimeline from '../../content/plan-timeline.json';
+
+// Wavy dotted connector for the 8-week plan timeline (coded, not an image).
+// WEEK_W must match the .plan-week width in CSS so icon centres line up.
+const WEEK_W = 280;
+const WAVE_BASE = 44;  // y of the icon centres within the wave SVG (= track pad-top 16 + icon radius 28)
+const WAVE_AMP = 22;
+const planWeeks = planTimeline.weeks;
+const waveW = WEEK_W * planWeeks.length;
+const waveH = WAVE_BASE + WAVE_AMP + 4;
+let wavePath = `M ${WEEK_W / 2} ${WAVE_BASE}`;
+for (let i = 0; i < planWeeks.length - 1; i++) {
+  const x0 = WEEK_W / 2 + i * WEEK_W;
+  const x1 = x0 + WEEK_W;
+  const peakY = i % 2 === 0 ? WAVE_BASE - WAVE_AMP : WAVE_BASE + WAVE_AMP;
+  wavePath += ` C ${x0 + WEEK_W * 0.4} ${peakY}, ${x0 + WEEK_W * 0.6} ${peakY}, ${x1} ${WAVE_BASE}`;
+}
 ---
 
 <BaseLayout title="alignd" loadGSAP={true} bodyClass="page-home">
@@ -26,29 +44,33 @@ import homeData from '../../content/home.json';
     </div>
   </Panel>
 
-  <!-- PROBLEM — scroll zone lets GSAP animate bubble rows while panel stays sticky -->
-  <div id="problem-scroll-zone" class="problem-scroll-zone">
+  <!-- PROBLEM — scroll zone drives a horizontal quote carousel while pinned -->
+  <div
+    id="problem-scroll-zone"
+    class="problem-scroll-zone"
+    style={`--quote-count: ${homeData.problem.quotes.length}`}
+  >
     <Panel id="problem" class="panel-page" background="surface" fullBleed={true}>
-      <!-- SR-only heading + quotes for accessibility -->
-      <h2 class="sr-only">{homeData.problem.heading}</h2>
-      <ul class="sr-only" aria-label="Parent quotes">
-        {homeData.problem.panels.map(p => <li>{p.quote}</li>)}
-      </ul>
-
-      <div class="bubble-stage" aria-hidden="true">
-        <div class="bubble-stage__headline">
+      <div class="problem-stage">
+        <div class="problem-header">
           <h2 class="panel-heading">{homeData.problem.heading}</h2>
+          <p class="panel-sub">{homeData.problem.subheading}</p>
         </div>
 
-        {[1, 2, 3, 4].map(row => (
-          <div class={`bubble-row bubble-row--${row}`}>
-            {homeData.problem.bubbles.filter(b => b.row === row && b.type === 'quote').map(b => (
-              <div class={`thought-bubble thought-bubble--${b.size}`}>
-                <p class="thought-bubble__text">"{b.text}"</p>
+        <!-- SR-only full quote list (the carousel below is decorative) -->
+        <ul class="sr-only" aria-label="Worries we hear from parents">
+          {homeData.problem.quotes.map(q => <li>{q}</li>)}
+        </ul>
+
+        <div class="quote-strip-wrap" aria-hidden="true">
+          <div class="quote-strip" id="quote-strip">
+            {homeData.problem.quotes.map((q, i) => (
+              <div class={`quote-card${i === 0 ? ' is-active' : ''}`} data-index={i}>
+                <p class="quote-card__text">"{q}"</p>
               </div>
             ))}
           </div>
-        ))}
+        </div>
       </div>
     </Panel>
   </div>
@@ -68,9 +90,17 @@ import homeData from '../../content/home.json';
         <div class="sol-texts">
           {homeData.solution.sections.map((section, i) => (
             <div class={`sol-text sol-text--${i}`} aria-hidden={i > 0 ? 'true' : 'false'}>
-              <p class="eyebrow">What you've been missing</p>
+              <p class="eyebrow">{section.eyebrow}</p>
               <h2 class="panel-heading">{section.title}</h2>
-              <p class="sol-body">{section.body}</p>
+              <p class="sol-body">
+                {section.linkPhrase && section.body.includes(section.linkPhrase) ? (
+                  <Fragment>
+                    {section.body.split(section.linkPhrase)[0]}
+                    <button type="button" class="sol-inline-link" data-open-plan>{section.linkPhrase}</button>
+                    {section.body.split(section.linkPhrase)[1]}
+                  </Fragment>
+                ) : section.body}
+              </p>
             </div>
           ))}
         </div>
@@ -130,6 +160,18 @@ import homeData from '../../content/home.json';
       <Reveal delay={100}><p class="panel-sub">{homeData.pricing.subheading}</p></Reveal>
     </div>
     <PricingBlock pricing={homeData.pricing} />
+  </Panel>
+
+  <!-- COMPARISON — sticky z-index:6 -->
+  <Panel id="comparison" class="panel-page" background="surface">
+    <div class="panel-header">
+      <Reveal><p class="eyebrow">{homeData.comparison.eyebrow}</p></Reveal>
+      <Reveal delay={100}><h2 class="panel-heading">{homeData.comparison.heading}</h2></Reveal>
+      {homeData.comparison.subheading && (
+        <Reveal delay={200}><p class="panel-sub">{homeData.comparison.subheading}</p></Reveal>
+      )}
+    </div>
+    <ComparisonBlock comparison={homeData.comparison} />
   </Panel>
 
   <!-- SOCIAL PROOF — scroll zone gives GSAP room to cycle quotes -->
@@ -203,6 +245,45 @@ import homeData from '../../content/home.json';
     </div>
   </div>
 
+  <!-- 8-week plan timeline modal -->
+  <div class="plan-modal" id="plan-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="plan-modal-heading">
+    <div class="plan-modal__backdrop"></div>
+    <div class="plan-modal__panel">
+      <button class="plan-modal__close" aria-label="Close">&times;</button>
+
+      <div class="plan-modal__header">
+        <p class="eyebrow">{planTimeline.eyebrow}</p>
+        <h2 id="plan-modal-heading" class="plan-modal__heading">{planTimeline.heading}</h2>
+        <p class="plan-modal__intro">{planTimeline.intro}</p>
+      </div>
+
+      <div class="plan-track-wrap">
+        <div class="plan-track" style={`--week-w: ${WEEK_W}px`}>
+          <svg
+            class="plan-wave"
+            width={waveW}
+            height={waveH}
+            viewBox={`0 0 ${waveW} ${waveH}`}
+            fill="none"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path d={wavePath} />
+          </svg>
+          {planWeeks.map((w, i) => (
+            <div class="plan-week" style={`--i: ${i}`}>
+              <div class="plan-week__icon"><span>{w.week}</span></div>
+              <h3 class="plan-week__title">{w.title}</h3>
+              <p class="plan-week__body">{w.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p class="plan-modal__hint" aria-hidden="true">Scroll to explore →</p>
+    </div>
+  </div>
+
 </BaseLayout>
 
 <style>
@@ -220,6 +301,15 @@ import homeData from '../../content/home.json';
   :global(#social-proof) {
     position: sticky;
     top: var(--masthead-h);
+  }
+
+  /* Comparison is NOT pinned — its table can exceed one viewport, and a
+     sticky panel can't scroll to reveal its own overflow. As a normal-flow
+     panel it scrolls fully through the viewport (so every row is visible),
+     while its z-index still lets it slide up over the pinned pricing panel
+     on entry and lets social-proof slide over it on exit. */
+  :global(#comparison) {
+    position: relative;
   }
 
   /* Mobile: non-animated panels revert to normal flow so taller content
@@ -251,14 +341,15 @@ import homeData from '../../content/home.json';
   :global(#solution)     { z-index: 3; background-color: var(--color-bg); }
   :global(#science)      { z-index: 4; background-color: var(--color-surface); }
   :global(#pricing)      { z-index: 5; background-color: var(--color-surface-raised); height: auto; min-height: calc(100svh - var(--masthead-h)); overflow: visible; padding-block: var(--space-10); }
-  :global(#social-proof) { z-index: 6; background-color: var(--color-bg); }
+  :global(#comparison)   { z-index: 6; background-color: var(--color-surface); height: auto; min-height: calc(100svh - var(--masthead-h)); overflow: visible; padding-block: var(--space-10); }
+  :global(#social-proof) { z-index: 7; background-color: var(--color-bg); }
 
   /* ── Shared panel header ─────────────────────────────── */
   /* Used at the top of every panel for eyebrow + heading  */
   .panel-header {
     text-align: center;
-    padding-top: var(--space-8);
-    padding-bottom: var(--space-6);
+    /* one consistent header→content gap across every panel */
+    margin-bottom: var(--space-10);
     flex-shrink: 0; /* don't compress in flex column */
   }
 
@@ -267,7 +358,7 @@ import homeData from '../../content/home.json';
     font-size: var(--text-4xl);
     font-weight: var(--weight-heading);
     line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
+    letter-spacing: var(--tracking-snug);
     color: var(--color-text);
     margin: 0;
   }
@@ -276,15 +367,22 @@ import homeData from '../../content/home.json';
     max-width: 60ch;
     margin-inline: auto;
     margin-top: var(--space-4);
+    font-size: var(--text-lg);
     color: var(--color-text-muted);
   }
 
-  /* ── Eyebrow (optional label above heading) ──────────── */
+  /* ── Eyebrow — a subtle pill tag above the heading ───── */
   .eyebrow {
+    display: inline-block;
+    align-self: flex-start; /* hug content inside the flex sol-text column */
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-surface-raised);
     font-family: var(--font-body);
     font-size: var(--text-xs);
     font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wider);
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--color-text-muted);
     margin: 0 0 var(--space-3);
@@ -313,7 +411,7 @@ import homeData from '../../content/home.json';
     flex-wrap: wrap;
   }
 
-  /* ── Problem: bubble stage ───────────────────────────── */
+  /* ── Problem: quote carousel ─────────────────────────── */
   .sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0;
     margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
@@ -321,85 +419,113 @@ import homeData from '../../content/home.json';
   }
 
   .problem-scroll-zone {
-    height: calc(3 * (100vh  - var(--masthead-h)));
-    height: calc(3 * (100svh - var(--masthead-h)));
+    /* one screen to settle, plus a fraction of a screen per extra quote
+       so the carousel scrubs through each one while the panel stays pinned */
+    height: calc((1 + (var(--quote-count) - 1) * 0.6) * (100vh  - var(--masthead-h)));
+    height: calc((1 + (var(--quote-count) - 1) * 0.6) * (100svh - var(--masthead-h)));
   }
 
-  .bubble-stage {
+  .problem-stage {
     flex: 1;
-    position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-12);
     width: 100%;
+    overflow: hidden;
   }
 
-  .bubble-stage__headline {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
+  .problem-header {
     text-align: center;
-    pointer-events: none;
-    white-space: nowrap;
+    max-width: 42rem;
+    padding: 0 var(--space-6);
   }
 
-  .bubble-row {
-    position: absolute;
+  .problem-header .panel-sub {
+    margin-top: var(--space-4);
+  }
+
+  /* Filmstrip of quotes — the centred one is scaled up + opaque, neighbours
+     recede (see the GSAP timeline). Full-bleed width; ends clipped. */
+  .quote-strip-wrap {
+    width: 100%;
+    overflow: hidden;
+    /* room above/below so the bubble tails aren't clipped */
+    padding-block: var(--space-10);
+  }
+
+  .quote-strip {
     display: flex;
     align-items: center;
-    gap: var(--space-10);
+    gap: var(--space-12);
+    width: max-content;
+    will-change: transform;
   }
 
-  /* Rows intentionally overlap for depth */
-  .bubble-row--1 { top:  6%; }
-  .bubble-row--2 { top: 16%; }
-  .bubble-row--3 { top: 59%; }
-  .bubble-row--4 { top: 71%; }
-
-  /* Base thought bubble — pillowy oval */
-  .thought-bubble {
-    flex-shrink: 0;
+  /* Speech bubbles — roomy, with the quote centred in lots of open space */
+  .quote-card {
+    flex: 0 0 auto;
+    width: clamp(300px, 66vw, 640px);
+    min-height: clamp(190px, 28vh, 290px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--color-bg);
     border: 1.5px solid var(--color-border);
-    border-radius: 999px;
+    border-radius: 36px;
+    padding: var(--space-12);
     position: relative;
+    transform-origin: center center;
+    /* Resting (non-active) state — also the first paint before GSAP runs */
+    opacity: 0.4;
+    transform: scale(0.78);
   }
 
-  /* Quote bubbles — rounded rectangle with generous padding */
-  .thought-bubble {
-    border-radius: 20px;
-    padding: var(--space-6) var(--space-8);
-    margin-bottom: 28px; /* space for pip trail below */
+  .quote-card.is-active {
+    opacity: 1;
+    transform: scale(1.16);
   }
 
-  .thought-bubble--md { max-width: 260px; }
-  .thought-bubble--lg { max-width: 340px; }
-
-  .thought-bubble__text {
-    font-size: var(--text-base);
-    line-height: var(--leading-normal);
-    color: var(--color-text-muted);
-    margin: 0;
-  }
-
-  /* Pip trail — two circles stepping down-left from bubble */
-  .thought-bubble--quote::before,
-  .thought-bubble--quote::after {
+  /* Tail — a rotated square sitting over the bottom edge, showing only its
+     two outer borders so the bubble outline runs down to the point */
+  .quote-card::after {
     content: '';
     position: absolute;
-    border-radius: 50%;
+    bottom: -14px;
+    left: 14%;
+    width: 28px;
+    height: 28px;
     background: var(--color-bg);
-    border: 1.5px solid var(--color-border);
+    border-right: 1.5px solid var(--color-border);
+    border-bottom: 1.5px solid var(--color-border);
+    border-bottom-right-radius: 7px;
+    transform: rotate(45deg);
   }
 
-  .thought-bubble--quote::before {
-    width: 14px; height: 14px;
-    bottom: -18px; left: 28px;
+  .quote-card__text {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    font-style: italic;
+    font-size: var(--text-2xl);
+    line-height: var(--leading-snug);
+    color: var(--color-text);
+    margin: 0;
+    text-align: center;
+    max-width: 30ch;
   }
 
-  .thought-bubble--quote::after {
-    width: 8px; height: 8px;
-    bottom: -30px; left: 18px;
+  /* Reduced motion: a plain, manually-scrollable row of full quotes */
+  .quote-strip-wrap.is-static {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: var(--space-2) 0;
+  }
+
+  .quote-strip-wrap.is-static .quote-card {
+    opacity: 1;
+    transform: none;
+    scroll-snap-align: center;
   }
 
 
@@ -543,10 +669,6 @@ import homeData from '../../content/home.json';
   }
 
   /* ── Science cards ───────────────────────────────────── */
-  :global(#science .panel-header) {
-    padding-block: var(--space-5);
-  }
-
   .science-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -565,7 +687,11 @@ import homeData from '../../content/home.json';
     height: 100%;
   }
 
-  .science-card h3 { font-size: var(--text-2xl); }
+  .science-card h3 {
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-normal);
+    line-height: var(--leading-snug);
+  }
 
   .science-card p {
     color: var(--color-text-muted);
@@ -584,12 +710,12 @@ import homeData from '../../content/home.json';
       flex: 1; /* fill #solution's explicit height so 45%/flex:1 children resolve */
     }
 
-    /* Text block: top 50% of the stage */
+    /* Text block: compact, top third — leaves the rest for big phones */
     .sol-texts {
       position: relative;
       left: auto;
       width: 100%;
-      height: 50%;
+      height: 34%;
       flex-shrink: 0;
     }
 
@@ -597,12 +723,17 @@ import homeData from '../../content/home.json';
       position: absolute;
       inset: 0;
       justify-content: flex-start;
-      padding-top: var(--space-5);
+      padding-top: var(--space-4);
       padding-inline: var(--container-pad);
       padding-right: var(--space-4);
+      gap: var(--space-3);
     }
 
-    /* Phone filmstrip: bottom 55%, re-enabled.
+    /* Smaller heading + body so the text fits its compact band */
+    .sol-text :global(.panel-heading) { font-size: var(--text-2xl); }
+    .sol-body { font-size: var(--text-sm); }
+
+    /* Phone filmstrip: fills the remaining ~two-thirds.
        No justify-content — GSAP owns the horizontal x position. */
     .sol-filmstrip-wrap {
       position: relative;
@@ -614,15 +745,17 @@ import homeData from '../../content/home.json';
       align-items: center;
     }
 
-    /* Smaller phones on mobile */
-    .sol-phone-item { width: 155px; }
+    /* Big phones on mobile — sized to fill the filmstrip height (the active
+       phone now sits at scale 1, so this height is the rendered height) */
+    .sol-phone-item { width: auto; }
     .sol-phone-device {
-      width: 143px;
-      height: 286px;
-      border-radius: 24px;
+      width: auto;
+      height: min(54svh, 460px);
+      aspect-ratio: 1 / 2;
+      border-radius: 30px;
     }
-    .sol-phone-device::before { width: 44px; height: 11px; }
-    .sol-phone-device::after  { width: 44px; }
+    .sol-phone-device::before { width: 52px; height: 13px; }
+    .sol-phone-device::after  { width: 52px; }
 
   }
 
@@ -687,6 +820,7 @@ import homeData from '../../content/home.json';
     font-family: var(--font-heading);
     font-size: var(--text-4xl);
     font-weight: var(--weight-heading);
+    font-style: italic;
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
     color: var(--color-text);
@@ -806,6 +940,200 @@ import homeData from '../../content/home.json';
     margin: 0;
   }
 
+  /* ── Inline "8-week plans" link in the solution copy ── */
+  .sol-inline-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+  }
+  .sol-inline-link:hover { opacity: 0.65; }
+
+  /* ── 8-week plan timeline modal ── */
+  .plan-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal, 200);
+    align-items: center;
+    justify-content: center;
+  }
+  .plan-modal[aria-hidden="false"] { display: flex; }
+
+  .plan-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .plan-modal__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    border-radius: var(--radius-lg);
+    width: min(1100px, calc(100% - var(--space-6)));
+    max-height: min(86vh, 760px);
+    padding-block: var(--space-10) var(--space-8);
+    overflow: hidden;
+  }
+
+  .plan-modal__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    z-index: 3;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--color-surface-raised);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: var(--text-xl);
+    line-height: 1;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+  }
+  .plan-modal__close:hover { color: var(--color-text); }
+
+  .plan-modal__header {
+    padding-inline: var(--space-10);
+    margin-bottom: var(--space-8);
+    max-width: 62ch;
+  }
+  .plan-modal__heading {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    font-size: var(--text-3xl);
+    margin: var(--space-2) 0 var(--space-3);
+  }
+  .plan-modal__intro {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    margin: 0;
+  }
+
+  /* Horizontal pan track */
+  .plan-track-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-inline: var(--space-10);
+    padding-bottom: var(--space-4);
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .plan-track {
+    position: relative;
+    display: flex;
+    width: max-content;
+    padding-top: 16px; /* icon centre lands at WAVE_BASE (44px) */
+  }
+
+  .plan-wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .plan-wave path {
+    stroke: var(--color-border-strong);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 0.1 10; /* dotted */
+  }
+
+  .plan-week {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    flex: 0 0 var(--week-w);
+    width: var(--week-w);
+    padding-inline: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    scroll-snap-align: center;
+  }
+
+  .plan-week__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+    color: var(--color-accent-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    font-size: var(--text-xl);
+    /* halo so the wavy line reads as connecting into the node */
+    box-shadow: 0 0 0 6px var(--color-bg);
+  }
+
+  .plan-week__title {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    font-size: var(--text-lg);
+    letter-spacing: var(--tracking-normal);
+    line-height: var(--leading-snug);
+    margin: var(--space-6) 0 var(--space-2);
+  }
+
+  .plan-week__body {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+    margin: 0;
+  }
+
+  .plan-modal__hint {
+    padding-inline: var(--space-10);
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-subtle);
+  }
+
+  /* Subtle motion: dots march along the wave; weeks rise in on open */
+  @media (prefers-reduced-motion: no-preference) {
+    .plan-wave path {
+      animation: plan-wave-march 7s linear infinite;
+    }
+    @keyframes plan-wave-march {
+      to { stroke-dashoffset: -101; }
+    }
+
+    .plan-week {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition-delay: calc(var(--i) * 60ms);
+    }
+    .plan-modal[aria-hidden="false"] .plan-week {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .plan-modal__header,
+    .plan-track-wrap,
+    .plan-modal__hint { padding-inline: var(--space-6); }
+    .plan-modal__panel { padding-block: var(--space-8) var(--space-6); }
+    .plan-modal__heading { font-size: var(--text-2xl); }
+  }
+
   /* ── Social proof: mobile overrides (must come after base rules) ── */
   @media (max-width: 767px) {
     .sp-quote__text {
@@ -858,6 +1186,33 @@ import homeData from '../../content/home.json';
   videoBackdrop?.addEventListener('click', closeVideoModal);
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoModal?.getAttribute('aria-hidden') === 'false') closeVideoModal();
+  });
+
+  // ── 8-week plan timeline modal ────────────────────────────────
+  const planModal = document.getElementById('plan-modal');
+  // Move to body so it escapes the sticky/pinned panel stacking contexts
+  if (planModal) document.body.appendChild(planModal);
+
+  const planOpenBtns = document.querySelectorAll('[data-open-plan]');
+  const planClose = planModal?.querySelector('.plan-modal__close');
+  const planBackdrop = planModal?.querySelector('.plan-modal__backdrop');
+  const planTrackWrap = planModal?.querySelector('.plan-track-wrap') as HTMLElement | null;
+
+  function openPlanModal() {
+    planModal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (planTrackWrap) planTrackWrap.scrollLeft = 0; // always start at week 1
+  }
+  function closePlanModal() {
+    planModal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  planOpenBtns.forEach(btn => btn.addEventListener('click', openPlanModal));
+  planClose?.addEventListener('click', closePlanModal);
+  planBackdrop?.addEventListener('click', closePlanModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && planModal?.getAttribute('aria-hidden') === 'false') closePlanModal();
   });
 
   // ── Anchor nav fix for sticky panels ─────────────────────────
@@ -949,6 +1304,10 @@ import homeData from '../../content/home.json';
           { threshold: 0.12 }
         );
         document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+        // Problem carousel can't scrub without GSAP — present it as a plain
+        // horizontally-scrollable row of full-size quotes instead.
+        document.getElementById('quote-strip')?.parentElement?.classList.add('is-static');
         return;
       }
 
@@ -981,6 +1340,13 @@ import homeData from '../../content/home.json';
       if (solZone && solTexts.length > 1 && filmstrip && filmstripWrap) {
         const solCount = solTexts.length;
 
+        // On mobile the active phone sits at full scale (the CSS sizes it to
+        // fill the viewport height) so it doesn't overflow when scaled up;
+        // on desktop the active phone grows past its neighbours.
+        const isMobile = window.matchMedia('(max-width: 767px)').matches;
+        const PH_ACTIVE   = isMobile ? 1    : 1.4;
+        const PH_INACTIVE = isMobile ? 0.72 : 0.72;
+
         // Compute step from rendered positions (handles any gap/size)
         const STEP = phoneItems.length > 1
           ? phoneItems[1].getBoundingClientRect().left - phoneItems[0].getBoundingClientRect().left
@@ -993,12 +1359,11 @@ import homeData from '../../content/home.json';
 
         // Initialize positions
         gsap.set(filmstrip, { x: initX });
-        // Slide the whole sol-text — since all eyebrows are identical,
-        // the outgoing one slides out while the incoming slides in
-        // at the same position, giving the visual effect of staying put.
+        // Each section's full text block (eyebrow + heading + body) slides:
+        // the outgoing one exits left as the incoming one enters from the right.
         gsap.set(solTexts.slice(1), { xPercent: 100 });
         phoneDivs.forEach((p, i) => gsap.set(p,
-          i === 0 ? { scale: 1.18, opacity: 1 } : { scale: 0.76, opacity: 0.45 }
+          i === 0 ? { scale: PH_ACTIVE, opacity: 1 } : { scale: PH_INACTIVE, opacity: 0.45 }
         ));
 
         const TRANS = 0.28;
@@ -1007,7 +1372,7 @@ import homeData from '../../content/home.json';
         for (let i = 0; i < solCount - 1; i++) {
           const t = i + 1 - TRANS;
 
-          // Slide the full text block — identical eyebrows create a "stays put" illusion
+          // Slide the full text block (eyebrow included) out as the next slides in
           solTl.to(solTexts[i],     { xPercent: -100, ease: 'power2.inOut', duration: TRANS }, t);
           solTl.to(solTexts[i + 1], { xPercent:    0, ease: 'power2.inOut', duration: TRANS }, t);
 
@@ -1015,8 +1380,8 @@ import homeData from '../../content/home.json';
           solTl.to(filmstrip, { x: initX - (i + 1) * STEP, ease: 'power2.inOut', duration: TRANS }, t);
 
           // Phone scales: active grows, outgoing shrinks
-          solTl.to(phoneDivs[i],     { scale: 0.76, opacity: 0.45, ease: 'power1.in',    duration: TRANS * 0.9 }, t);
-          solTl.to(phoneDivs[i + 1], { scale: 1.18, opacity: 1,    ease: 'back.out(1.2)', duration: TRANS * 0.9 }, t);
+          solTl.to(phoneDivs[i],     { scale: PH_INACTIVE, opacity: 0.45, ease: 'power1.in',    duration: TRANS * 0.9 }, t);
+          solTl.to(phoneDivs[i + 1], { scale: PH_ACTIVE,   opacity: 1,    ease: 'back.out(1.2)', duration: TRANS * 0.9 }, t);
         }
 
         ScrollTrigger.create({
@@ -1050,34 +1415,46 @@ import homeData from '../../content/home.json';
         });
       }
 
-      // ── Problem: scroll-driven thought bubble rows ────────
+      // ── Problem: horizontal quote carousel ────────────────
+      // Scroll scrubs a filmstrip of quotes; the centred card scales up and
+      // brightens while neighbours recede — like the solution phone strip.
       const problemZone = document.getElementById('problem-scroll-zone');
-      const bubbleRows = Array.from(document.querySelectorAll<HTMLElement>('.bubble-row'));
+      const qStrip = document.getElementById('quote-strip') as HTMLElement | null;
+      const qCards = qStrip ? Array.from(qStrip.querySelectorAll<HTMLElement>('.quote-card')) : [];
+      const qWrap = qStrip?.parentElement as HTMLElement | null;
 
-      if (problemZone && bubbleRows.length) {
-        // Each row has a different speed to create parallax depth
-        const rowSpeeds    = [1.0, 1.5, 0.7, 1.3];
-        // Staggered start positions so the initial composition is varied
-        const rowStartFrac = [0.25, 0.55, 0.1, 0.45];
+      if (problemZone && qStrip && qWrap && qCards.length > 1) {
+        const N = qCards.length;
+        // Translate needed to centre card i in the wrap (layout offsets are
+        // unaffected by the scale transforms, so this stays accurate).
+        const centerX = (i: number) =>
+          qWrap.offsetWidth / 2 - (qCards[i].offsetLeft + qCards[i].offsetWidth / 2);
 
-        bubbleRows.forEach((row, i) => {
-          const speed     = rowSpeeds[i]    ?? 1;
-          const startFrac = rowStartFrac[i] ?? 0.3;
-          const dir       = i % 2 === 0 ? 1 : -1; // alternate direction per row
+        gsap.set(qStrip, { x: centerX(0) });
+        qCards.forEach((c, i) =>
+          gsap.set(c, i === 0 ? { scale: 1.16, opacity: 1 } : { scale: 0.78, opacity: 0.4 })
+        );
 
-          gsap.fromTo(row,
-            { x: dir * window.innerWidth * startFrac },
-            {
-              x: -dir * (row.scrollWidth * speed * 0.55),
-              ease: 'none',
-              scrollTrigger: {
-                trigger: problemZone,
-                start: 'top 85%',
-                end:   () => `+=${2 * panelH()}`,
-                scrub: 1,
-              },
-            }
-          );
+        const TRANS = 0.4;
+        const qTl = gsap.timeline({ paused: true });
+        for (let i = 0; i < N - 1; i++) {
+          const t = i + 1 - TRANS; // dwell on each card, then a quick slide
+          qTl.to(qStrip,        { x: centerX(i + 1), ease: 'power2.inOut', duration: TRANS }, t);
+          qTl.to(qCards[i],     { scale: 0.78, opacity: 0.4, ease: 'power1.in',  duration: TRANS }, t);
+          qTl.to(qCards[i + 1], { scale: 1.16, opacity: 1,   ease: 'power2.out', duration: TRANS }, t);
+        }
+
+        ScrollTrigger.create({
+          trigger: problemZone,
+          start: `top top+=${mastheadH}`,
+          end: () => `+=${(N - 1) * panelH() * 0.6}`,
+          scrub: 1,
+          invalidateOnRefresh: true,
+          animation: qTl,
+          onUpdate(self) {
+            const idx = Math.round(self.progress * (N - 1));
+            qCards.forEach((c, i) => c.classList.toggle('is-active', i === idx));
+          },
         });
       }
 

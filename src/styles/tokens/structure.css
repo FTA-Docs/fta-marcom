@@ -10,9 +10,13 @@
   --space-4:  clamp(1rem,     2vw,   1.5rem);
   --space-5:  clamp(1.25rem,  2.5vw, 1.75rem);
   --space-6:  clamp(1.5rem,   3vw,   2rem);
+  --space-7:  clamp(1.75rem,  3.5vw, 2.5rem);
   --space-8:  clamp(2rem,     4vw,   3rem);
+  --space-9:  clamp(2.25rem,  4.5vw, 3.5rem);
   --space-10: clamp(2.5rem,   5vw,   4rem);
+  --space-11: clamp(2.75rem,  5.5vw, 4.5rem);
   --space-12: clamp(3rem,     6vw,   5rem);
+  --space-14: clamp(3.5rem,   7vw,   6rem);
   --space-16: clamp(4rem,     8vw,   7rem);
   --space-20: clamp(5rem,    10vw,   9rem);
   --space-24: clamp(6rem,    12vw,  11rem);
@@ -31,11 +35,11 @@
   /* --bp-sm: 640px  --bp-md: 768px  --bp-lg: 1024px     */
   /* --bp-xl: 1280px  --bp-2xl: 1536px                    */
 
-  /* ── Border radius ──────────────────────────────────── */
-  --radius-sm:   0.25rem;
-  --radius-md:   0.5rem;
-  --radius-lg:   1rem;
-  --radius-xl:   1.5rem;
+  /* ── Border radius — rounded & friendly ─────────────── */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1.25rem;
+  --radius-xl:   2rem;
   --radius-full: 9999px;
 
   /* ── Z-index ────────────────────────────────────────── */

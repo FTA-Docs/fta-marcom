@@ -249,7 +249,7 @@ import techData from '../../content/about/technology.json';
 
   .about-figure__frame {
     aspect-ratio: 1 / 1;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     background: var(--color-surface-raised);
     border: 1px solid var(--color-border);
     overflow: hidden;
@@ -412,7 +412,7 @@ import techData from '../../content/about/technology.json';
     gap: var(--space-1);
     background: var(--color-accent);
     color: var(--color-accent-text);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     padding: var(--space-6) var(--space-5);
     min-width: 8.5rem;
   }
@@ -516,13 +516,13 @@ import techData from '../../content/about/technology.json';
   .bio-modal__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: color-mix(in srgb, var(--midnight) 60%, transparent);
   }
 
   .bio-modal__panel {
     position: relative;
-    background: var(--color-surface, #fff);
-    border-radius: var(--radius-lg);
+    background: var(--color-surface, var(--white));
+    border-radius: var(--radius-md);
     padding: var(--space-10);
     max-width: 480px;
     width: calc(100% - var(--space-8));

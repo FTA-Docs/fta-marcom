@@ -398,20 +398,70 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   }
 
   /* ── Hero ────────────────────────────────────────────── */
+
+  /* Remove main's padding-top so the hero image bleeds flush to the masthead */
+  :global(.page-home main) {
+    padding-top: 0;
+  }
+
+  :global(#hero) {
+    background-image: url('/soccer.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    top: 0; /* reset the sticky-group's top: masthead-h offset */
+    /* Full viewport height — masthead floats over the image */
+    height: 100svh;
+    /* Offset so flex-centering operates on the visible area below the masthead */
+    padding-top: var(--masthead-h);
+  }
+
+  :global(#hero)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--spring-leaf) 40%, transparent);
+    pointer-events: none;
+  }
+
+  :global(#hero) > * { position: relative; }
+
   .hero {
-    max-width: 72ch;
+    max-width: 66ch;
     text-align: left;
     padding: var(--space-8) var(--container-pad);
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Blurred backdrop behind the text — feathered on all edges */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    -webkit-mask-image:
+      linear-gradient(to right,  transparent,     black 35%, black 65%, transparent),
+      linear-gradient(to bottom, transparent 5%,  black 28%, black 72%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right,  transparent,     black 35%, black 65%, transparent),
+      linear-gradient(to bottom, transparent 5%,  black 28%, black 72%, transparent);
+    mask-composite: intersect;
   }
 
   .hero h1 {
     font-size: var(--text-5xl);
     margin-bottom: var(--space-6);
+    color: var(--light-beige);
+    text-shadow: 0 1px 8px rgb(var(--shadow-color) / 0.35);
   }
 
   .hero__sub {
     margin-bottom: var(--space-8);
-    color: var(--color-text-muted);
+    color: var(--light-beige);
   }
 
   .hero__actions {
@@ -688,7 +738,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .science-card {
     background: var(--color-bg);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     padding: var(--space-8);
     display: flex;
     flex-direction: column;
@@ -897,7 +947,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .video-modal__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.88);
+    background: color-mix(in srgb, var(--midnight) 92%, transparent);
   }
 
   .video-modal__panel {
@@ -905,7 +955,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     width: min(900px, calc(100% - var(--space-8)));
     aspect-ratio: 16 / 9;
     background: var(--color-surface);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
 
@@ -916,16 +966,16 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     z-index: 2;
     width: 32px; height: 32px;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(0, 0, 0, 0.45);
+    background: color-mix(in srgb, var(--midnight) 55%, transparent);
     border: none;
     border-radius: var(--radius-sm);
-    color: #fff;
+    color: var(--white);
     font-size: var(--text-xl);
     line-height: 1;
     cursor: pointer;
     transition: background var(--transition-fast);
   }
-  .video-modal__close:hover { background: rgba(0, 0, 0, 0.7); }
+  .video-modal__close:hover { background: color-mix(in srgb, var(--midnight) 80%, transparent); }
 
   .video-modal__screen {
     position: absolute;
@@ -977,7 +1027,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .plan-modal__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
+    background: color-mix(in srgb, var(--midnight) 65%, transparent);
   }
 
   .plan-modal__panel {
@@ -985,7 +1035,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     display: flex;
     flex-direction: column;
     background: var(--color-bg);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     width: min(1100px, calc(100% - var(--space-6)));
     max-height: min(86vh, 760px);
     padding-block: var(--space-10) var(--space-8);

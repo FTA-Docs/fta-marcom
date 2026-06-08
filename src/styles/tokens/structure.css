@@ -38,6 +38,7 @@
   /* ── Border radius ───────────────────────────────────── */
   --radius-sm:   0.375rem;   /* 6px  — inputs, badges, tags */
   --radius-md:   1rem;       /* 16px — cards, panels, modals */
+  --radius-xl:   2rem;       /* 32px — hero card, large feature panels */
   --radius-full: 9999px;     /* pill — buttons */
 
   /* ── Z-index ────────────────────────────────────────── */

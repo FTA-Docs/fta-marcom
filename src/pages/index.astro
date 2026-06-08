@@ -28,20 +28,21 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   <!-- HERO — sticky z-index:1, CSS handles stacking -->
   <Panel id="hero" class="panel-page" background="default">
-    <div class="hero">
+    <div class="hero-text">
       <Reveal><h1>{homeData.hero.headline}</h1></Reveal>
-      <Reveal delay={150}><p class="lead hero__sub">{homeData.hero.subheadline}</p></Reveal>
-      <Reveal delay={300}>
+      <Reveal delay={100}><p class="hero__sub">{homeData.hero.subheadline}</p></Reveal>
+      <Reveal delay={250}>
         <div class="hero__actions">
-          <button id="watch-video-btn" class="btn btn--primary btn--lg" type="button">
+          <button id="watch-video-btn" class="btn btn--primary" type="button">
             {homeData.hero.cta.label}
           </button>
-          <a href={homeData.hero.cta2.href} class="btn btn--secondary btn--lg">
+          <a href={homeData.hero.cta2.href} class="btn btn--secondary">
             {homeData.hero.cta2.label}
           </a>
         </div>
       </Reveal>
     </div>
+    <div class="hero-img" aria-hidden="true" role="presentation"></div>
   </Panel>
 
   <!-- PROBLEM — scroll zone drives a horizontal quote carousel while pinned -->
@@ -399,75 +400,81 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   /* ── Hero ────────────────────────────────────────────── */
 
-  /* Remove main's padding-top so the hero image bleeds flush to the masthead */
+  /* Homepage main starts at y:0 — masthead floats over the page bg seamlessly */
   :global(.page-home main) {
     padding-top: 0;
   }
 
   :global(#hero) {
-    background-image: url('/soccer.jpg');
-    background-size: cover;
-    background-position: center;
     position: relative;
-    top: 0; /* reset the sticky-group's top: masthead-h offset */
-    /* Full viewport height — masthead floats over the image */
+    top: 0; /* reset sticky-group's top: masthead-h offset */
     height: 100svh;
-    /* Offset so flex-centering operates on the visible area below the masthead */
+    background: var(--light-beige);
     padding-top: var(--masthead-h);
+    padding-bottom: var(--space-5);
+    /* No padding-inline here — the inner .container handles it,
+       matching the masthead's .container model exactly */
   }
 
-  :global(#hero)::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: color-mix(in srgb, var(--spring-leaf) 40%, transparent);
-    pointer-events: none;
+  /* Container: side-by-side row; horizontal padding comes from
+     the .container class so logo and content edges align with masthead */
+  :global(#hero > .container) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-5);
   }
 
-  :global(#hero) > * { position: relative; }
-
-  .hero {
-    max-width: 66ch;
-    text-align: left;
-    padding: var(--space-8) var(--container-pad);
-    position: relative;
-    isolation: isolate;
+  /* ── Left: text on page background ──────────────────── */
+  .hero-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertically centre in the panel */
+    align-items: flex-start;
+    gap: var(--space-5);
   }
 
-  /* Blurred backdrop behind the text — feathered on all edges */
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    -webkit-mask-image:
-      linear-gradient(to right,  transparent,     black 35%, black 65%, transparent),
-      linear-gradient(to bottom, transparent 5%,  black 28%, black 72%, transparent);
-    -webkit-mask-composite: source-in;
-    mask-image:
-      linear-gradient(to right,  transparent,     black 35%, black 65%, transparent),
-      linear-gradient(to bottom, transparent 5%,  black 28%, black 72%, transparent);
-    mask-composite: intersect;
-  }
-
-  .hero h1 {
+  .hero-text h1 {
     font-size: var(--text-5xl);
-    margin-bottom: var(--space-6);
-    color: var(--light-beige);
-    text-shadow: 0 1px 8px rgb(var(--shadow-color) / 0.35);
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-snug);
+    margin: 0;
   }
 
   .hero__sub {
-    margin-bottom: var(--space-8);
-    color: var(--light-beige);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    line-height: var(--leading-normal);
+    margin: 0;
   }
 
   .hero__actions {
     display: flex;
     gap: var(--space-4);
     flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* ── Right: image card, square-ish ───────────────────── */
+  .hero-img {
+    flex: 1;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-xl);
+    background-image: url('/soccer.jpg');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Spring-leaf tint on the image card only */
+  .hero-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--spring-leaf) 35%, transparent);
+    pointer-events: none;
   }
 
   /* ── Problem: quote carousel ─────────────────────────── */
@@ -1375,9 +1382,9 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
       gsap.registerPlugin(ScrollTrigger);
 
       // ── Parallax depth: hero content recedes as problem slides over it ──
-      gsap.to('#hero .hero', {
-        y: '-6%',
-        opacity: 0.4,
+      gsap.to('#hero > .container > *', {
+        y: '-4%',
+        opacity: 0.5,
         ease: 'none',
         scrollTrigger: {
           trigger: '#problem',

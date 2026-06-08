@@ -1,79 +1,82 @@
 /* SKIN TOKENS — colors · typography · shadows · visual style */
-/* ⚠️  PLACEHOLDER GRAYSCALE — replace with brand values       */
-/*     during skinning. Do NOT change structure.css.           */
 /* ⚠️  No spacing, grid, or breakpoints in this file.          */
 
 :root {
-  /* ── Raw gray palette ───────────────────────────────── */
-  --gray-0:    #ffffff;
-  --gray-50:   #fafafa;
-  --gray-100:  #f5f5f5;
-  --gray-200:  #e5e5e5;
-  --gray-300:  #d4d4d4;
-  --gray-400:  #a3a3a3;
-  --gray-500:  #737373;
-  --gray-600:  #525252;
-  --gray-700:  #404040;
-  --gray-800:  #262626;
-  --gray-900:  #171717;
-  --gray-950:  #0a0a0a;
-  --gray-1000: #000000;
+  /* ── Raw palette ─────────────────────────────────────────── */
+  --white:          #FFFFFF;
+  --light-grey:     #EFEFEF;
+  --secondary-grey: #9F9F9F;
+  --prime-grey:     #5A5A5A;
+  --dark-grey:      #3B3F46;
+  --midnight:       #1B263E;
+  --spring-leaf:    #669D5B;   /* Primary brand / primary buttons */
+  --pollen:         #F3C27D;
+  --roman-coffee:   #7A5848;
+  --red:            #D54848;
+  --perry-blue:     #8FABD8;
+  --dusk-blue:      #4D5D81;
+  --light-beige:    #FEFAF7;
+  --pale-beige:     #FCF6F1;
+  --taupe-beige:    #F8F2ED;
+  --base-beige:     #FFF3E9;
+  --heavy-beige:    #F4E8DC;
+  --almond-beige:   #ECD8C8;
+  --blush:          #FEEEEE;
 
-  /* ── Surface colors ─────────────────────────────────── */
-  --color-bg:              var(--gray-0);
-  --color-surface:         var(--gray-50);
-  --color-surface-raised:  var(--gray-100);
-  --color-surface-overlay: var(--gray-200);
+  /* ── Surface colors ─────────────────────────────────────── */
+  --color-bg:              var(--white);
+  --color-surface:         var(--light-beige);
+  --color-surface-raised:  var(--pale-beige);
+  --color-surface-overlay: var(--taupe-beige);
 
-  /* ── Text colors ────────────────────────────────────── */
-  --color-text:         var(--gray-900);
-  --color-text-muted:   var(--gray-500);
-  --color-text-subtle:  var(--gray-400);
-  --color-text-inverse: var(--gray-0);
+  /* ── Text colors ────────────────────────────────────────── */
+  --color-heading:      var(--dark-grey);
+  --color-text:         var(--prime-grey);
+  --color-text-muted:   var(--secondary-grey);
+  --color-text-subtle:  var(--secondary-grey);
+  --color-text-inverse: var(--white);
 
-  /* ── Border colors ──────────────────────────────────── */
-  --color-border:       var(--gray-200);
-  --color-border-strong: var(--gray-400);
+  /* ── Border colors ──────────────────────────────────────── */
+  --color-border:        var(--almond-beige);
+  --color-border-strong: var(--secondary-grey);
 
-  /* ── Accent — primary CTA (placeholder dark gray) ───── */
-  --color-accent:       var(--gray-900);
-  --color-accent-hover: var(--gray-800);
-  --color-accent-text:  var(--gray-0);
+  /* ── Accent — primary CTA (Spring Leaf) ─────────────────── */
+  --color-accent:       var(--spring-leaf);
+  --color-accent-hover: color-mix(in srgb, var(--spring-leaf) 85%, var(--midnight));
+  --color-accent-text:  var(--white);
 
-  /* ── Secondary CTA ──────────────────────────────────── */
-  --color-secondary:       var(--gray-200);
-  --color-secondary-hover: var(--gray-300);
-  --color-secondary-text:  var(--gray-900);
+  /* ── Secondary CTA ──────────────────────────────────────── */
+  --color-secondary:       var(--heavy-beige);
+  --color-secondary-hover: var(--almond-beige);
+  --color-secondary-text:  var(--dark-grey);
 
-  /* ── Masthead ────────────────────────────────────────── */
-  --masthead-bg:     var(--gray-0);
-  --masthead-text:   var(--gray-900);
-  --masthead-border: var(--gray-200);
+  /* ── Masthead ────────────────────────────────────────────── */
+  --masthead-bg:     var(--white);
+  --masthead-text:   var(--dark-grey);
+  --masthead-border: var(--almond-beige);
 
-  /* ── Footer ──────────────────────────────────────────── */
-  --footer-bg:         var(--gray-900);
-  --footer-text:       var(--gray-300);
-  --footer-text-muted: var(--gray-500);
-  --footer-border:     var(--gray-800);
-  --footer-link:       var(--gray-300);
-  --footer-link-hover: var(--gray-0);
+  /* ── Footer ──────────────────────────────────────────────── */
+  --footer-bg:         var(--spring-leaf);
+  --footer-text:       var(--light-grey);
+  --footer-text-muted: var(--light-beige);
+  --footer-border:     color-mix(in srgb, var(--spring-leaf) 60%, var(--midnight));
+  --footer-link:       var(--light-grey);
+  --footer-link-hover: var(--white);
 
-  /* ── Font families — PLACEHOLDER: system fonts ─────── */
+  /* ── Font families ──────────────────────────────────────── */
   --font-body:    'Figtree', system-ui, -apple-system, sans-serif;
   --font-heading: 'Lora', Georgia, serif;
   --font-mono:    ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
 
-  /* ── Font weights ────────────────────────────────────── */
+  /* ── Font weights ────────────────────────────────────────── */
   --weight-normal:   400;
   --weight-medium:   500;
   --weight-semibold: 600;
   --weight-bold:     700;
   --weight-black:    900;
-  --weight-heading:  500; /* matches Lora Medium — change when swapping heading font */
+  --weight-heading:  500;
 
-  /* ── Type scale (fluid via clamp) ───────────────────── */
-  /* Two-tier modular scale: text tier (xs–lg) ~1.15, display tier (xl–6xl)  */
-  /* ~1.25. Min = mobile (≈375px), max = desktop (≈1280px).                   */
+  /* ── Type scale (fluid via clamp) ───────────────────────── */
   --text-xs:   clamp(0.75rem,   0.72rem + 0.11vw, 0.8125rem);
   --text-sm:   clamp(0.875rem,  0.85rem + 0.11vw, 0.9375rem);
   --text-base: clamp(1rem,      0.95rem + 0.22vw, 1.125rem);
@@ -85,28 +88,45 @@
   --text-5xl:  clamp(2.625rem,  2.13rem + 2.1vw,  3.8125rem);
   --text-6xl:  clamp(3.125rem,  2.45rem + 2.87vw, 4.75rem);
 
-  /* ── Line height ─────────────────────────────────────── */
-  --leading-tight:  1.2;
-  --leading-snug:   1.35;
-  --leading-normal: 1.6;
-  --leading-loose:  1.8;
+  /* ── Line height ─────────────────────────────────────────── */
+  --leading-tight:   1.2;
+  --leading-snug:    1.35;
+  --leading-normal:  1.6;
+  --leading-loose:   1.8;
+  /* Font-role aliases */
+  --leading-heading: 1.2;    /* Lora 120% */
+  --leading-body:    1.4;    /* Figtree 140% */
 
-  /* ── Letter spacing ──────────────────────────────────── */
-  --tracking-tight:  -0.02em;
-  --tracking-snug:   -0.01em; /* gentle — warm serif headings */
-  --tracking-normal:  0;
-  --tracking-wide:    0.05em;
-  --tracking-wider:   0.1em;
+  /* ── Letter spacing ──────────────────────────────────────── */
+  --tracking-tight:   -0.02em;
+  --tracking-snug:    -0.01em;
+  --tracking-normal:   0;      /* Figtree & Lora both 0% */
+  --tracking-wide:     0.05em;
+  --tracking-wider:    0.1em;
 
-  /* ── Status colors (strength indicators, feedback) ─────── */
-  --color-status-error:   #e53e3e;
-  --color-status-warning: #dd6b20;
-  --color-status-caution: #d69e2e;
-  --color-status-success: #38a169;
+  /* ── Form states ─────────────────────────────────────────── */
+  --form-label:          var(--prime-grey);
+  --form-outline:        var(--almond-beige);
+  --form-fill:           var(--light-beige);
+  --form-text:           var(--prime-grey);
 
-  /* ── Shadows ─────────────────────────────────────────── */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+  --form-active-outline: var(--pollen);
+  --form-active-text:    var(--dark-grey);
+
+  --form-error-outline:  var(--red);
+  --form-error-fill:     var(--blush);
+  --form-error-text:     var(--dark-grey);
+
+  /* ── Status colors ───────────────────────────────────────── */
+  --color-status-error:   var(--red);
+  --color-status-warning: var(--roman-coffee);
+  --color-status-caution: var(--pollen);
+  --color-status-success: var(--spring-leaf);
+
+  /* ── Shadows ─────────────────────────────────────────────── */
+  --shadow-color: 27 38 62;   /* --midnight RGB */
+  --shadow-sm: 0 1px 2px 0 rgb(var(--shadow-color) / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(var(--shadow-color) / 0.10), 0 2px 4px -2px rgb(var(--shadow-color) / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(var(--shadow-color) / 0.10), 0 4px 6px -4px rgb(var(--shadow-color) / 0.06);
+  --shadow-xl: 0 20px 25px -5px rgb(var(--shadow-color) / 0.10), 0 8px 10px -6px rgb(var(--shadow-color) / 0.06);
 }

@@ -92,7 +92,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <!-- Live strength indicator -->
           <div class="pwd-strength" id="pwd-strength" hidden aria-live="polite">
             <div class="pwd-strength__bar">
-              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span>
             </div>
             <span class="pwd-strength__label"></span>
           </div>
@@ -147,19 +147,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     gap: var(--space-3);
     width: 100%;
     padding: var(--space-4);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    background: var(--light-beige);
+    border: 1.5px solid var(--almond-beige);
+    border-radius: var(--radius-full);
     font-size: var(--text-base);
     font-weight: var(--weight-medium);
-    color: var(--color-text);
+    color: var(--dark-grey);
     cursor: pointer;
     transition: background var(--transition-fast), border-color var(--transition-fast);
   }
 
   .auth-social-btn:hover {
-    background: var(--color-surface);
-    border-color: var(--color-border-strong);
+    background: var(--heavy-beige);
+    border-color: var(--almond-beige);
   }
 
   .auth-divider {
@@ -213,7 +213,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     width: 100%;
     padding: var(--space-4);
     padding-right: var(--space-12);
-    background: var(--color-bg);
+    background: var(--light-beige);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     font-size: var(--text-base);
@@ -225,8 +225,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .auth-input::placeholder { color: var(--color-text-muted); }
 
   .auth-input:focus {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+    border-color: var(--form-active-outline);
   }
 
   .auth-eye {
@@ -275,17 +274,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   /* Segment fill + label colour driven by data-strength */
-  [data-strength="1"] .pwd-strength__bar span:nth-child(1)    { background: var(--color-status-error); }
-  [data-strength="1"] .pwd-strength__label                     { color: var(--color-status-error); }
+  [data-strength="1"] .pwd-strength__bar span:nth-child(1)   { background: var(--red); }
+  [data-strength="1"] .pwd-strength__label                    { color: var(--red); }
 
-  [data-strength="2"] .pwd-strength__bar span:nth-child(-n+2)  { background: var(--color-status-warning); }
-  [data-strength="2"] .pwd-strength__label                     { color: var(--color-status-warning); }
+  [data-strength="2"] .pwd-strength__bar span:nth-child(-n+2) { background: var(--pollen); }
+  [data-strength="2"] .pwd-strength__label                    { color: var(--roman-coffee); }
 
-  [data-strength="3"] .pwd-strength__bar span:nth-child(-n+3)  { background: var(--color-status-caution); }
-  [data-strength="3"] .pwd-strength__label                     { color: var(--color-status-caution); }
-
-  [data-strength="4"] .pwd-strength__bar span                   { background: var(--color-status-success); }
-  [data-strength="4"] .pwd-strength__label                     { color: var(--color-status-success); }
+  [data-strength="3"] .pwd-strength__bar span                 { background: var(--spring-leaf); }
+  [data-strength="3"] .pwd-strength__label                    { color: var(--spring-leaf); }
 
   .auth-submit {
     width: 100%;
@@ -324,15 +320,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const pwdStrength  = document.getElementById('pwd-strength') as HTMLElement;
   const pwdLabel     = pwdStrength?.querySelector('.pwd-strength__label') as HTMLElement;
 
-  const LEVELS = ['Weak', 'Fair', 'Good', 'Strong'];
+  const LEVELS = ['Weak', 'Fair', 'Strong'];
 
   function score(val: string): number {
     if (!val) return 0;
     if (val.length < 8) return 1;               // too short → Weak
     const hasNum = /\d/.test(val);
     const hasSpc = /[!@#$%^&*()\-_=+,.?":{}|<>]/.test(val);
-    if (hasNum && hasSpc) return 4;             // all reqs met → Strong
-    if (hasNum || hasSpc) return 3;             // partial → Good
+    if (hasNum && hasSpc) return 3;             // all reqs met → Strong
     return 2;                                   // long but no extras → Fair
   }
 

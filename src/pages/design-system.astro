@@ -6,8 +6,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 // page reflects the skin automatically — change a token and it updates here.
 
 const palette = [
-  '--gray-0', '--gray-50', '--gray-100', '--gray-200', '--gray-300', '--gray-400',
-  '--gray-500', '--gray-600', '--gray-700', '--gray-800', '--gray-900', '--gray-950', '--gray-1000',
+  '--white', '--light-grey', '--secondary-grey', '--prime-grey', '--dark-grey', '--midnight',
+  '--spring-leaf', '--pollen', '--roman-coffee', '--red', '--perry-blue', '--dusk-blue',
+  '--light-beige', '--pale-beige', '--taupe-beige', '--base-beige', '--heavy-beige', '--almond-beige', '--blush',
 ];
 
 const colorGroups = [
@@ -44,13 +45,13 @@ const spacing = [
   '--space-8', '--space-9', '--space-10', '--space-11', '--space-12', '--space-14', '--space-16', '--space-20', '--space-24',
 ];
 
-const radii = ['--radius-sm', '--radius-md', '--radius-lg', '--radius-xl', '--radius-full'];
+const radii = ['--radius-sm', '--radius-md', '--radius-full'];
 const shadows = ['--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl'];
 const zindex = ['--z-below', '--z-base', '--z-raised', '--z-overlay', '--z-masthead', '--z-modal'];
 const transitions = ['--transition-fast', '--transition-base', '--transition-slow'];
 
 const toc = [
-  ['colors', 'Colors'], ['type', 'Typography'], ['spacing', 'Spacing'],
+  ['logo', 'Logo'], ['colors', 'Colors'], ['type', 'Typography'], ['spacing', 'Spacing'],
   ['radius', 'Radius'], ['shadow', 'Shadow'], ['system', 'Z-index & motion'],
   ['buttons', 'Buttons'], ['elements', 'Text elements'], ['patterns', 'Patterns'],
 ];
@@ -74,6 +75,25 @@ const toc = [
         {toc.map(([id, label]) => <a href={`#${id}`} class="ds-toc__link">{label}</a>)}
       </nav>
     </header>
+
+    <!-- ── LOGO ── -->
+    <section id="logo" class="ds-section">
+      <div class="ds-section__head"><h2>Logo</h2></div>
+      <div class="ds-logo-grid">
+        <div class="ds-logo-swatch ds-logo-swatch--light">
+          <img src="/alignd_logo_fullcolor.svg" alt="alignd logo" class="ds-logo-img" width="183" height="28" />
+          <span class="ds-logo-label">On light</span>
+        </div>
+        <div class="ds-logo-swatch ds-logo-swatch--dark">
+          <img src="/alignd_logo_reversed.svg" alt="alignd logo" class="ds-logo-img" width="183" height="28" />
+          <span class="ds-logo-label">On dark</span>
+        </div>
+        <div class="ds-logo-swatch ds-logo-swatch--beige">
+          <img src="/alignd_logo_fullcolor.svg" alt="alignd logo" class="ds-logo-img" width="183" height="28" />
+          <span class="ds-logo-label">On beige</span>
+        </div>
+      </div>
+    </section>
 
     <!-- ── COLORS ── -->
     <section id="colors" class="ds-section">
@@ -283,9 +303,28 @@ const toc = [
         <h3 class="ds-group__title">Card</h3>
         <article class="ds-card">
           <h3>Clinical Experience</h3>
-          <p>A card surface using <code>--color-bg</code>, <code>--color-border</code>, <code>--radius-lg</code> and <code>--space-8</code> padding.</p>
+          <p>A card surface using <code>--color-bg</code>, <code>--color-border</code>, <code>--radius-md</code> and <code>--space-8</code> padding.</p>
           <button class="btn btn--secondary" type="button">Learn more</button>
         </article>
+      </div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">Form fields</h3>
+        <div class="ds-form-grid">
+          <div class="field">
+            <label class="field__label">Default</label>
+            <input class="field__input" type="text" placeholder="Placeholder text" />
+          </div>
+          <div class="field">
+            <label class="field__label">Active / filled</label>
+            <input class="field__input" type="text" value="Jane Smith" />
+          </div>
+          <div class="field field--error">
+            <label class="field__label">Error</label>
+            <input class="field__input" type="text" value="bad@" />
+            <span class="field__error-msg">Please enter a valid email address.</span>
+          </div>
+        </div>
       </div>
 
       <div class="ds-group">
@@ -339,6 +378,34 @@ const toc = [
   .ds-toc__link:hover { background: var(--color-surface-overlay); }
 
   /* ── Sections ── */
+  /* Logo */
+  .ds-logo-grid {
+    display: flex;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+  .ds-logo-swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-8) var(--space-10);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    min-width: 220px;
+  }
+  .ds-logo-swatch--light { background: var(--white); }
+  .ds-logo-swatch--dark  { background: var(--midnight); }
+  .ds-logo-swatch--beige { background: var(--light-beige); }
+  .ds-logo-img { height: 40px; width: auto; }
+  .ds-logo-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .ds-logo-swatch--dark .ds-logo-label { color: var(--secondary-grey); }
+
   .ds-section {
     padding-top: var(--space-12);
     margin-top: var(--space-12);
@@ -466,7 +533,7 @@ const toc = [
   .ds-shadow-box {
     height: 96px;
     background: var(--color-bg);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
   }
 
   /* ── Defs (z-index / transitions) ── */
@@ -498,7 +565,7 @@ const toc = [
     max-width: 380px;
     background: var(--color-bg);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     padding: var(--space-8);
     display: flex;
     flex-direction: column;
@@ -508,6 +575,7 @@ const toc = [
   }
   .ds-card h3 { font-size: var(--text-2xl); letter-spacing: var(--tracking-normal); line-height: var(--leading-snug); margin: 0; }
   .ds-card p { margin: 0; }
+  .ds-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-6); max-width: 720px; }
   .ds-pattern-header { text-align: center; max-width: 42rem; margin-inline: auto; }
   .ds-pattern-heading { font-size: var(--text-4xl); letter-spacing: var(--tracking-snug); margin: var(--space-3) 0 0; }
   .ds-pattern-sub { font-size: var(--text-lg); color: var(--color-text-muted); margin-top: var(--space-4); }

@@ -28,20 +28,21 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   <!-- HERO — sticky z-index:1, CSS handles stacking -->
   <Panel id="hero" class="panel-page" background="default">
-    <div class="hero">
+    <div class="hero-text">
       <Reveal><h1>{homeData.hero.headline}</h1></Reveal>
-      <Reveal delay={150}><p class="lead hero__sub">{homeData.hero.subheadline}</p></Reveal>
-      <Reveal delay={300}>
+      <Reveal delay={100}><p class="hero__sub">{homeData.hero.subheadline}</p></Reveal>
+      <Reveal delay={250}>
         <div class="hero__actions">
-          <button id="watch-video-btn" class="btn btn--primary btn--lg" type="button">
+          <button id="watch-video-btn" class="btn btn--primary" type="button">
             {homeData.hero.cta.label}
           </button>
-          <a href={homeData.hero.cta2.href} class="btn btn--secondary btn--lg">
+          <a href={homeData.hero.cta2.href} class="btn btn--secondary">
             {homeData.hero.cta2.label}
           </a>
         </div>
       </Reveal>
     </div>
+    <div class="hero-img" aria-hidden="true" role="presentation"></div>
   </Panel>
 
   <!-- PROBLEM — scroll zone drives a horizontal quote carousel while pinned -->
@@ -398,26 +399,82 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   }
 
   /* ── Hero ────────────────────────────────────────────── */
-  .hero {
-    max-width: 72ch;
-    text-align: left;
-    padding: var(--space-8) var(--container-pad);
+
+  /* Homepage main starts at y:0 — masthead floats over the page bg seamlessly */
+  :global(.page-home main) {
+    padding-top: 0;
   }
 
-  .hero h1 {
+  :global(#hero) {
+    position: relative;
+    top: 0; /* reset sticky-group's top: masthead-h offset */
+    height: 100svh;
+    background: var(--light-beige);
+    padding-top: var(--masthead-h);
+    padding-bottom: var(--space-5);
+    /* No padding-inline here — the inner .container handles it,
+       matching the masthead's .container model exactly */
+  }
+
+  /* Container: side-by-side row; horizontal padding comes from
+     the .container class so logo and content edges align with masthead */
+  :global(#hero > .container) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  /* ── Left: text on page background ──────────────────── */
+  .hero-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertically centre in the panel */
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
+  .hero-text h1 {
     font-size: var(--text-5xl);
-    margin-bottom: var(--space-6);
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-snug);
+    margin: 0;
   }
 
   .hero__sub {
-    margin-bottom: var(--space-8);
-    color: var(--color-text-muted);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    line-height: var(--leading-normal);
+    margin: 0;
   }
 
   .hero__actions {
     display: flex;
     gap: var(--space-4);
     flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* ── Right: image card, square-ish ───────────────────── */
+  .hero-img {
+    flex: 1;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-xl);
+    background-image: url('/soccer.jpg');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Spring-leaf tint on the image card only */
+  .hero-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--spring-leaf) 35%, transparent);
+    pointer-events: none;
   }
 
   /* ── Problem: quote carousel ─────────────────────────── */
@@ -688,7 +745,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .science-card {
     background: var(--color-bg);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     padding: var(--space-8);
     display: flex;
     flex-direction: column;
@@ -897,7 +954,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .video-modal__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.88);
+    background: color-mix(in srgb, var(--midnight) 92%, transparent);
   }
 
   .video-modal__panel {
@@ -905,7 +962,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     width: min(900px, calc(100% - var(--space-8)));
     aspect-ratio: 16 / 9;
     background: var(--color-surface);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
 
@@ -916,16 +973,16 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     z-index: 2;
     width: 32px; height: 32px;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(0, 0, 0, 0.45);
+    background: color-mix(in srgb, var(--midnight) 55%, transparent);
     border: none;
     border-radius: var(--radius-sm);
-    color: #fff;
+    color: var(--white);
     font-size: var(--text-xl);
     line-height: 1;
     cursor: pointer;
     transition: background var(--transition-fast);
   }
-  .video-modal__close:hover { background: rgba(0, 0, 0, 0.7); }
+  .video-modal__close:hover { background: color-mix(in srgb, var(--midnight) 80%, transparent); }
 
   .video-modal__screen {
     position: absolute;
@@ -977,7 +1034,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .plan-modal__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
+    background: color-mix(in srgb, var(--midnight) 65%, transparent);
   }
 
   .plan-modal__panel {
@@ -985,7 +1042,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     display: flex;
     flex-direction: column;
     background: var(--color-bg);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     width: min(1100px, calc(100% - var(--space-6)));
     max-height: min(86vh, 760px);
     padding-block: var(--space-10) var(--space-8);
@@ -1325,9 +1382,9 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
       gsap.registerPlugin(ScrollTrigger);
 
       // ── Parallax depth: hero content recedes as problem slides over it ──
-      gsap.to('#hero .hero', {
-        y: '-6%',
-        opacity: 0.4,
+      gsap.to('#hero > .container > *', {
+        y: '-4%',
+        opacity: 0.5,
         ease: 'none',
         scrollTrigger: {
           trigger: '#problem',

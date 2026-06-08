@@ -3,6 +3,7 @@
 body {
   font-family: var(--font-body);
   font-size: var(--text-base);
+  line-height: var(--leading-body);
   font-weight: var(--weight-normal);
   color: var(--color-text);
   background-color: var(--color-bg);
@@ -16,8 +17,8 @@ h5,
 h6 {
   font-family: var(--font-heading);
   font-weight: var(--weight-heading);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-snug);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-normal);
   color: var(--color-text);
 }
 
@@ -28,25 +29,16 @@ h4 { font-size: var(--text-2xl); }
 h5 { font-size: var(--text-xl); }
 h6 { font-size: var(--text-lg); }
 
-/* Tight, negative tracking suits large display type; ease it off on the
-   smaller headings (and give them a touch more leading) so they stay legible. */
-h4,
-h5,
-h6 {
-  letter-spacing: var(--tracking-normal);
-  line-height: var(--leading-snug);
-}
-
 p {
   font-size: var(--text-base);
-  line-height: var(--leading-normal);
+  line-height: var(--leading-body);
   color: var(--color-text-muted);
 }
 
 /* Lead / intro paragraphs step up from body for hierarchy under a heading */
 .lead {
   font-size: var(--text-lg);
-  line-height: var(--leading-normal);
+  line-height: var(--leading-body);
   color: var(--color-text);
 }
 

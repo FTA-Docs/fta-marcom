@@ -5,7 +5,7 @@ import siteData from '../../content/site.json';
 <header class="masthead" role="banner">
   <div class="masthead__inner container">
     <a href="/" class="masthead__logo" aria-label="alignd — go to homepage">
-      <span class="masthead__logo-text">alignd</span>
+      <img src="/alignd_logo_fullcolor.svg" alt="alignd" class="masthead__logo-img" width="222" height="34" />
     </a>
 
     <button
@@ -28,7 +28,7 @@ import siteData from '../../content/site.json';
         ))}
       </ul>
       <div class="masthead__actions">
-        <a href={siteData.cta.signIn.href} class="btn btn--ghost">Sign In</a>
+        <a href={siteData.cta.signIn.href} class="btn btn--secondary">Sign In</a>
         <a href={siteData.cta.getStarted.href} class="btn btn--primary">Get Started</a>
       </div>
     </nav>
@@ -44,7 +44,6 @@ import siteData from '../../content/site.json';
     z-index: var(--z-masthead);
     height: var(--masthead-h);
     background-color: var(--masthead-bg);
-    border-bottom: 1px solid var(--masthead-border);
     backdrop-filter: blur(8px);
   }
 
@@ -60,14 +59,13 @@ import siteData from '../../content/site.json';
     display: flex;
     align-items: center;
     text-decoration: none;
+    flex-shrink: 0;
   }
 
-  .masthead__logo-text {
-    font-family: var(--font-heading);
-    font-size: var(--text-xl);
-    font-weight: var(--weight-heading);
-    color: var(--masthead-text);
-    letter-spacing: var(--tracking-tight);
+  .masthead__logo-img {
+    height: 34px;
+    width: 222px;
+    display: block;
   }
 
   .masthead__nav {

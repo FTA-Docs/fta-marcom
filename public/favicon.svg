@@ -1,4 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#171717"/>
-  <text x="16" y="22" text-anchor="middle" font-size="18" fill="white" font-family="system-ui,sans-serif" font-weight="700">a</text>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_40000002_4854" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1" y="1" width="30" height="30">
+<circle cx="14.6765" cy="14.6765" r="14.6765" transform="matrix(0.995509 0.0946684 0.0946684 -0.995509 0 29.2212)" fill="white"/>
+</mask>
+<g mask="url(#mask0_40000002_4854)">
+<circle cx="14.6765" cy="14.6765" r="14.6765" transform="matrix(1 0 0 -1 1.32349 30.6765)" fill="#669D5B"/>
+<path d="M7.91351 5.91514L10.6809 21.6098C10.7631 22.0757 11.2802 22.2627 12.0913 22.1197L14.7807 21.6454C15.5918 21.5024 16.0138 21.1499 15.9317 20.6839L13.1643 4.98928C13.0821 4.52335 12.565 4.3364 11.7539 4.47942L9.06446 4.95363C8.25337 5.09665 7.83135 5.4492 7.91351 5.91514Z" fill="#FFF3E9"/>
+<path d="M16.8652 11.6371L19.5513 26.871C19.6311 27.3233 20.1468 27.5023 20.9579 27.3593L23.6473 26.8851C24.4584 26.7421 24.8818 26.3975 24.8021 25.9452L22.1159 10.7113C22.0362 10.259 21.5204 10.08 20.7093 10.223L18.0199 10.6972C17.2088 10.8402 16.7854 11.1849 16.8652 11.6371Z" fill="#FFF3E9"/>
+<circle cx="14.6765" cy="14.6765" r="11.8523" transform="matrix(1 0 0 -1 1.32349 30.6765)" stroke="#669D5B" stroke-width="5.64835"/>
+</g>
 </svg>

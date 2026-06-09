@@ -14,11 +14,12 @@ interface Props {
   pricing: {
     plans: Plan[];
     valueHighlights: string[];
+    subheading?: string;
   };
 }
 
 const { pricing } = Astro.props;
-const { plans, valueHighlights } = pricing;
+const { plans, valueHighlights, subheading } = pricing;
 ---
 
 <div class="pricing-block">
@@ -50,16 +51,13 @@ const { plans, valueHighlights } = pricing;
               </Fragment>
             ) : plan.description}
           </p>
-          <a
-            href={plan.cta.href}
-            class={`btn ${i === 0 ? 'btn--primary' : 'btn--secondary'} plan-card__cta`}
-          >{plan.cta.label}</a>
         </article>
       ))}
     </div>
 
-    <!-- Right: value highlights + compare link -->
+    <!-- Right: value highlights + single CTA -->
     <div class="pricing-highlights">
+      {subheading && <p class="pricing-highlights__heading">{subheading}</p>}
       <ul class="value-highlights" role="list">
         {valueHighlights.map(h => (
           <li class="value-highlight">
@@ -68,6 +66,7 @@ const { plans, valueHighlights } = pricing;
           </li>
         ))}
       </ul>
+      <a href={plans[0].cta.href} class="btn btn--primary pricing-highlights__cta">{plans[0].cta.label}</a>
     </div>
 
   </div>
@@ -151,7 +150,7 @@ const { plans, valueHighlights } = pricing;
   }
 
   .plan-card__name {
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
     font-weight: var(--weight-semibold);
     margin: 0;
   }
@@ -182,7 +181,7 @@ const { plans, valueHighlights } = pricing;
   }
 
   .plan-card__description {
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: var(--leading-normal);
     margin: 0;
@@ -202,16 +201,23 @@ const { plans, valueHighlights } = pricing;
   }
   .plan-inline-link:hover { opacity: 0.65; }
 
-  .plan-card__cta {
-    align-self: flex-start;
+  /* ── Value highlights ── */
+  .pricing-highlights__heading {
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-normal);
+    line-height: var(--leading-snug);
+    color: var(--color-heading);
+    margin: 0;
+    white-space: pre-line;
   }
 
-  /* ── Value highlights ── */
   .pricing-highlights {
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
     padding-top: var(--space-2);
+    padding-left: var(--space-10);
   }
 
   .value-highlights {
@@ -229,13 +235,26 @@ const { plans, valueHighlights } = pricing;
     font-size: var(--text-base);
     color: var(--color-text);
     line-height: var(--leading-normal);
-    align-items: flex-start;
+    align-items: center;
   }
 
   .value-highlight__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    border-radius: 50%;
+    background: var(--heavy-beige);
+    color: var(--roman-coffee);
+    font-size: 0.8rem;
     font-weight: var(--weight-bold);
     flex-shrink: 0;
-    margin-top: 2px;
+  }
+
+  .pricing-highlights__cta {
+    align-self: flex-start;
   }
 
   /* ── Responsive ── */
@@ -264,6 +283,10 @@ const { plans, valueHighlights } = pricing;
 
     .value-highlights {
       grid-template-columns: 1fr;
+    }
+
+    .pricing-highlights {
+      padding-left: 0;
     }
   }
 </style>

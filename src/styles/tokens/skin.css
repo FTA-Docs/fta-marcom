@@ -10,7 +10,9 @@
   --dark-grey:      #3B3F46;
   --midnight:       #1B263E;
   --spring-leaf:    #669D5B;   /* Primary brand / primary buttons */
+  --forest:         color-mix(in srgb, #669D5B 55%, #1B263E); /* deep brand green for text on light bg */
   --pollen:         #F3C27D;
+  --pollen-text:    #F3C27D;  /* pollen used as accent text on dark panels */
   --roman-coffee:   #7A5848;
   --red:            #D54848;
   --perry-blue:     #8FABD8;
@@ -51,15 +53,15 @@
   --color-secondary-text:  var(--dark-grey);
 
   /* ── Masthead ────────────────────────────────────────────── */
-  --masthead-bg:     var(--white);
+  --masthead-bg:     color-mix(in srgb, var(--white) 72%, transparent);
   --masthead-text:   var(--dark-grey);
-  --masthead-border: var(--almond-beige);
+  --masthead-border: color-mix(in srgb, var(--dark-grey) 8%, transparent);
 
   /* ── Footer ──────────────────────────────────────────────── */
-  --footer-bg:         var(--spring-leaf);
+  --footer-bg:         var(--midnight);
   --footer-text:       var(--light-grey);
-  --footer-text-muted: var(--light-beige);
-  --footer-border:     color-mix(in srgb, var(--spring-leaf) 60%, var(--midnight));
+  --footer-text-muted: var(--almond-beige);
+  --footer-border:     color-mix(in srgb, var(--white) 12%, transparent);
   --footer-link:       var(--light-grey);
   --footer-link-hover: var(--white);
 

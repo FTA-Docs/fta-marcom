@@ -25,19 +25,22 @@
         "title": "A Plan for You & Your Child",
         "linkPhrase": "8-week plans",
         "body": "We combine our team's leading pediatric digital health expertise with AI‑powered personalization to create 8-week plans designed to drive measurable change.",
-        "phones": 3
+        "phones": 3,
+        "screen": "/Plan_ Overview.png"
       },
       {
         "eyebrow": "It starts with you",
         "title": "Share What Matters",
         "body": "Tell us about your child's current relationship with technology, your family's goals, and what you've already tried. The more we know, the better we can tailor a plan that actually fits your family.",
-        "phones": 2
+        "phones": 2,
+        "screen": "/Wrap-Up_ Intake Chat.png"
       },
       {
         "eyebrow": "At your own pace",
         "title": "Use & Tune",
         "body": "Work through your personalized 8-week plan week by week, completing structured tasks at your own pace. Quick check-in surveys along the way help us refine your guidance as your situation evolves.",
-        "phones": 2
+        "phones": 2,
+        "screen": "/pressed.png"
       },
       {
         "eyebrow": "Never on your own",

@@ -56,48 +56,83 @@ const { cols, rows } = comparison;
 
   .cmp-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: var(--text-sm);
     min-width: 720px;
+  }
+
+  .cmp-table {
+    table-layout: fixed;
   }
 
   .cmp-table th,
   .cmp-table td {
     padding: var(--space-4) var(--space-5);
     text-align: left;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: none;
     vertical-align: top;
     line-height: var(--leading-normal);
-    width: 25%;
+  }
+
+  /* Column widths: label / alignd / traditional / parental-tech */
+  .cmp-table thead th:first-child,
+  .cmp-table tbody th { width: 20%; }
+  .cmp-table thead th.cmp-table__alignd { width: 30%; }
+  .cmp-table thead th:nth-child(3),
+  .cmp-table thead th:nth-child(4) { width: 25%; }
+
+  .cmp-table tbody tr:nth-child(odd) td,
+  .cmp-table tbody tr:nth-child(odd) th {
+    background: var(--light-beige);
+  }
+
+  /* Subtle darker green on filled rows so the alignd column stripes in sync */
+  .cmp-table tbody tr:nth-child(odd) td.cmp-table__alignd {
+    background: color-mix(in srgb, var(--spring-leaf) 95%, black);
   }
 
   .cmp-table thead th {
-    font-size: var(--text-xs);
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
     font-weight: var(--weight-semibold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-text-muted);
-    border-bottom-width: 2px;
+    letter-spacing: var(--tracking-normal);
+    text-transform: none;
+    color: var(--color-heading);
   }
 
   .cmp-table tbody th {
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
     font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-normal);
     color: var(--color-text);
+    vertical-align: top;
   }
 
   .cmp-table td {
-    color: var(--color-text-muted);
+    color: var(--color-text);
   }
 
   /* Highlighted alignd column */
   .cmp-table__alignd {
-    color: var(--color-text) !important;
-    font-weight: var(--weight-medium);
-    background: var(--color-surface-raised);
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-base);
+    background: var(--spring-leaf);
+  }
+
+  .cmp-table td.cmp-table__alignd,
+  .cmp-table th.cmp-table__alignd,
+  .cmp-table thead th.cmp-table__alignd {
+    color: var(--white);
   }
 
   .cmp-table thead th.cmp-table__alignd {
-    color: var(--color-text) !important;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  .cmp-table tbody tr:last-child td.cmp-table__alignd {
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
   }
 
   /* Mobile: fit the whole comparison within the viewport — no horizontal

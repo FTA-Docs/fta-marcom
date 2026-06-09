@@ -45,93 +45,100 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     <div class="hero-img" aria-hidden="true" role="presentation"></div>
   </Panel>
 
-  <!-- PROBLEM — scroll zone drives a horizontal quote carousel while pinned -->
+  <!-- PROBLEM — panel in main flow so sticky spans beyond its scroll zone -->
+  <Panel id="problem" class="panel-page" background="surface" fullBleed={true}>
+    <div class="problem-stage">
+      <div class="problem-header">
+        <h2 class="panel-heading">{homeData.problem.heading}</h2>
+        <p class="panel-sub">{homeData.problem.subheading}</p>
+      </div>
+
+      <!-- SR-only full quote list (the carousel below is decorative) -->
+      <ul class="sr-only" aria-label="Worries we hear from parents">
+        {homeData.problem.quotes.map(q => <li>{q}</li>)}
+      </ul>
+
+      <div class="quote-strip-wrap" aria-hidden="true">
+        <div class="quote-strip" id="quote-strip">
+          {homeData.problem.quotes.map((q, i) => (
+            <div
+              class={`quote-card${i === 0 ? ' is-active' : ''}`}
+              data-index={i}
+              style="--card-fill: var(--pale-beige)"
+            >
+              <p class="quote-card__text">"{q}"</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </Panel>
+  <!-- Scroll zone follows the panel — gives GSAP room to drive the carousel -->
   <div
     id="problem-scroll-zone"
     class="problem-scroll-zone"
     style={`--quote-count: ${homeData.problem.quotes.length}`}
-  >
-    <Panel id="problem" class="panel-page" background="surface" fullBleed={true}>
-      <div class="problem-stage">
-        <div class="problem-header">
-          <h2 class="panel-heading">{homeData.problem.heading}</h2>
-          <p class="panel-sub">{homeData.problem.subheading}</p>
-        </div>
+  ></div>
 
-        <!-- SR-only full quote list (the carousel below is decorative) -->
-        <ul class="sr-only" aria-label="Worries we hear from parents">
-          {homeData.problem.quotes.map(q => <li>{q}</li>)}
-        </ul>
+  <!-- SOLUTION — panel in main flow; scroll zone provides GSAP scroll space -->
+  <Panel id="solution" class="panel-page" background="default" fullBleed={true}>
+    <h2 class="sr-only">A Plan for You &amp; Your Child</h2>
 
-        <div class="quote-strip-wrap" aria-hidden="true">
-          <div class="quote-strip" id="quote-strip">
-            {homeData.problem.quotes.map((q, i) => (
-              <div class={`quote-card${i === 0 ? ' is-active' : ''}`} data-index={i}>
-                <p class="quote-card__text">"{q}"</p>
-              </div>
-            ))}
+    <div class="sol-stage">
+
+      <!-- Left: text blocks, cross-fade per section -->
+      <div class="sol-texts">
+        {homeData.solution.sections.map((section, i) => (
+          <div class={`sol-text sol-text--${i}`} aria-hidden={i > 0 ? 'true' : 'false'}>
+            <p class="eyebrow">{section.eyebrow}</p>
+            <h2 class="panel-heading">{section.title}</h2>
+            <p class="sol-body">
+              {section.linkPhrase && section.body.includes(section.linkPhrase) ? (
+                <Fragment>
+                  {section.body.split(section.linkPhrase)[0]}
+                  <button type="button" class="sol-inline-link" data-open-plan>{section.linkPhrase}</button>
+                  {section.body.split(section.linkPhrase)[1]}
+                </Fragment>
+              ) : section.body}
+            </p>
           </div>
+        ))}
+      </div>
+
+      <!-- Right: horizontal filmstrip, shifts on scroll -->
+      <div class="sol-filmstrip-wrap" aria-hidden="true">
+        <div class="sol-filmstrip" id="sol-filmstrip">
+          {homeData.solution.sections.map((section, i) => (
+            <div class={`sol-phone-item sol-phone-item--${i}`}>
+              <div class="sol-phone-device">
+                {section.screen && (
+                  <img class="sol-phone-screen" src={section.screen} alt="" aria-hidden="true" />
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </Panel>
-  </div>
 
-  <!-- SOLUTION — 4 inner sections, scroll-driven; z-index:3 -->
+    </div>
+
+    <div class="sol-dots" role="tablist" aria-label="Section navigation">
+      {homeData.solution.sections.map((_, i) => (
+        <button
+          class={`sol-dot${i === 0 ? ' is-active' : ''}`}
+          role="tab"
+          aria-label={`Go to section ${i + 1}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          data-index={String(i)}
+        />
+      ))}
+    </div>
+  </Panel>
   <div
     id="solution-scroll-zone"
     class="solution-scroll-zone"
     style={`--sol-count: ${homeData.solution.sections.length}`}
-  >
-    <Panel id="solution" class="panel-page" background="default" fullBleed={true}>
-      <h2 class="sr-only">A Plan for You &amp; Your Child</h2>
-
-      <div class="sol-stage">
-
-        <!-- Left: text blocks, cross-fade per section -->
-        <div class="sol-texts">
-          {homeData.solution.sections.map((section, i) => (
-            <div class={`sol-text sol-text--${i}`} aria-hidden={i > 0 ? 'true' : 'false'}>
-              <p class="eyebrow">{section.eyebrow}</p>
-              <h2 class="panel-heading">{section.title}</h2>
-              <p class="sol-body">
-                {section.linkPhrase && section.body.includes(section.linkPhrase) ? (
-                  <Fragment>
-                    {section.body.split(section.linkPhrase)[0]}
-                    <button type="button" class="sol-inline-link" data-open-plan>{section.linkPhrase}</button>
-                    {section.body.split(section.linkPhrase)[1]}
-                  </Fragment>
-                ) : section.body}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <!-- Right: horizontal filmstrip, shifts on scroll -->
-        <div class="sol-filmstrip-wrap" aria-hidden="true">
-          <div class="sol-filmstrip" id="sol-filmstrip">
-            {homeData.solution.sections.map((_, i) => (
-              <div class={`sol-phone-item sol-phone-item--${i}`}>
-                <div class="sol-phone-device"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </div>
-
-      <div class="sol-dots" role="tablist" aria-label="Section navigation">
-        {homeData.solution.sections.map((_, i) => (
-          <button
-            class={`sol-dot${i === 0 ? ' is-active' : ''}`}
-            role="tab"
-            aria-label={`Go to section ${i + 1}`}
-            aria-selected={i === 0 ? 'true' : 'false'}
-            data-index={String(i)}
-          />
-        ))}
-      </div>
-    </Panel>
-  </div>
+  ></div>
 
   <!-- SCIENCE — sticky z-index:4 -->
   <Panel id="science" class="panel-page" background="surface">
@@ -158,7 +165,6 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   <Panel id="pricing" class="panel-page" background="raised">
     <div class="panel-header">
       <Reveal><h2 class="panel-heading">{homeData.pricing.heading}</h2></Reveal>
-      <Reveal delay={100}><p class="panel-sub">{homeData.pricing.subheading}</p></Reveal>
     </div>
     <PricingBlock pricing={homeData.pricing} />
   </Panel>
@@ -175,61 +181,47 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     <ComparisonBlock comparison={homeData.comparison} />
   </Panel>
 
-  <!-- SOCIAL PROOF — scroll zone gives GSAP room to cycle quotes -->
-  <!-- Zone height = quotes × panel height so panel stays sticky throughout -->
-  <div
-    class="social-scroll-zone"
-    id="social-scroll-zone"
-    style={`--quote-count: ${homeData.socialProof.panels.length}`}
+  <!-- SOCIAL PROOF — compact strip, auto-cycles, sits directly above footer -->
+  <section
+    id="social-proof"
+    aria-label={homeData.socialProof.heading}
   >
-    <section
-      id="social-proof"
-      class="panel-page"
-      aria-label={homeData.socialProof.heading}
-    >
-      <!-- sp-content constrains to container-max without using .container
-           (which would trigger the global flex:1 rule and break stage height) -->
-      <div class="sp-content">
+    <div class="sp-content">
 
-        <div class="panel-header sp-header">
-          <h2 class="eyebrow">{homeData.socialProof.heading}</h2>
-        </div>
-
-        <div class="sp-stage" aria-live="polite" aria-atomic="true">
-          {homeData.socialProof.panels.map((panel, i) => (
-            <div
-              class="sp-quote"
-              role="group"
-              aria-label={`Quote ${i + 1} of ${homeData.socialProof.panels.length}`}
-              aria-hidden={i !== 0 ? 'true' : 'false'}
-            >
-              <blockquote class="sp-quote__text">
-                <p>"{panel.quote}"</p>
-                {panel.attribution && (
-                  <footer>
-                    <cite class="sp-quote__attr">— {panel.attribution}</cite>
-                  </footer>
-                )}
-              </blockquote>
-            </div>
-          ))}
-        </div>
-
-        <div class="sp-dots" role="tablist" aria-label="Quote navigation">
-          {homeData.socialProof.panels.map((_, i) => (
-            <button
-              class={`sp-dot${i === 0 ? ' is-active' : ''}`}
-              role="tab"
-              aria-label={`Go to quote ${i + 1}`}
-              aria-selected={i === 0 ? 'true' : 'false'}
-              data-index={String(i)}
-            />
-          ))}
-        </div>
-
+      <div class="sp-stage" aria-live="polite" aria-atomic="true">
+        {homeData.socialProof.panels.map((panel, i) => (
+          <div
+            class="sp-quote"
+            role="group"
+            aria-label={`Quote ${i + 1} of ${homeData.socialProof.panels.length}`}
+            aria-hidden={i !== 0 ? 'true' : 'false'}
+          >
+            <blockquote class="sp-quote__text">
+              <p>"{panel.quote}"</p>
+              {panel.attribution && (
+                <footer>
+                  <cite class="sp-quote__attr">— {panel.attribution}</cite>
+                </footer>
+              )}
+            </blockquote>
+          </div>
+        ))}
       </div>
-    </section>
-  </div>
+
+      <div class="sp-dots" role="tablist" aria-label="Quote navigation">
+        {homeData.socialProof.panels.map((_, i) => (
+          <button
+            class={`sp-dot${i === 0 ? ' is-active' : ''}`}
+            role="tab"
+            aria-label={`Go to quote ${i + 1}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            data-index={String(i)}
+          />
+        ))}
+      </div>
+
+    </div>
+  </section>
 
   <!-- Video modal -->
   <div class="video-modal" id="video-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Watch video">
@@ -281,7 +273,6 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
         </div>
       </div>
 
-      <p class="plan-modal__hint" aria-hidden="true">Scroll to explore →</p>
     </div>
   </div>
 
@@ -298,8 +289,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   :global(#problem),
   :global(#solution),
   :global(#science),
-  :global(#pricing),
-  :global(#social-proof) {
+  :global(#pricing) {
     position: sticky;
     top: var(--masthead-h);
   }
@@ -332,14 +322,12 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
       top: 0;
     }
 
-    /* Problem, Solution, and Social Proof stay sticky and need explicit
-       heights so their flex children resolve correctly.
-       panel-page resets to height:auto on mobile, which collapses
-       absolutely/percentage-sized children to 0 and exposes the
-       scroll-zone background as blank white space. */
+    /* Problem and Solution stay sticky and need explicit heights so their
+       flex children resolve correctly. panel-page resets to height:auto on
+       mobile, which collapses absolutely/percentage-sized children to 0 and
+       exposes the scroll-zone background as blank white space. */
     :global(#problem),
-    :global(#solution),
-    :global(#social-proof) {
+    :global(#solution) {
       height: calc(100svh - var(--masthead-h));
       overflow: hidden;
     }
@@ -347,12 +335,12 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   /* Ascending z-index so each incoming panel covers the previous */
   :global(#hero)         { z-index: 1; background-color: var(--color-bg); }
-  :global(#problem)      { z-index: 2; background-color: var(--color-surface); }
-  :global(#solution)     { z-index: 3; background-color: var(--color-bg); }
-  :global(#science)      { z-index: 4; background-color: var(--color-surface); }
-  :global(#pricing)      { z-index: 5; background-color: var(--color-surface-raised); height: auto; min-height: calc(100svh - var(--masthead-h)); overflow: visible; padding-block: var(--space-10); }
-  :global(#comparison)   { z-index: 6; background-color: var(--color-surface); height: auto; min-height: calc(100svh - var(--masthead-h)); overflow: visible; padding-block: var(--space-10); }
-  :global(#social-proof) { z-index: 7; background-color: var(--color-bg); }
+  :global(#problem)      { z-index: 2; background-color: var(--white); }
+  :global(#solution)     { z-index: 3; background-color: var(--light-beige); }
+  :global(#science)      { z-index: 4; background-color: var(--white); }
+  :global(#pricing)      { z-index: 5; background-color: var(--light-beige); height: auto; min-height: calc(100svh - var(--masthead-h)); overflow: visible; padding-block: var(--space-10); }
+  :global(#comparison)   { z-index: 6; background-color: var(--white); height: auto; min-height: calc(100svh - var(--masthead-h)); overflow: visible; padding-block: var(--space-10); }
+  :global(#social-proof) { position: relative; z-index: 8; background-color: var(--spring-leaf); }
 
   /* ── Shared panel header ─────────────────────────────── */
   /* Used at the top of every panel for eyebrow + heading  */
@@ -381,21 +369,21 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     color: var(--color-text-muted);
   }
 
-  /* ── Eyebrow — a subtle pill tag above the heading ───── */
+  /* ── Eyebrow — clean uppercase label, no pill ─────────── */
   .eyebrow {
     display: inline-block;
-    align-self: flex-start; /* hug content inside the flex sol-text column */
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
-    background: var(--color-surface-raised);
+    align-self: flex-start;
     font-family: var(--font-body);
-    font-size: var(--text-xs);
+    font-size: 0.65rem;
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin: 0 0 var(--space-3);
+    color: var(--roman-coffee);
+    background: var(--pale-beige);
+    border: 1px solid var(--almond-beige);
+    border-radius: var(--radius-full);
+    padding: 0.25em 1.4em;
+    margin: 0 0 var(--space-2);
   }
 
   /* ── Hero ────────────────────────────────────────────── */
@@ -406,8 +394,8 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   }
 
   :global(#hero) {
-    position: relative;
-    top: 0; /* reset sticky-group's top: masthead-h offset */
+    position: sticky;
+    top: 0; /* hero fills full viewport; other panels stick at masthead-h */
     height: 100svh;
     background: var(--light-beige);
     padding-top: var(--masthead-h);
@@ -423,6 +411,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     align-items: center;
     gap: var(--space-5);
   }
+
 
   /* ── Left: text on page background ──────────────────── */
   .hero-text {
@@ -450,6 +439,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   }
 
   .hero__actions {
+    margin-top: var(--space-2);
     display: flex;
     gap: var(--space-4);
     flex-wrap: wrap;
@@ -461,7 +451,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     flex: 1;
     aspect-ratio: 1 / 1;
     border-radius: var(--radius-xl);
-    background-image: url('/soccer.jpg');
+    background-image: url('/soccer2.jpg');
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -473,9 +463,10 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     content: '';
     position: absolute;
     inset: 0;
-    background: color-mix(in srgb, var(--spring-leaf) 35%, transparent);
+    background: color-mix(in srgb, var(--spring-leaf) 25%, transparent);
     pointer-events: none;
   }
+
 
   /* ── Problem: quote carousel ─────────────────────────── */
   .sr-only {
@@ -485,10 +476,9 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   }
 
   .problem-scroll-zone {
-    /* one screen to settle, plus a fraction of a screen per extra quote
-       so the carousel scrubs through each one while the panel stays pinned */
-    height: calc((1 + (var(--quote-count) - 1) * 0.6) * (100vh  - var(--masthead-h)));
-    height: calc((1 + (var(--quote-count) - 1) * 0.6) * (100svh - var(--masthead-h)));
+    /* panel now lives before this zone, so subtract one panel-height from the total */
+    height: calc((var(--quote-count) - 1) * 0.6 * (100vh  - var(--masthead-h)));
+    height: calc((var(--quote-count) - 1) * 0.6 * (100svh - var(--masthead-h)));
   }
 
   .problem-stage {
@@ -497,7 +487,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-12);
+    gap: var(--space-5);
     width: 100%;
     overflow: hidden;
   }
@@ -508,8 +498,15 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     padding: 0 var(--space-6);
   }
 
+  .problem-header :global(.panel-heading) {
+    font-size: var(--text-5xl);
+    color: var(--color-heading);
+  }
+
   .problem-header .panel-sub {
     margin-top: var(--space-4);
+    font-size: var(--text-base);
+    color: var(--color-text);
   }
 
   /* Filmstrip of quotes — the centred one is scaled up + opaque, neighbours
@@ -517,8 +514,9 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .quote-strip-wrap {
     width: 100%;
     overflow: hidden;
-    /* room above/below so the bubble tails aren't clipped */
-    padding-block: var(--space-10);
+    /* room above/below so the bubble tails aren't clipped at scale */
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-14);
   }
 
   .quote-strip {
@@ -537,12 +535,13 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-bg);
-    border: 1.5px solid var(--color-border);
+    background: var(--card-fill);
+    border: 1px solid var(--almond-beige);
     border-radius: 36px;
     padding: var(--space-12);
     position: relative;
     transform-origin: center center;
+    box-shadow: 0 8px 24px 0 rgb(var(--shadow-color) / 0.06);
     /* Resting (non-active) state — also the first paint before GSAP runs */
     opacity: 0.4;
     transform: scale(0.78);
@@ -562,20 +561,20 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     left: 14%;
     width: 28px;
     height: 28px;
-    background: var(--color-bg);
-    border-right: 1.5px solid var(--color-border);
-    border-bottom: 1.5px solid var(--color-border);
+    background: var(--card-fill);
+    border-right: 1px solid var(--almond-beige);
+    border-bottom: 1px solid var(--almond-beige);
     border-bottom-right-radius: 7px;
     transform: rotate(45deg);
   }
 
   .quote-card__text {
     font-family: var(--font-heading);
-    font-weight: var(--weight-heading);
+    font-weight: 400;
     font-style: italic;
     font-size: var(--text-2xl);
     line-height: var(--leading-snug);
-    color: var(--color-text);
+    color: var(--roman-coffee);
     margin: 0;
     text-align: center;
     max-width: 30ch;
@@ -597,8 +596,9 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   /* ── Solution: 4-section inner carousel ─────────────── */
   .solution-scroll-zone {
-    height: calc(var(--sol-count) * (100vh  - var(--masthead-h)));
-    height: calc(var(--sol-count) * (100svh - var(--masthead-h)));
+    /* panel lives before this zone, so subtract one panel-height */
+    height: calc((var(--sol-count) - 1) * (100vh  - var(--masthead-h)));
+    height: calc((var(--sol-count) - 1) * (100svh - var(--masthead-h)));
   }
 
   .sol-stage {
@@ -624,7 +624,6 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .sol-text {
     position: absolute;
     inset: 0;
-    padding-inline: var(--container-pad);
     padding-right: var(--space-8);
     display: flex;
     flex-direction: column;
@@ -643,9 +642,14 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   .sol-body {
     font-size: var(--text-base);
-    color: var(--color-text-muted);
+    color: var(--color-text);
     line-height: var(--leading-normal);
     max-width: 46ch;
+  }
+
+  .sol-text :global(.panel-heading) {
+    font-size: var(--text-5xl);
+    color: var(--color-heading);
   }
 
   /* ── Right half: phone filmstrip ── */
@@ -676,31 +680,27 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   .sol-phone-device {
     width: 188px;
     height: 376px;
-    background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    border-radius: 28px;
+    background: transparent;
+    border: none;
+    border-radius: 18px;
     position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 40px 0 rgb(var(--shadow-color) / 0.12);
     /* GSAP manages scale + opacity */
   }
 
-  .sol-phone-device::before {
-    content: '';
+  .sol-phone-screen {
     position: absolute;
-    top: 10px; left: 50%;
-    transform: translateX(-50%);
-    width: 52px; height: 13px;
-    background: var(--color-bg);
-    border-radius: 7px;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
 
+  .sol-phone-device::before,
   .sol-phone-device::after {
-    content: '';
-    position: absolute;
-    bottom: 8px; left: 50%;
-    transform: translateX(-50%);
-    width: 52px; height: 4px;
-    background: var(--color-border);
-    border-radius: 2px;
+    content: none;
   }
 
   /* Indicator dots */
@@ -733,6 +733,97 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
+
+  /* ── Solution panel (light-beige) — spring-leaf defaults are fine ── */
+
+  /* ── Science panel (pale-beige) — roman-coffee heading, forest eyebrow ── */
+  :global(#science) .panel-heading { color: var(--roman-coffee); }
+
+  /* Science cards: pollen + perry-blue (full :global wraps bypass Astro CID scoping) */
+  :global(#science .science-grid > *:nth-child(1) .science-card) {
+    background: var(--pollen);
+    border-color: var(--pollen);
+  }
+  :global(#science .science-grid > *:nth-child(2) .science-card) {
+    background: var(--perry-blue);
+    border-color: var(--perry-blue);
+  }
+  :global(#science .science-card h3) { color: var(--midnight); }
+  :global(#science .science-card p) { color: color-mix(in srgb, var(--midnight) 72%, transparent); }
+  :global(#science .science-card .btn--secondary) {
+    background: color-mix(in srgb, var(--midnight) 12%, transparent);
+    border-color: color-mix(in srgb, var(--midnight) 28%, transparent);
+    color: var(--midnight);
+  }
+  :global(#science .science-card .btn--secondary:hover) {
+    background: color-mix(in srgb, var(--midnight) 22%, transparent);
+  }
+
+  /* ── Pricing panel — hero-matched heading + body ── */
+  :global(#pricing) .panel-heading {
+    font-size: var(--text-5xl);
+    color: var(--color-heading);
+  }
+  :global(#pricing) .panel-sub {
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  /* ── Plan cards (pricing) — both green; monthly lighter, annual richer ── */
+
+  /* Shared green card text styles */
+  :global(#pricing .plan-card:first-child .plan-card__name),
+  :global(#pricing .plan-card:first-child .plan-card__price),
+  :global(#pricing .plan-card:last-child .plan-card__name),
+  :global(#pricing .plan-card:last-child .plan-card__price) { color: var(--white); }
+
+  :global(#pricing .plan-card:first-child .plan-card__period),
+  :global(#pricing .plan-card:first-child .plan-card__note),
+  :global(#pricing .plan-card:first-child .plan-card__description),
+  :global(#pricing .plan-card:last-child .plan-card__period),
+  :global(#pricing .plan-card:last-child .plan-card__note),
+  :global(#pricing .plan-card:last-child .plan-card__description) {
+    color: color-mix(in srgb, var(--white) 78%, transparent);
+  }
+
+  :global(#pricing .plan-card:first-child .plan-inline-link),
+  :global(#pricing .plan-card:last-child .plan-inline-link) { color: var(--white); }
+
+  /* Monthly — lighter green */
+  :global(#pricing .plan-card:first-child) {
+    background: color-mix(in srgb, var(--spring-leaf) 65%, white);
+    border-color: color-mix(in srgb, var(--spring-leaf) 65%, white);
+  }
+  /* Annual — full spring-leaf */
+  :global(#pricing .plan-card:last-child) {
+    background: var(--spring-leaf);
+    border-color: var(--spring-leaf);
+  }
+
+  /* ── Comparison panel (taupe-beige) — midnight heading, roman-coffee eyebrow ── */
+  /* ── Comparison panel — hero-matched header typography ── */
+  :global(#comparison) .panel-heading {
+    font-size: var(--text-5xl);
+    color: var(--color-heading);
+  }
+  :global(#comparison) .panel-sub {
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+
+  /* ── Social proof (spring-leaf) — forest eyebrow, white text ── */
+
+  :global(#social-proof) .sp-quote__text { color: var(--light-beige); }
+
+  :global(#social-proof) .sp-quote__attr {
+    color: color-mix(in srgb, var(--white) 70%, transparent);
+  }
+
+  :global(#social-proof) .sp-dot {
+    background: color-mix(in srgb, var(--white) 40%, transparent);
+  }
+  :global(#social-proof) .sp-dot.is-active { background: var(--forest); }
 
   /* ── Science cards ───────────────────────────────────── */
   .science-grid {
@@ -818,31 +909,23 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
       width: auto;
       height: min(54svh, 460px);
       aspect-ratio: 1 / 2;
-      border-radius: 30px;
+      border-radius: 22px;
     }
-    .sol-phone-device::before { width: 52px; height: 13px; }
-    .sol-phone-device::after  { width: 52px; }
 
   }
 
   /* ── Social proof: scroll-zone + quote cycling ───────── */
 
   /* Zone is N× panel height — gives sticky panel room to cycle quotes */
-  .social-scroll-zone {
-    height: calc(var(--quote-count) * (100vh - var(--masthead-h)));
-    height: calc(var(--quote-count) * (100svh - var(--masthead-h)));
-  }
-
-  /* sp-content: container-constrained wrapper, vertically centers group */
+  /* sp-content: container-constrained wrapper */
   .sp-content {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     gap: var(--space-5);
     max-width: var(--container-max);
     width: 100%;
     margin-inline: auto;
+    padding-block: var(--space-10) var(--space-6);
   }
 
   .sp-header {
@@ -855,7 +938,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: clamp(200px, 32vh, 300px);
+    height: clamp(100px, 14vh, 160px);
   }
 
   /* Each quote fills the stage; JS drives transform */
@@ -864,7 +947,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     inset: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding-inline: var(--container-pad);
     transform: translateX(100%);
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -880,11 +963,11 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   .sp-quote__text {
     max-width: 48ch;
-    text-align: center;
+    text-align: left;
     border: none;
     padding: 0;
     font-family: var(--font-heading);
-    font-size: var(--text-4xl);
+    font-size: var(--text-3xl);
     font-weight: var(--weight-heading);
     font-style: italic;
     line-height: var(--leading-tight);
@@ -902,9 +985,9 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   .sp-quote__attr {
     display: block;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-style: normal;
-    font-weight: var(--weight-medium);
+    font-weight: var(--weight-semibold);
     color: var(--color-text-muted);
     letter-spacing: var(--tracking-wide);
   }
@@ -915,7 +998,8 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     justify-content: center;
     gap: var(--space-3);
     padding-block: 0;
-    padding-top: var(--space-4);
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-4);
     flex-shrink: 0;
   }
 
@@ -1012,7 +1096,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     border: none;
     padding: 0;
     font: inherit;
-    color: var(--color-text);
+    color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 3px;
     cursor: pointer;
@@ -1031,6 +1115,17 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   }
   .plan-modal[aria-hidden="false"] { display: flex; }
 
+  /* Right-edge fade — signals more content to scroll */
+  .plan-modal__panel::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 140px;
+    background: linear-gradient(to right, transparent, var(--color-bg) 80%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
   .plan-modal__backdrop {
     position: absolute;
     inset: 0;
@@ -1044,8 +1139,8 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     background: var(--color-bg);
     border-radius: var(--radius-md);
     width: min(1100px, calc(100% - var(--space-6)));
-    max-height: min(86vh, 760px);
-    padding-block: var(--space-10) var(--space-8);
+    max-height: min(92vh, 860px);
+    padding-block: var(--space-8);
     overflow: hidden;
   }
 
@@ -1069,18 +1164,19 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 
   .plan-modal__header {
     padding-inline: var(--space-10);
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-6);
     max-width: 62ch;
   }
   .plan-modal__heading {
     font-family: var(--font-heading);
     font-weight: var(--weight-heading);
-    font-size: var(--text-3xl);
-    margin: var(--space-2) 0 var(--space-3);
+    font-size: var(--text-4xl);
+    color: var(--color-heading);
+    margin: var(--space-3) 0 var(--space-4);
   }
   .plan-modal__intro {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
+    font-size: var(--text-base);
+    color: var(--color-text);
     line-height: var(--leading-normal);
     margin: 0;
   }
@@ -1093,7 +1189,12 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     padding-bottom: var(--space-4);
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
   }
+  .plan-track-wrap::-webkit-scrollbar { display: none; }
+
 
   .plan-track {
     position: relative;
@@ -1113,7 +1214,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     stroke: var(--color-border-strong);
     stroke-width: 2;
     stroke-linecap: round;
-    stroke-dasharray: 0.1 10; /* dotted */
+    stroke-dasharray: 1.5 9; /* dotted */
   }
 
   .plan-week {
@@ -1131,8 +1232,8 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   }
 
   .plan-week__icon {
-    width: 56px;
-    height: 56px;
+    width: 44px;
+    height: 44px;
     border-radius: var(--radius-full);
     background: var(--color-accent);
     color: var(--color-accent-text);
@@ -1141,23 +1242,25 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     justify-content: center;
     font-family: var(--font-heading);
     font-weight: var(--weight-heading);
-    font-size: var(--text-xl);
+    font-size: var(--text-base);
     /* halo so the wavy line reads as connecting into the node */
-    box-shadow: 0 0 0 6px var(--color-bg);
+    box-shadow: 0 0 0 5px var(--color-bg);
   }
 
   .plan-week__title {
     font-family: var(--font-heading);
-    font-weight: var(--weight-heading);
-    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-base);
+    color: var(--color-heading);
     letter-spacing: var(--tracking-normal);
     line-height: var(--leading-snug);
-    margin: var(--space-6) 0 var(--space-2);
+    white-space: pre-line;
+    margin: var(--space-4) 0 var(--space-1);
   }
 
   .plan-week__body {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: var(--color-text);
     line-height: var(--leading-normal);
     margin: 0;
   }
@@ -1169,6 +1272,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
     color: var(--color-text-subtle);
+    text-align: right;
   }
 
   /* Subtle motion: dots march along the wave; weeks rise in on open */
@@ -1200,26 +1304,10 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     .plan-modal__heading { font-size: var(--text-2xl); }
   }
 
-  /* ── Social proof: mobile overrides (must come after base rules) ── */
+  /* ── Social proof: mobile overrides ── */
   @media (max-width: 767px) {
     .sp-quote__text {
       font-size: var(--text-xl);
-    }
-
-    /* Panel now has an explicit height (see :global(#social-proof) above).
-       Switch from centred layout to top-anchored: header at top, stage
-       fills remaining space so the quote is centred in a tall area,
-       dots sit flush at the bottom. */
-    .sp-content {
-      justify-content: flex-start;
-      padding-top: var(--space-6);
-      padding-bottom: var(--space-4);
-    }
-
-    .sp-stage {
-      flex: 1;              /* fill available height between header and dots */
-      height: auto;         /* override the desktop fixed clamp */
-      max-height: 480px;    /* cap so the quote stays near vertical centre */
     }
   }
 </style>
@@ -1304,13 +1392,14 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     });
   });
 
-  // ── Social proof carousel (independent of GSAP) ───────────
-  const spZone   = document.getElementById('social-scroll-zone');
+  // ── Social proof carousel — auto-cycles every 5s ─────────
   const spQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sp-quote'));
   const spDots   = Array.from(document.querySelectorAll<HTMLElement>('.sp-dot'));
 
-  if (spZone && spQuotes.length > 1) {
+  if (spQuotes.length > 1) {
     const quoteCount = spQuotes.length;
+    let current = 0;
+    let timer: ReturnType<typeof setInterval>;
 
     // Place quotes in a horizontal train without triggering CSS transition
     spQuotes.forEach((q, i) => {
@@ -1323,34 +1412,47 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
     }));
 
     function showQuote(idx: number) {
-      idx = Math.max(0, Math.min(Math.round(idx), quoteCount - 1));
+      current = Math.max(0, Math.min(idx, quoteCount - 1));
       spQuotes.forEach((q, i) => {
-        q.style.transform = `translateX(${(i - idx) * 100}%)`;
-        q.setAttribute('aria-hidden', String(i !== idx));
+        q.style.transform = `translateX(${(i - current) * 100}%)`;
+        q.setAttribute('aria-hidden', String(i !== current));
       });
       spDots.forEach((dot, i) => {
-        const active = i === idx;
+        const active = i === current;
         dot.classList.toggle('is-active', active);
         dot.setAttribute('aria-selected', String(active));
       });
     }
 
-    // Scroll-driven switching
-    function onScroll() {
-      const rect = spZone!.getBoundingClientRect();
-      const scrolledIn = mastheadH - rect.top;
-      showQuote(scrolledIn / panelH());
+    function advance() {
+      showQuote((current + 1) % quoteCount);
     }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // sync on load
 
-    // Dot clicks: scroll to quote's position in the zone
+    function startTimer() {
+      timer = setInterval(advance, 8000);
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      startTimer();
+    }
+
+    // Dot clicks: jump to quote and reset the auto-cycle
     spDots.forEach((dot, i) => {
       dot.addEventListener('click', () => {
-        const zoneAbsTop = spZone!.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: zoneAbsTop - mastheadH + i * panelH(), behavior: 'smooth' });
+        showQuote(i);
+        resetTimer();
       });
     });
+
+    // Pause on hover/focus, resume on leave
+    const spSection = document.getElementById('social-proof');
+    spSection?.addEventListener('mouseenter', () => clearInterval(timer));
+    spSection?.addEventListener('mouseleave', startTimer);
+    spSection?.addEventListener('focusin',    () => clearInterval(timer));
+    spSection?.addEventListener('focusout',   startTimer);
+
+    startTimer();
   }
 
   // ── GSAP: hero parallax + reveal fade-ins ─────────────────
@@ -1410,8 +1512,8 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
         // fill the viewport height) so it doesn't overflow when scaled up;
         // on desktop the active phone grows past its neighbours.
         const isMobile = window.matchMedia('(max-width: 767px)').matches;
-        const PH_ACTIVE   = isMobile ? 1    : 1.4;
-        const PH_INACTIVE = isMobile ? 0.72 : 0.72;
+        const PH_ACTIVE   = isMobile ? 1    : 1.55;
+        const PH_INACTIVE = isMobile ? 0.72 : 0.82;
 
         // Compute step from rendered positions (handles any gap/size)
         const STEP = phoneItems.length > 1
@@ -1501,7 +1603,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
           gsap.set(c, i === 0 ? { scale: 1.16, opacity: 1 } : { scale: 0.78, opacity: 0.4 })
         );
 
-        const TRANS = 0.4;
+        const TRANS = 0.65;
         const qTl = gsap.timeline({ paused: true });
         for (let i = 0; i < N - 1; i++) {
           const t = i + 1 - TRANS; // dwell on each card, then a quick slide
@@ -1514,7 +1616,7 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
           trigger: problemZone,
           start: `top top+=${mastheadH}`,
           end: () => `+=${(N - 1) * panelH() * 0.6}`,
-          scrub: 1,
+          scrub: 2,
           invalidateOnRefresh: true,
           animation: qTl,
           onUpdate(self) {

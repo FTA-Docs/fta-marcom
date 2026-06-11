@@ -2,29 +2,29 @@
 @import './tokens/skin.css';
 @import './base/reset.css';
 @import './base/typography.css';
-@import './layout/grid.css';
 @import './layout/container.css';
 
-/* ─── Accessibility ─────────────────────────────────────────────────────── */
+/* ─── Text utility ───────────────────────────────────────────────────────── */
+/* Muted body text — used on the legal pages' "Last updated" line. */
+.text-muted { color: var(--color-text-muted); }
 
-.visually-hidden {
-  position: absolute; width: 1px; height: 1px; padding: 0;
-  margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
-  white-space: nowrap; border-width: 0;
+/* ─── Eyebrow ────────────────────────────────────────────────────────────── */
+/* Uppercase pill label above a heading — the site-wide section-label convention.
+   (index.astro keeps a scoped copy for the animated homepage panels.) */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--roman-coffee);
+  background: var(--pale-beige);
+  border: 1px solid var(--almond-beige);
+  border-radius: var(--radius-full);
+  padding: 0.25em 1.4em;
+  margin: 0 0 var(--space-2);
 }
-
-/* ─── Flex utilities ─────────────────────────────────────────────────────── */
-
-.flex         { display: flex; }
-.flex-col     { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-center   { justify-content: center; }
-.justify-between  { justify-content: space-between; }
-.gap-4  { gap: var(--space-4); }
-.gap-6  { gap: var(--space-6); }
-.gap-8  { gap: var(--space-8); }
-.text-center  { text-align: center; }
-.text-muted   { color: var(--color-text-muted); }
 
 /* ─── Button base ────────────────────────────────────────────────────────── */
 

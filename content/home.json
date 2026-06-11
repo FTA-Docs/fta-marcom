@@ -9,13 +9,11 @@
     "heading": "Sound Familiar?",
     "subheading": "You're not alone — these are the worries we hear from families every day.",
     "quotes": [
-      "I've tried setting screen time limits, but she just finds workarounds.",
-      "I feel like he's missing out on real life.",
-      "Conversations about devices keep turning into arguments.",
-      "Parental controls aren't enough, and therapy feels out of reach.",
-      "He's glued to his screen from the moment he wakes up.",
-      "We've tried everything. Nothing sticks.",
-      "I worry about what she's watching, but I can't monitor everything."
+      { "quote": "Conversations about devices keep turning into arguments.", "emotion": "Conflict" },
+      { "quote": "He's glued to his screen from the moment he wakes up.", "emotion": "Overwhelmed" },
+      { "quote": "Parental controls aren't enough, and therapy feels out of reach.", "emotion": "Confusion" },
+      { "quote": "We've tried everything. Nothing sticks.", "emotion": "Tension" },
+      { "quote": "I feel like he's missing out on real life.", "emotion": "Sad" }
     ]
   },
   "solution": {
@@ -46,7 +44,8 @@
         "eyebrow": "Never on your own",
         "title": "Always Be Supported",
         "body": "Ali, our AI assistant, is available any time to answer questions or help you navigate a difficult moment. When you need a human, our coaching team is a message away.",
-        "phones": 3
+        "phones": 3,
+        "screen": "/Wrap-Up_ Intake Chat.png"
       }
     ]
   },
@@ -57,33 +56,38 @@
       {
         "title": "Clinical Experience",
         "body": "Our plans are grounded in 30 years of pediatric digital health research and care led by Dr. Michael Rich, founding director of the Digital Wellness Lab at Boston Children's Hospital. His clinical experience — built from the thousands of families with whom he's worked — is at the heart of the guidance we provide.",
+        "image": "/clinicalexperience.png",
         "cta": { "label": "Learn More", "href": "/about" }
       },
       {
         "title": "A Proven Approach",
         "body": "Our plans are built on COM-B, a proven behavior change framework that looks at three things: Does your child have the skills to manage technology? Does their environment make healthy choices realistic? Do they have reasons to change? By addressing all three — not just setting rules — we help families make changes that actually stick.",
+        "image": "/provenapproach.png",
         "cta": { "label": "Learn More", "href": "/about#com-b" }
       }
     ]
   },
   "pricing": {
+    "eyebrow": "No Contracts, No Surprises",
     "heading": "Plans & Pricing",
     "subheading": "Start with a plan.\nStay as long as you need.",
     "plans": [
       {
         "name": "Initial 8-Week Plan",
         "price": "$149",
-        "period": "one-time payment",
+        "period": "one-time",
+        "image": "/Plan_ Overview.png",
         "linkPhrase": "eight structured weeks",
         "description": "A personalized digital wellness plan built around your child's habits and your family's goals — delivered in eight structured weeks with AI coaching and expert guidance every step of the way.",
         "cta": { "label": "Get Started", "href": "#" },
         "primary": true
       },
       {
-        "name": "Monthly Planning & Support",
+        "name": "Ongoing Plans & Support",
         "price": "$15",
         "period": "/month",
-        "note": "cancel anytime",
+        "image": "/Wrap-Up_ Intake Chat.png",
+        "imageFocus": "17%",
         "description": "Keep the momentum going. For less than the cost of a single coaching session, continue accessing Ali, your coaching team, and ongoing micro-plans as your child grows and your situation evolves.",
         "cta": { "label": "Get Started", "href": "#" },
         "primary": false
@@ -93,7 +97,8 @@
       "24/7 AI coaching available any time via chat",
       "Unlimited coaching team messaging (async)",
       "Weekly check-ins that adapt to your plan",
-      "Plan updates based on your progress"
+      "Plan updates based on your progress",
+      "Cancel anytime"
     ]
   },
   "comparison": {

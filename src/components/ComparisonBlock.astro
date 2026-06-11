@@ -47,7 +47,7 @@ const { cols, rows } = comparison;
 
 <style>
   .comparison-block {
-    padding-bottom: var(--space-10);
+    padding-bottom: 0; /* panel owns the bottom space (matches #science) */
   }
 
   .cmp-table-wrap {
@@ -59,7 +59,9 @@ const { cols, rows } = comparison;
     border-collapse: separate;
     border-spacing: 0;
     font-size: var(--text-sm);
-    min-width: 720px;
+    /* Fits within the tablet container (≈707px inner at 768px) so the table
+       never gets its own horizontal scrollbar between mobile and desktop. */
+    min-width: 680px;
   }
 
   .cmp-table {
@@ -68,7 +70,7 @@ const { cols, rows } = comparison;
 
   .cmp-table th,
   .cmp-table td {
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-3) var(--space-5);
     text-align: left;
     border-bottom: none;
     vertical-align: top;
@@ -124,7 +126,12 @@ const { cols, rows } = comparison;
   .cmp-table td.cmp-table__alignd,
   .cmp-table th.cmp-table__alignd,
   .cmp-table thead th.cmp-table__alignd {
-    color: var(--white);
+    color: var(--light-beige);
+  }
+
+  /* alignd column body copy — one weight step lighter than the header */
+  .cmp-table td.cmp-table__alignd {
+    font-weight: var(--weight-medium);
   }
 
   .cmp-table thead th.cmp-table__alignd {
@@ -151,17 +158,20 @@ const { cols, rows } = comparison;
       padding: var(--space-3) var(--space-2);
       line-height: var(--leading-snug);
       overflow-wrap: break-word;
+      /* Hyphenate at syllable breaks so narrow columns never split a word
+         mid-letter (e.g. "Coach-ing" rather than "Coachin g"). */
+      hyphens: auto;
     }
 
+    /* Match the body size so each header word fits its narrow column on one
+       line; the bold serif still reads as a header against the cell text. */
     .cmp-table thead th {
+      font-size: var(--text-xs);
       letter-spacing: var(--tracking-normal);
     }
 
     /* Row-label column gets a bit more room; split the rest across options */
     .cmp-table thead th:first-child { width: 26%; }
     .cmp-table thead th:not(:first-child) { width: 24.6%; }
-
-    /* Hyphenate cleanly if a long label/word must break */
-    .cmp-table tbody th { hyphens: auto; }
   }
 </style>

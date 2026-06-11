@@ -1,10 +1,5 @@
 ---
 import siteData from '../../content/site.json';
-
-const buildTime = new Date().toLocaleString('en-US', {
-  year: 'numeric', month: 'short', day: 'numeric',
-  hour: '2-digit', minute: '2-digit', timeZoneName: 'short',
-});
 ---
 
 <footer class="footer" role="contentinfo">
@@ -41,8 +36,6 @@ const buildTime = new Date().toLocaleString('en-US', {
   <div class="footer__bottom">
     <div class="container">
       <p class="footer__copyright">{siteData.footer.copyright}</p>
-      <!-- TODO: remove before launch -->
-      <p class="footer__build-time">Last updated: {buildTime}</p>
     </div>
   </div>
 </footer>
@@ -64,52 +57,57 @@ const buildTime = new Date().toLocaleString('en-US', {
 
   .footer__logo-img {
     display: block;
-    height: 24px;
-    width: 160px;
-    margin-bottom: var(--space-2);
+    height: 34px; /* same size as the masthead logo */
+    width: 222px;
+    margin-bottom: var(--space-3);
     flex-shrink: 0;
   }
 
   .footer__tagline {
-    font-size: var(--text-xs);
-    color: var(--footer-text-muted);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--heavy-beige); /* match the logo wordmark */
     line-height: var(--leading-normal);
+    max-width: 34ch;
     margin: 0;
   }
 
   .footer__nav-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-3);
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
+  /* Footer wayfinding — matches the main nav (text-sm / medium), never larger */
   .footer__nav-link {
     font-size: var(--text-sm);
-    line-height: 1.4;
-    color: var(--footer-link);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--footer-text);
     text-decoration: none;
     transition: color var(--transition-fast);
   }
 
   .footer__nav-link:hover {
-    color: var(--footer-link-hover);
+    color: var(--pollen);
   }
 
   .footer__contact-list {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: var(--space-3) var(--space-4);
+    gap: var(--space-3) var(--space-5);
     align-items: baseline;
     margin: 0;
   }
 
+  /* Accent labels — pollen against the midnight ground */
   .footer__contact-label {
-    font-size: var(--text-xs);
+    font-size: var(--text-2xs);
     font-weight: var(--weight-semibold);
-    color: var(--footer-text-muted);
+    color: var(--pollen);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wider);
   }
@@ -120,32 +118,26 @@ const buildTime = new Date().toLocaleString('en-US', {
 
   .footer__contact-link {
     font-size: var(--text-sm);
-    color: var(--footer-link);
+    font-weight: var(--weight-normal);
+    color: var(--footer-text);
     text-decoration: none;
     transition: color var(--transition-fast);
   }
 
   .footer__contact-link:hover {
-    color: var(--footer-link-hover);
+    color: var(--pollen);
   }
 
   .footer__bottom {
-    padding-block: var(--space-6);
+    padding-block: var(--space-5);
   }
 
   .footer__copyright {
     font-size: var(--text-xs);
+    line-height: var(--leading-normal);
     color: var(--footer-text-muted);
     text-align: center;
     margin: 0;
-  }
-
-  .footer__build-time {
-    font-size: var(--text-xs);
-    color: var(--footer-text-muted);
-    text-align: center;
-    margin: var(--space-2) 0 0;
-    opacity: 0.6;
   }
 
   @media (max-width: 767px) {

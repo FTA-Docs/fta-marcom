@@ -7,7 +7,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const palette = [
   '--white', '--light-grey', '--secondary-grey', '--prime-grey', '--dark-grey', '--midnight',
-  '--spring-leaf', '--pollen', '--roman-coffee', '--red', '--perry-blue', '--dusk-blue',
+  '--spring-leaf', '--forest', '--pollen', '--roman-coffee', '--red', '--perry-blue', '--dusk-blue',
   '--light-beige', '--pale-beige', '--taupe-beige', '--base-beige', '--heavy-beige', '--almond-beige', '--blush',
 ];
 
@@ -29,7 +29,7 @@ const fonts = [
 ];
 
 const typeScale = [
-  '--text-xs', '--text-sm', '--text-base', '--text-lg', '--text-xl',
+  '--text-2xs', '--text-xs', '--text-sm', '--text-base', '--text-lg', '--text-xl',
   '--text-2xl', '--text-3xl', '--text-4xl', '--text-5xl', '--text-6xl',
 ];
 
@@ -296,7 +296,7 @@ const toc = [
 
       <div class="ds-group">
         <h3 class="ds-group__title">Eyebrow tag</h3>
-        <span class="ds-eyebrow">How it works</span>
+        <span class="eyebrow">How it works</span>
       </div>
 
       <div class="ds-group">
@@ -330,9 +330,24 @@ const toc = [
       <div class="ds-group">
         <h3 class="ds-group__title">Section header</h3>
         <div class="ds-pattern-header">
-          <span class="ds-eyebrow">Always evidence-based</span>
+          <span class="eyebrow">Always evidence-based</span>
           <h2 class="ds-pattern-heading">Grounded in science</h2>
-          <p class="ds-pattern-sub">A subheading at the lead size, sitting under a display heading.</p>
+          <p class="ds-pattern-sub">Body / subheading copy — base size, full text color, sitting under a display heading. Same treatment as the hero sub and every page intro.</p>
+        </div>
+      </div>
+
+      <div class="ds-group">
+        <h3 class="ds-group__title">On-color usage</h3>
+        <p class="ds-note">No pure white on color. Dark and colored surfaces take warm beige text; the accent is <strong>pollen</strong> on dark, <strong>forest / spring-leaf</strong> on light.</p>
+        <div class="ds-oncolor">
+          <div class="ds-oncolor__tile ds-oncolor__tile--dark">
+            <span class="eyebrow ds-eyebrow--pollen">On dark</span>
+            <p class="ds-oncolor__text">Almond-beige body · pollen accent &amp; link hover. Logo wordmark in heavy-beige.</p>
+          </div>
+          <div class="ds-oncolor__tile ds-oncolor__tile--green">
+            <span class="eyebrow ds-eyebrow--frost">On green</span>
+            <p class="ds-oncolor__text">Pale-beige text on the brand spring-leaf; forest reserved for feathered divider lines.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -549,18 +564,6 @@ const toc = [
   .ds-elements > *:last-child { margin-bottom: 0; }
 
   /* ── Patterns ── */
-  .ds-eyebrow {
-    display: inline-block;
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
-    background: var(--color-surface-raised);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
   .ds-card {
     max-width: 380px;
     background: var(--color-bg);
@@ -578,7 +581,27 @@ const toc = [
   .ds-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-6); max-width: 720px; }
   .ds-pattern-header { text-align: center; max-width: 42rem; margin-inline: auto; }
   .ds-pattern-heading { font-size: var(--text-4xl); letter-spacing: var(--tracking-snug); margin: var(--space-3) 0 0; }
-  .ds-pattern-sub { font-size: var(--text-lg); color: var(--color-text-muted); margin-top: var(--space-4); }
+  .ds-pattern-sub { font-size: var(--text-base); line-height: var(--leading-normal); color: var(--color-text); margin-top: var(--space-4); }
+
+  /* On-color usage tiles */
+  .ds-oncolor { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-top: var(--space-4); }
+  .ds-oncolor__tile {
+    display: flex; flex-direction: column; gap: var(--space-3);
+    padding: var(--space-6); border-radius: var(--radius-md);
+  }
+  .ds-oncolor__tile--dark  { background: var(--midnight); }
+  .ds-oncolor__tile--green { background: var(--spring-leaf); }
+  .ds-oncolor__tile--dark  .ds-oncolor__text { color: var(--almond-beige); }
+  .ds-oncolor__tile--green .ds-oncolor__text { color: var(--pale-beige); }
+  .ds-oncolor__text { font-size: var(--text-sm); line-height: var(--leading-normal); margin: 0; }
+  /* eyebrow variants for color contexts */
+  .ds-eyebrow--pollen { color: var(--pollen); border-color: color-mix(in srgb, var(--pollen) 50%, transparent); background: transparent; }
+  .ds-eyebrow--frost {
+    color: var(--pale-beige);
+    border-color: color-mix(in srgb, var(--pale-beige) 28%, transparent);
+    background: color-mix(in srgb, var(--pale-beige) 16%, transparent);
+  }
+  @media (max-width: 640px) { .ds-oncolor { grid-template-columns: 1fr; } }
 
   @media (max-width: 640px) {
     .ds-type-row { grid-template-columns: 1fr; gap: var(--space-2); }
@@ -591,10 +614,14 @@ const toc = [
   const root = getComputedStyle(document.documentElement);
   const raw = (n: string) => root.getPropertyValue(n).trim();
 
-  function rgbToHex(rgb: string): string {
-    const m = rgb.match(/[\d.]+/g);
-    if (!m) return rgb;
-    const [r, g, b, a] = m.map(Number);
+  function rgbToHex(value: string): string {
+    const v = value.trim();
+    const nums = v.match(/[\d.]+/g);
+    if (!nums) return value;
+    let [r, g, b, a] = nums.map(Number);
+    // Mixed colors (color-mix) compute to `color(srgb r g b / a)` with 0–1
+    // channels; plain rgb()/rgba() uses 0–255. Normalize the former to 0–255.
+    if (/^color\(/i.test(v)) { r *= 255; g *= 255; b *= 255; }
     const hex = '#' + [r, g, b].map(x => Math.round(x).toString(16).padStart(2, '0')).join('');
     return a !== undefined && a < 1 ? `${hex} · ${Math.round(a * 100)}%` : hex;
   }

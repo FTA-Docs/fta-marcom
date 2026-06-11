@@ -21,14 +21,8 @@
   --space-20: clamp(5rem,    10vw,   9rem);
   --space-24: clamp(6rem,    12vw,  11rem);
 
-  /* ── Grid ───────────────────────────────────────────── */
-  --grid-cols:  12;
-  --grid-gap:   clamp(1rem, 2vw, 1.5rem);
-
   /* ── Container ──────────────────────────────────────── */
   --container-max:    1280px;
-  --container-narrow: 768px;
-  --container-wide:   1536px;
   --container-pad:    clamp(1rem, 4vw, 3rem);
 
   /* ── Breakpoints (reference only — use in media queries) */

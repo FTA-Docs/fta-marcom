@@ -10,6 +10,28 @@ import FoundingTeamContent from '../../content/about/founding-team.md';
 import teamData from '../../content/about/team.json';
 import combData from '../../content/about/com-b.json';
 import techData from '../../content/about/technology.json';
+
+// Hand-drawn emotion-shape motifs (same system as the homepage line motifs):
+// pull the raw SVG, strip the wrapper + white rect, keep just the <path>s,
+// downsampled so dense shapes stay calm.
+const emotionSvgs = import.meta.glob('/public/emotions/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+const emotionPaths = (name: string, maxArcs = 8): string => {
+  const raw = (emotionSvgs[`/public/emotions/${name}.svg`] ?? '')
+    .replace(/<svg[^>]*>/, '')
+    .replace(/<\/svg>/, '')
+    .replace(/<rect[^>]*\/>/g, '');
+  const paths = raw.match(/<path[\s\S]*?\/>/g) ?? [];
+  if (paths.length <= maxArcs) return paths.join('');
+  const kept: string[] = [];
+  for (let i = 0; i < maxArcs; i++) {
+    kept.push(paths[Math.round((i * (paths.length - 1)) / (maxArcs - 1))]);
+  }
+  return kept.join('');
+};
 ---
 
 <BaseLayout
@@ -17,21 +39,32 @@ import techData from '../../content/about/technology.json';
   description="Learn about alignd's mission, coaching team, and the behavioral science behind our approach to family digital wellness."
 >
 
-  <!-- Hero / Our Mission -->
+  <!-- Hero / Our Mission — text left, image right (matches the homepage hero) -->
   <Panel size="sm">
-    <div class="about-hero">
-      <Reveal><h1>Our Mission</h1></Reveal>
-      <Reveal delay={100}>
-        <div class="prose about-hero__prose">
-          <MissionContent />
-        </div>
+    <div class="about-split about-hero">
+      <div class="about-split__text">
+        <Reveal><p class="eyebrow">About alignd</p></Reveal>
+        <Reveal delay={50}><h1>Our Mission</h1></Reveal>
+        <Reveal delay={100}>
+          <div class="prose about-hero__prose">
+            <MissionContent />
+          </div>
+        </Reveal>
+      </div>
+      <Reveal delay={150} class="about-split__visual">
+        <figure class="about-figure">
+          <div class="about-figure__frame">
+            <img src="/teenageband.png" alt="Teenagers playing music together" />
+          </div>
+          <svg class="about-figure__motif" viewBox="0 0 298 298" fill="none" aria-hidden="true" set:html={emotionPaths('Clarity')} />
+        </figure>
       </Reveal>
     </div>
   </Panel>
 
-  <!-- Clinical Experience — text + photo -->
+  <!-- Clinical Experience — photo (circle) left, text right -->
   <Panel background="surface" class="about-pad">
-    <div class="about-split">
+    <div class="about-split about-split--reverse">
       <div class="about-split__text">
         <Reveal><h2>Clinical Experience</h2></Reveal>
         <Reveal delay={100}>
@@ -41,7 +74,7 @@ import techData from '../../content/about/technology.json';
         </Reveal>
       </div>
       <Reveal delay={150} class="about-split__visual">
-        <figure class="about-figure">
+        <figure class="about-figure about-figure--circle">
           <div class="about-figure__frame">
             <span class="about-figure__placeholder">Photo</span>
           </div>
@@ -51,9 +84,9 @@ import techData from '../../content/about/technology.json';
     </div>
   </Panel>
 
-  <!-- About COM-B — text + coded Venn diagram -->
+  <!-- About COM-B — text left, line-motif Venn right -->
   <Panel background="default" class="about-pad">
-    <div class="about-split about-split--reverse">
+    <div class="about-split">
       <div class="about-split__text">
         <Reveal><h2>About COM-B</h2></Reveal>
         <Reveal delay={100}>
@@ -102,9 +135,9 @@ import techData from '../../content/about/technology.json';
     </div>
   </Panel>
 
-  <!-- Our Technology — text + coded inputs → AI → outputs schematic -->
+  <!-- Our Technology — centered headline + body, schematic below -->
   <Panel background="surface" class="about-pad">
-    <div class="about-section">
+    <div class="about-section about-section--center">
       <Reveal><h2>Our Technology</h2></Reveal>
       <Reveal delay={100}>
         <div class="prose about-prose-narrow">
@@ -192,14 +225,14 @@ import techData from '../../content/about/technology.json';
     padding-block: var(--space-12);
   }
 
+  /* Mission image — match the homepage hero card's corner radius */
+  .about-hero .about-figure__frame {
+    border-radius: var(--radius-xl);
+  }
+
   .about-hero__prose {
     max-width: 60ch;
     margin-top: var(--space-5);
-  }
-
-  /* Lead-sized paragraphs for the mission hero */
-  .about-hero__prose :global(p) {
-    font-size: var(--text-lg);
   }
 
   .about-section {
@@ -211,8 +244,14 @@ import techData from '../../content/about/technology.json';
     margin-bottom: var(--space-5);
   }
 
+  /* Technology section: centered headline + body (schematic keeps its own layout) */
+  .about-section--center { text-align: center; }
+  .about-section--center .about-prose-narrow { margin-inline: auto; }
+  .about-section--center .tech-flow { text-align: initial; }
+
+  /* Body copy matches the homepage hero sub: base size, full text color */
   .prose :global(p) {
-    color: var(--color-text-muted);
+    color: var(--color-text);
     line-height: var(--leading-normal);
     margin-bottom: var(--space-4);
   }
@@ -245,23 +284,65 @@ import techData from '../../content/about/technology.json';
   .about-prose-narrow { max-width: 64ch; }
 
   /* ── Photo figure (placeholder) ── */
-  .about-figure { margin: 0; }
+  .about-figure { margin: 0; position: relative; }
+
+  /* Clarity motif — drawn over the phone in the photo, spilling past the left
+     edge into the whitespace (like the homepage science-panel motif). */
+  .about-figure__motif {
+    position: absolute;
+    left: -24%;
+    bottom: -24%;
+    width: 68%;
+    aspect-ratio: 1 / 1;
+    color: var(--pollen);
+    overflow: visible;
+    max-width: none;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .about-figure__motif :global(path) {
+    stroke: currentColor;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
   .about-figure__frame {
+    position: relative;
     aspect-ratio: 1 / 1;
     border-radius: var(--radius-md);
     background: var(--color-surface-raised);
-    border: 1px solid var(--color-border);
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
+  /* Spring-leaf tint over the Mission photo — matches the homepage hero card */
+  .about-hero .about-figure__frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--spring-leaf) 25%, transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+
   .about-figure__frame img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* Circular portrait variant — centered, sized down from the full column */
+  .about-figure--circle {
+    max-width: 360px;
+    margin-inline: auto;
+  }
+  .about-figure--circle .about-figure__frame {
+    border-radius: var(--radius-full);
   }
 
   .about-figure__placeholder {
@@ -287,14 +368,14 @@ import techData from '../../content/about/technology.json';
     aspect-ratio: 1 / 1;
   }
 
-  /* Translucent fills so overlaps darken into the classic Venn shape */
+  /* Filled translucent beige circles — overlaps darken into the Venn shape */
   .comb__circle {
     position: absolute;
     width: 64%;
     aspect-ratio: 1 / 1;
     border-radius: var(--radius-full);
-    background: var(--color-accent);
-    opacity: 0.12;
+    background: var(--almond-beige);
+    opacity: 0.32;
   }
 
   .comb__circle--cap { top: 0; left: 50%; transform: translateX(-50%); }
@@ -313,8 +394,8 @@ import techData from '../../content/about/technology.json';
   }
 
   .comb__label--cap { top: 9%;  left: 50%; transform: translateX(-50%); }
-  .comb__label--opp { bottom: 13%; left: 0; }
-  .comb__label--mot { bottom: 13%; right: 0; }
+  .comb__label--opp { bottom: 13%; left: 9%; }
+  .comb__label--mot { bottom: 13%; right: 9%; }
 
   .comb__icon {
     width: 26px;
@@ -345,11 +426,11 @@ import techData from '../../content/about/technology.json';
 
   .comb__center {
     position: absolute;
-    top: 57%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
     color: var(--color-text);

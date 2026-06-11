@@ -97,6 +97,11 @@ const jsonLd = JSON.stringify([
 <style is:global>
   main {
     padding-top: var(--masthead-h);
+    /* Clip decorative motifs that intentionally spill past the page edges so
+       they never trigger a horizontal scrollbar on narrow viewports. `clip`
+       (not `hidden`) leaves the vertical axis visible, so the homepage's
+       position:sticky panels and GSAP pinning are unaffected. */
+    overflow-x: clip;
   }
 
   .skip-link {

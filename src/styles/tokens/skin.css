@@ -12,7 +12,6 @@
   --spring-leaf:    #669D5B;   /* Primary brand / primary buttons */
   --forest:         color-mix(in srgb, #669D5B 55%, #1B263E); /* deep brand green for text on light bg */
   --pollen:         #F3C27D;
-  --pollen-text:    #F3C27D;  /* pollen used as accent text on dark panels */
   --roman-coffee:   #7A5848;
   --red:            #D54848;
   --perry-blue:     #8FABD8;
@@ -59,11 +58,11 @@
 
   /* ── Footer ──────────────────────────────────────────────── */
   --footer-bg:         var(--midnight);
-  --footer-text:       var(--light-grey);
-  --footer-text-muted: var(--almond-beige);
-  --footer-border:     color-mix(in srgb, var(--white) 12%, transparent);
-  --footer-link:       var(--light-grey);
-  --footer-link-hover: var(--white);
+  --footer-text:       var(--almond-beige);
+  --footer-text-muted: color-mix(in srgb, var(--almond-beige) 58%, var(--midnight));
+  --footer-border:     color-mix(in srgb, var(--almond-beige) 16%, transparent);
+  --footer-link:       var(--almond-beige);
+  --footer-link-hover: var(--pollen);
 
   /* ── Font families ──────────────────────────────────────── */
   --font-body:    'Figtree', system-ui, -apple-system, sans-serif;
@@ -79,6 +78,7 @@
   --weight-heading:  500;
 
   /* ── Type scale (fluid via clamp) ───────────────────────── */
+  --text-2xs:  0.6875rem;  /* fixed micro-label (footer contact labels) */
   --text-xs:   clamp(0.75rem,   0.72rem + 0.11vw, 0.8125rem);
   --text-sm:   clamp(0.875rem,  0.85rem + 0.11vw, 0.9375rem);
   --text-base: clamp(1rem,      0.95rem + 0.22vw, 1.125rem);

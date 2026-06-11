@@ -2,8 +2,8 @@
 interface Props {
   id?: string;
   class?: string;
-  background?: 'default' | 'surface' | 'raised' | 'dark';
-  size?: 'sm' | 'md' | 'lg';
+  background?: 'default' | 'surface' | 'raised';
+  size?: 'sm' | 'md';
   fullBleed?: boolean;
   tag?: 'section' | 'div' | 'article';
 }
@@ -21,13 +21,11 @@ const bgClass: Record<string, string> = {
   default: '',
   surface: 'section--bg-surface',
   raised: 'section--bg-raised',
-  dark: 'section--bg-dark',
 };
 
 const sizeClass: Record<string, string> = {
   sm: 'section--sm',
   md: '',
-  lg: 'section--lg',
 };
 
 const combinedClass = ['section', bgClass[background], sizeClass[size], className]

@@ -21,26 +21,19 @@
   --space-20: clamp(5rem,    10vw,   9rem);
   --space-24: clamp(6rem,    12vw,  11rem);
 
-  /* ── Grid ───────────────────────────────────────────── */
-  --grid-cols:  12;
-  --grid-gap:   clamp(1rem, 2vw, 1.5rem);
-
   /* ── Container ──────────────────────────────────────── */
   --container-max:    1280px;
-  --container-narrow: 768px;
-  --container-wide:   1536px;
   --container-pad:    clamp(1rem, 4vw, 3rem);
 
   /* ── Breakpoints (reference only — use in media queries) */
   /* --bp-sm: 640px  --bp-md: 768px  --bp-lg: 1024px     */
   /* --bp-xl: 1280px  --bp-2xl: 1536px                    */
 
-  /* ── Border radius — rounded & friendly ─────────────── */
-  --radius-sm:   0.375rem;
-  --radius-md:   0.75rem;
-  --radius-lg:   1.25rem;
-  --radius-xl:   2rem;
-  --radius-full: 9999px;
+  /* ── Border radius ───────────────────────────────────── */
+  --radius-sm:   0.375rem;   /* 6px  — inputs, badges, tags */
+  --radius-md:   1rem;       /* 16px — cards, panels, modals */
+  --radius-xl:   2rem;       /* 32px — hero card, large feature panels */
+  --radius-full: 9999px;     /* pill — buttons */
 
   /* ── Z-index ────────────────────────────────────────── */
   --z-below:    -1;

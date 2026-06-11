@@ -9,8 +9,9 @@ import faqData from '../../content/faqs.json';
 <BaseLayout title="Support & FAQs" description="Get answers to common questions about alignd care coordination. Contact our support team at support@alignd.care.">
 
   <Panel size="sm">
-    <h1>Support & FAQs</h1>
-    <p class="lead text-muted">{faqData.intro} {faqData.contactNote} <a href={`mailto:${faqData.contactEmail}`}>{faqData.contactEmail}</a>. {faqData.responseTime}</p>
+    <Reveal><p class="eyebrow">{faqData.eyebrow}</p></Reveal>
+    <Reveal delay={100}><h1>Support & FAQs</h1></Reveal>
+    <Reveal delay={150}><p class="lead">{faqData.intro} {faqData.contactNote} <a href={`mailto:${faqData.contactEmail}`}>{faqData.contactEmail}</a>. {faqData.responseTime}</p></Reveal>
   </Panel>
 
   <Panel background="default" size="sm" class="faqs-panel">
@@ -32,9 +33,13 @@ import faqData from '../../content/faqs.json';
 </BaseLayout>
 
 <style>
+  /* Intro copy matches the homepage hero sub: base size, full text color */
   .lead {
-    max-width: 56ch;
+    max-width: 60ch;
     margin-top: var(--space-4);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--color-text);
   }
 
   :global(.faqs-panel) {

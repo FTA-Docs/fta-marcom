@@ -125,19 +125,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     gap: var(--space-3);
     width: 100%;
     padding: var(--space-4);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    background: var(--light-beige);
+    border: 1.5px solid var(--almond-beige);
+    border-radius: var(--radius-full);
     font-size: var(--text-base);
     font-weight: var(--weight-medium);
-    color: var(--color-text);
+    color: var(--dark-grey);
     cursor: pointer;
     transition: background var(--transition-fast), border-color var(--transition-fast);
   }
 
   .auth-social-btn:hover {
-    background: var(--color-surface);
-    border-color: var(--color-border-strong);
+    background: var(--heavy-beige);
+    border-color: var(--almond-beige);
   }
 
   /* OR divider */
@@ -186,7 +186,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     width: 100%;
     padding: var(--space-4);
     padding-right: var(--space-12);
-    background: var(--color-bg);
+    background: var(--light-beige);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     font-size: var(--text-base);
@@ -198,8 +198,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .auth-input::placeholder { color: var(--color-text-muted); }
 
   .auth-input:focus {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+    border-color: var(--form-active-outline);
   }
 
   .auth-eye {

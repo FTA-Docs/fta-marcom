@@ -2,7 +2,8 @@ backend:
   name: github
   repo: FTA-Docs/fta-marcom
   branch: dev
-  base_url: https://marcom-dev.fta.care/api
+  base_url: https://marcom-dev.fta.care
+  auth_endpoint: api/auth
 
 local_backend: false
 

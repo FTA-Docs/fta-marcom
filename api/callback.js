@@ -22,26 +22,16 @@ export default async function handler(req, res) {
   const message = `authorization:github:success:${JSON.stringify({ token, provider: 'github' })}`;
 
   res.setHeader('Content-Type', 'text/html');
-  res.send(`<!doctype html><html><body>
-  <pre id="log" style="font:12px monospace;padding:8px"></pre>
-  <script>
+  res.send(`<!doctype html><html><body><script>
     (function() {
       var msg = ${JSON.stringify(message)};
-      var log = document.getElementById('log');
-      var sent = 0;
-
-      function addLog(s) { log.textContent += s + '\\n'; }
-
-      window.addEventListener('message', function(e) {
-        addLog('RECEIVED from ' + e.origin + ': ' + JSON.stringify(e.data));
-      }, false);
-
-      var intervalId = setInterval(function() {
-        sent++;
-        addLog('SENT authorizing:github (#' + sent + ')');
-        window.opener.postMessage('authorizing:github', '*');
-        if (sent >= 10) { clearInterval(intervalId); addLog('Gave up after 10 tries.'); }
-      }, 800);
+      function receiveMessage(e) {
+        window.removeEventListener('message', receiveMessage, false);
+        window.opener.postMessage(msg, e.origin);
+        window.close();
+      }
+      window.addEventListener('message', receiveMessage, false);
+      window.opener.postMessage('authorizing:github', '*');
     })()
   </script></body></html>`);
 }

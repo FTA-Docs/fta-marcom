@@ -1,0 +1,337 @@
+backend:
+  name: github
+  repo: FTA-Docs/fta-marcom
+  branch: dev
+  base_url: https://marcom-dev.fta.care/api
+
+local_backend: false
+
+media_folder: public
+public_folder: /
+
+collections:
+
+  # ─── Homepage ────────────────────────────────────────────────────────────────
+  - name: homepage
+    label: Homepage
+    files:
+      - label: Homepage Content
+        name: home
+        file: content/home.json
+        fields:
+
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Headline, name: headline, widget: string }
+              - { label: Subheadline, name: subheadline, widget: text }
+              - label: Primary CTA
+                name: cta
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: URL, name: href, widget: string }
+              - label: Secondary CTA
+                name: cta2
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: URL, name: href, widget: string }
+
+          - label: Problem Section
+            name: problem
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Subheading, name: subheading, widget: string }
+              - label: Quotes
+                name: quotes
+                widget: list
+                fields:
+                  - { label: Quote, name: quote, widget: string }
+                  - { label: Emotion, name: emotion, widget: string }
+
+          - label: Solution Section
+            name: solution
+            widget: object
+            fields:
+              - label: Sections
+                name: sections
+                widget: list
+                fields:
+                  - { label: Eyebrow, name: eyebrow, widget: string }
+                  - { label: Title, name: title, widget: string }
+                  - { label: Body, name: body, widget: text }
+                  - { label: Link Phrase, name: linkPhrase, widget: string, required: false }
+                  - { label: Screen Image Path, name: screen, widget: string }
+                  - { label: Phone Count, name: phones, widget: number }
+
+          - label: Science Section
+            name: science
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Heading, name: heading, widget: string }
+              - label: Panels
+                name: panels
+                widget: list
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Body, name: body, widget: text }
+                  - { label: Image Path, name: image, widget: string }
+                  - label: CTA
+                    name: cta
+                    widget: object
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: URL, name: href, widget: string }
+
+          - label: Pricing Section
+            name: pricing
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Heading, name: heading, widget: string }
+              - { label: Subheading, name: subheading, widget: text }
+              - label: Plans
+                name: plans
+                widget: list
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Price, name: price, widget: string }
+                  - { label: Period, name: period, widget: string }
+                  - { label: Description, name: description, widget: text }
+                  - { label: Link Phrase, name: linkPhrase, widget: string, required: false }
+                  - { label: Image Path, name: image, widget: string, required: false }
+                  - { label: Image Focus, name: imageFocus, widget: string, required: false }
+                  - label: CTA
+                    name: cta
+                    widget: object
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: URL, name: href, widget: string }
+                  - { label: Primary (featured card), name: primary, widget: boolean }
+              - label: Value Highlights
+                name: valueHighlights
+                widget: list
+                field: { label: Highlight, name: highlight, widget: string }
+
+          - label: Comparison Section
+            name: comparison
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Heading, name: heading, widget: string }
+              - { label: Subheading, name: subheading, widget: string }
+              - label: Column Headers
+                name: cols
+                widget: list
+                field: { label: Column, name: col, widget: string }
+              - label: Rows
+                name: rows
+                widget: list
+                fields:
+                  - { label: Row Label, name: label, widget: string }
+                  - { label: alignd Column, name: alignd, widget: text }
+                  - { label: Traditional Coaching Column, name: traditional, widget: text }
+                  - { label: Parental Control Tech Column, name: parentalTech, widget: text }
+
+          - label: Social Proof
+            name: socialProof
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Quotes
+                name: panels
+                widget: list
+                fields:
+                  - { label: Quote, name: quote, widget: text }
+                  - { label: Attribution, name: attribution, widget: string }
+
+  # ─── Site Settings ────────────────────────────────────────────────────────────
+  - name: site-settings
+    label: Site Settings
+    files:
+      - label: Global Site Settings
+        name: site
+        file: content/site.json
+        fields:
+          - { label: Brand Name, name: brand, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - label: Navigation
+            name: nav
+            widget: list
+            fields:
+              - { label: Label, name: label, widget: string }
+              - { label: URL, name: href, widget: string }
+          - label: CTAs
+            name: cta
+            widget: object
+            fields:
+              - label: Sign In Button
+                name: signIn
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: URL, name: href, widget: string }
+              - label: Get Started Button
+                name: getStarted
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: URL, name: href, widget: string }
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Copyright Text, name: copyright, widget: string }
+              - label: Footer Links
+                name: links
+                widget: list
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: URL, name: href, widget: string }
+              - label: Contact Emails
+                name: contacts
+                widget: list
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Email, name: email, widget: string }
+
+  # ─── FAQs ─────────────────────────────────────────────────────────────────────
+  - name: faqs
+    label: FAQs
+    files:
+      - label: Support & FAQs Page
+        name: faqs
+        file: content/faqs.json
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string }
+          - { label: Intro Text, name: intro, widget: string }
+          - { label: Contact Note, name: contactNote, widget: string }
+          - { label: Contact Email, name: contactEmail, widget: string }
+          - { label: Response Time Note, name: responseTime, widget: string }
+          - label: Categories
+            name: categories
+            widget: list
+            fields:
+              - { label: Category Name, name: category, widget: string }
+              - label: FAQs
+                name: faqs
+                widget: list
+                fields:
+                  - { label: Question, name: q, widget: string }
+                  - { label: Answer, name: a, widget: text }
+
+  # ─── Plan Timeline ────────────────────────────────────────────────────────────
+  - name: plan-timeline
+    label: Plan Timeline
+    files:
+      - label: 8-Week Plan Timeline
+        name: plan-timeline
+        file: content/plan-timeline.json
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string }
+          - { label: Heading, name: heading, widget: string }
+          - { label: Intro, name: intro, widget: text }
+          - label: Weeks
+            name: weeks
+            widget: list
+            fields:
+              - { label: Week Number, name: week, widget: number }
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+
+  # ─── About ────────────────────────────────────────────────────────────────────
+  - name: about
+    label: About Page
+    files:
+      - label: Mission
+        name: mission
+        file: content/about/mission.md
+        fields:
+          - { label: Body, name: body, widget: markdown }
+
+      - label: Clinical Expertise
+        name: clinical
+        file: content/about/clinical.md
+        fields:
+          - { label: Body, name: body, widget: markdown }
+
+      - label: COM-B Framework (copy)
+        name: com-b-copy
+        file: content/about/com-b.md
+        fields:
+          - { label: Body, name: body, widget: markdown }
+
+      - label: COM-B Framework (diagram labels)
+        name: com-b-data
+        file: content/about/com-b.json
+        fields:
+          - { label: Centre Label, name: center, widget: string }
+          - label: Nodes
+            name: nodes
+            widget: list
+            fields:
+              - { label: Key, name: key, widget: string }
+              - { label: Label, name: label, widget: string }
+              - { label: Description, name: desc, widget: string }
+
+      - label: Technology (copy)
+        name: technology-copy
+        file: content/about/technology.md
+        fields:
+          - { label: Body, name: body, widget: markdown }
+
+      - label: Technology (diagram labels)
+        name: technology-data
+        file: content/about/technology.json
+        fields:
+          - { label: Engine Label, name: engineLabel, widget: string }
+          - { label: Engine Sub-label, name: engineSub, widget: string }
+          - label: Inputs
+            name: inputs
+            widget: list
+            field: { label: Input, name: input, widget: string }
+          - label: Outputs
+            name: outputs
+            widget: list
+            field: { label: Output, name: output, widget: string }
+
+      - label: Founding Team (intro copy)
+        name: founding-team
+        file: content/about/founding-team.md
+        fields:
+          - { label: Body, name: body, widget: markdown }
+
+      - label: Team Members
+        name: team
+        file: content/about/team.json
+        fields:
+          - label: Team Members
+            name: members
+            widget: list
+            fields:
+              - { label: ID (slug, no spaces), name: id, widget: string }
+              - { label: Name, name: name, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Headshot Image Path, name: headshot, widget: string, required: false }
+              - { label: LinkedIn URL, name: linkedin, widget: string, required: false }
+              - { label: Bio, name: bio, widget: text }
+
+  # ─── Legal ────────────────────────────────────────────────────────────────────
+  - name: legal
+    label: Legal
+    files:
+      - label: Privacy Policy
+        name: privacy
+        file: content/legal/privacy.md
+        fields:
+          - { label: Body, name: body, widget: markdown }
+
+      - label: Terms & Conditions
+        name: terms
+        file: content/legal/terms.md
+        fields:
+          - { label: Body, name: body, widget: markdown }

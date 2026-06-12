@@ -24,11 +24,11 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'text/html');
   res.send(`<!doctype html><html><body><script>
     (function() {
-      function receiveMessage(e) {
-        window.opener.postMessage(${JSON.stringify(message)}, e.origin);
+      var msg = ${JSON.stringify(message)};
+      if (window.opener) {
+        window.opener.postMessage(msg, '*');
       }
-      window.addEventListener("message", receiveMessage, false);
-      window.opener.postMessage("authorizing:github", "*");
+      window.close();
     })()
   </script></body></html>`);
 }

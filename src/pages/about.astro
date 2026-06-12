@@ -183,7 +183,7 @@ const emotionPaths = (name: string, maxArcs = 8): string => {
         </div>
       </Reveal>
       <div class="team-grid">
-        {teamData.map((member, i) => (
+        {teamData.members.map((member, i) => (
           <Reveal delay={i * 80}>
             <div class="team-card">
               <div class="team-avatar" aria-hidden="true">
@@ -718,7 +718,7 @@ const emotionPaths = (name: string, maxArcs = 8): string => {
   const modalLinkedin = modal.querySelector('.bio-modal__linkedin');
 
   function openModal(id) {
-    const member = teamData.find(m => m.id === id);
+    const member = teamData.members.find(m => m.id === id);
     if (!member) return;
     modalName.textContent = member.name;
     modalTitle.textContent = member.title;

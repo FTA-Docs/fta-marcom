@@ -1,19 +1,40 @@
 {
   "hero": {
-    "headline": "Your child's relationship with technology can change.",
+    "headline": "Your child's relationship with technology can change real fast.",
     "subheadline": "You're not powerless. Get a personalized, evidence-based behavior change plan made to minimize concerning behaviors, reduce conflict and align you and your child on a shared vision of digital health.",
-    "cta": { "label": "Watch Video", "href": "#" },
-    "cta2": { "label": "View Plans & Pricing", "href": "#pricing" }
+    "cta": {
+      "label": "Watch Video",
+      "href": "#"
+    },
+    "cta2": {
+      "label": "View Plans & Pricing",
+      "href": "#pricing"
+    }
   },
   "problem": {
     "heading": "Sound Familiar?",
     "subheading": "You're not alone — these are the worries we hear from families every day.",
     "quotes": [
-      { "quote": "Conversations about devices keep turning into arguments.", "emotion": "Conflict" },
-      { "quote": "He's glued to his screen from the moment he wakes up.", "emotion": "Overwhelmed" },
-      { "quote": "Parental controls aren't enough, and therapy feels out of reach.", "emotion": "Confusion" },
-      { "quote": "We've tried everything. Nothing sticks.", "emotion": "Tension" },
-      { "quote": "I feel like he's missing out on real life.", "emotion": "Sad" }
+      {
+        "quote": "Conversations about about devices keep turning into arguments.",
+        "emotion": "Conflict"
+      },
+      {
+        "quote": "He's glued to his screen from the moment he wakes up.",
+        "emotion": "Overwhelmed"
+      },
+      {
+        "quote": "Parental controls aren't enough, and therapy feels out of reach.",
+        "emotion": "Confusion"
+      },
+      {
+        "quote": "We've tried everything. Nothing sticks.",
+        "emotion": "Tension"
+      },
+      {
+        "quote": "I feel like he's missing out on real life.",
+        "emotion": "Sad"
+      }
     ]
   },
   "solution": {
@@ -57,13 +78,19 @@
         "title": "Clinical Experience",
         "body": "Our plans are grounded in 30 years of pediatric digital health research and care led by Dr. Michael Rich, founding director of the Digital Wellness Lab at Boston Children's Hospital. His clinical experience — built from the thousands of families with whom he's worked — is at the heart of the guidance we provide.",
         "image": "/clinicalexperience.png",
-        "cta": { "label": "Learn More", "href": "/about" }
+        "cta": {
+          "label": "Learn More",
+          "href": "/about"
+        }
       },
       {
         "title": "A Proven Approach",
         "body": "Our plans are built on COM-B, a proven behavior change framework that looks at three things: Does your child have the skills to manage technology? Does their environment make healthy choices realistic? Do they have reasons to change? By addressing all three — not just setting rules — we help families make changes that actually stick.",
         "image": "/provenapproach.png",
-        "cta": { "label": "Learn More", "href": "/about#com-b" }
+        "cta": {
+          "label": "Learn More",
+          "href": "/about#com-b"
+        }
       }
     ]
   },
@@ -79,7 +106,10 @@
         "image": "/Plan_ Overview.png",
         "linkPhrase": "eight structured weeks",
         "description": "A personalized digital wellness plan built around your child's habits and your family's goals — delivered in eight structured weeks with AI coaching and expert guidance every step of the way.",
-        "cta": { "label": "Get Started", "href": "#" },
+        "cta": {
+          "label": "Get Started",
+          "href": "#"
+        },
         "primary": true
       },
       {
@@ -89,7 +119,10 @@
         "image": "/Wrap-Up_ Intake Chat.png",
         "imageFocus": "17%",
         "description": "Keep the momentum going. For less than the cost of a single coaching session, continue accessing Ali, your coaching team, and ongoing micro-plans as your child grows and your situation evolves.",
-        "cta": { "label": "Get Started", "href": "#" },
+        "cta": {
+          "label": "Get Started",
+          "href": "#"
+        },
         "primary": false
       }
     ],
@@ -105,24 +138,75 @@
     "eyebrow": "How we compare",
     "heading": "How alignd compares",
     "subheading": "Coaching that builds lasting habits — not another session to schedule or app to police.",
-    "cols": ["alignd", "Traditional Coaching", "Parental Control Tech"],
+    "cols": [
+      "alignd",
+      "Traditional Coaching",
+      "Parental Control Tech"
+    ],
     "rows": [
-      { "label": "Goal", "alignd": "Build lasting digital habits and a healthier relationship with tech", "traditional": "Address issues through periodic conversation", "parentalTech": "Restrict and monitor screen access" },
-      { "label": "Cost", "alignd": "$149 one-time + optional $15/month", "traditional": "$150–$300/session; 8–12 sessions minimum ($1,200–$3,600+)", "parentalTech": "$50–$160/year per family, billed indefinitely" },
-      { "label": "Time commitment", "alignd": "Work at your own pace; check-ins adapt to your progress", "traditional": "Weekly 60-min sessions, fixed schedule, often months-long", "parentalTech": "Quick to install; ongoing monitoring and rule-tweaking falls on you" },
-      { "label": "Availability", "alignd": "Start today; AI coaching available any time, day or night", "traditional": "Appointment-only; 1–2 week wait times typical", "parentalTech": "Instant setup, but no human guidance when issues come up" },
-      { "label": "Personalization", "alignd": "Plan built specifically around your child's age, habits, and your family's goals", "traditional": "Coach's general approach applied to your situation", "parentalTech": "One-size-fits-all filters and time limits" },
-      { "label": "Family involvement", "alignd": "Whole-family approach built into every plan", "traditional": "Typically parent-only in sessions", "parentalTech": "Parent-controlled; often feels like surveillance to kids" },
-      { "label": "Evidence base", "alignd": "Grounded in the COM-B behavioral science framework", "traditional": "Varies by practitioner", "parentalTech": "Built for blocking, not behavior change" }
+      {
+        "label": "Goal",
+        "alignd": "Build lasting digital habits and a healthier relationship with tech",
+        "traditional": "Address issues through periodic conversation",
+        "parentalTech": "Restrict and monitor screen access"
+      },
+      {
+        "label": "Cost",
+        "alignd": "$149 one-time + optional $15/month",
+        "traditional": "$150–$300/session; 8–12 sessions minimum ($1,200–$3,600+)",
+        "parentalTech": "$50–$160/year per family, billed indefinitely"
+      },
+      {
+        "label": "Time commitment",
+        "alignd": "Work at your own pace; check-ins adapt to your progress",
+        "traditional": "Weekly 60-min sessions, fixed schedule, often months-long",
+        "parentalTech": "Quick to install; ongoing monitoring and rule-tweaking falls on you"
+      },
+      {
+        "label": "Availability",
+        "alignd": "Start today; AI coaching available any time, day or night",
+        "traditional": "Appointment-only; 1–2 week wait times typical",
+        "parentalTech": "Instant setup, but no human guidance when issues come up"
+      },
+      {
+        "label": "Personalization",
+        "alignd": "Plan built specifically around your child's age, habits, and your family's goals",
+        "traditional": "Coach's general approach applied to your situation",
+        "parentalTech": "One-size-fits-all filters and time limits"
+      },
+      {
+        "label": "Family involvement",
+        "alignd": "Whole-family approach built into every plan",
+        "traditional": "Typically parent-only in sessions",
+        "parentalTech": "Parent-controlled; often feels like surveillance to kids"
+      },
+      {
+        "label": "Evidence base",
+        "alignd": "Grounded in the COM-B behavioral science framework",
+        "traditional": "Varies by practitioner",
+        "parentalTech": "Built for blocking, not behavior change"
+      }
     ]
   },
   "socialProof": {
     "heading": "What Customers Are Saying",
     "panels": [
-      { "quote": "For the first time, my son actually agreed to some limits. The plan gave us a shared framework instead of a fight.", "attribution": "Parent of a 14-year-old" },
-      { "quote": "We'd tried apps, rules, everything. Alignd helped us understand why he was struggling — not just restrict the behavior.", "attribution": "Mother of two" },
-      { "quote": "Ali answered my questions at 11pm when I was spiraling. Having that support available made all the difference.", "attribution": "Parent" },
-      { "quote": "After 8 weeks I actually feel like I have tools, not just restrictions. My daughter's relationship with her phone is genuinely different.", "attribution": "Parent of a 13-year-old" }
+      {
+        "quote": "For the first time, my son actually agreed to some limits. The plan gave us a shared framework instead of a fight.",
+        "attribution": "Parent of a 14-year-old"
+      },
+      {
+        "quote": "We'd tried apps, rules, everything. Alignd helped us understand why he was struggling — not just restrict the behavior.",
+        "attribution": "Mother of two"
+      },
+      {
+        "quote": "Ali answered my questions at 11pm when I was spiraling. Having that support available made all the difference.",
+        "attribution": "Parent"
+      },
+      {
+        "quote": "After 8 weeks I actually feel like I have tools, not just restrictions. My daughter's relationship with her phone is genuinely different.",
+        "attribution": "Parent of a 13-year-old"
+      }
     ]
   }
 }

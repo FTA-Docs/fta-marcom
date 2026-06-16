@@ -24,6 +24,7 @@
   /* ── Container ──────────────────────────────────────── */
   --container-max:    1280px;
   --container-pad:    clamp(1rem, 4vw, 3rem);
+  --media-max:        460px;   /* cap for standalone imagery / phone mockups on compact screens */
 
   /* ── Breakpoints (reference only — use in media queries) */
   /* --bp-sm: 640px  --bp-md: 768px  --bp-lg: 1024px     */

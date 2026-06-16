@@ -139,6 +139,20 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
             ))}
           </div>
         </div>
+
+        <!-- Indicator dots — mobile / portrait-tablet only (CSS hides on desktop,
+             where the traveling line itself signals progress) -->
+        <div class="sf-dots" role="tablist" aria-label="Worry navigation">
+          {homeData.problem.quotes.map((_, i) => (
+            <button
+              class={`sf-dot${i === 0 ? ' is-active' : ''}`}
+              role="tab"
+              aria-label={`Go to worry ${i + 1}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              data-index={String(i)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   </Panel>
@@ -407,14 +421,16 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       top: 0;
     }
 
-    /* Solution stays sticky and needs an explicit height so its flex children
-       resolve correctly. panel-page resets to height:auto on mobile, which
-       collapses absolutely/percentage-sized children to 0 and exposes the
-       scroll-zone background as blank white space. */
+    /* Solution joins normal flow on phone — a static stacked list, not the
+       scroll-jacked carousel (its GSAP timeline is gated to ≥768). The
+       scroll-zone is hidden so it leaves no blank space below. */
     :global(#solution) {
-      height: calc(100svh - var(--masthead-h));
-      overflow: hidden;
+      height: auto;
+      overflow: visible;
+      /* match the other in-flow panels' compact rhythm */
+      padding-block: var(--space-10) var(--space-16);
     }
+    .solution-scroll-zone { display: none; }
   }
 
   /* Ascending z-index so each incoming panel covers the previous */
@@ -598,7 +614,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     .hero-media {
       flex: 0 0 auto;
       width: 100%;
-      max-width: 460px;
+      max-width: var(--media-max);
       align-self: center;
     }
   }
@@ -703,9 +719,30 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   }
   .sf-quote.is-active { opacity: 1; }
 
-  /* Reduced motion / mobile: no pan/scrub — hide the decorative track and show
-     the worries as a simple centred, readable list. */
-  @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  /* Indicator dots — hidden on desktop (the traveling line signals progress);
+     revealed only for the mobile / portrait-tablet carousel below. */
+  .sf-dots {
+    display: none;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+  .sf-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--color-border-strong);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background var(--transition-base), transform var(--transition-base);
+  }
+  .sf-dot.is-active { background: var(--color-accent); transform: scale(1.4); }
+  .sf-dot:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+
+  /* ≤1023px (phones + portrait tablets) and reduced motion: drop the desktop
+     pen-line track + scroll-jack. The panel sits in normal flow. */
+  @media (max-width: 1023px), (prefers-reduced-motion: reduce) {
     :global(#problem) {
       position: relative;
       height: auto;
@@ -714,11 +751,15 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     }
     .problem-scroll-zone { display: none; }
     /* Drop the desktop nudges that positioned the eyebrow + line against the
-       animated track — on mobile the eyebrow sits as a normal heading above
-       the static quote list. */
+       animated track — here the eyebrow sits as a normal heading. */
     .sf-eyebrow { transform: none; }
     .sf-line-wrap { height: auto; overflow: visible; transform: none; }
     .sf-line { display: none; }
+  }
+
+  /* Reduced motion (any width): no carousel — show the worries as a simple
+     centred, readable, stacked list. */
+  @media (prefers-reduced-motion: reduce) {
     .sf-quotes {
       position: static;
       display: flex;
@@ -732,6 +773,33 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       opacity: 1;
       font-size: var(--text-3xl);
     }
+    .sf-dots { display: none; }
+  }
+
+  /* Mobile + portrait tablet (motion OK): one worry at a time, crossfading,
+     with dots. Eyebrow + quote + dots centre as one breathable group inside a
+     bounded panel — no scroll-jacking, no full-viewport stack. */
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    :global(#problem) { min-height: min(82svh, 640px); }
+    .problem-stage { justify-content: center; }
+    .sf-center { justify-content: center; gap: var(--space-8); }
+    .sf-quotes {
+      position: relative;
+      display: grid;
+      place-items: center;
+      /* Reserve room for the longest worry so the panel doesn't jump on cycle */
+      min-height: 8.5em;
+      padding-inline: var(--container-pad);
+    }
+    .sf-quote {
+      grid-area: 1 / 1;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      font-size: var(--text-3xl);
+      max-width: min(90vw, 18ch);
+    }
+    .sf-quote.is-active { opacity: 1; }
+    .sf-dots { display: flex; }
   }
 
 
@@ -1065,72 +1133,72 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     /* stack: image on top, text below; no overlap or offset */
     .science-item,
     .science-item--rev {
+      --sci-overlap: 24px;        /* image/text overlap — keep margin + padding in sync */
       flex-direction: column;
       align-items: stretch;
       align-self: center;
       width: 100%;
-      max-width: 420px;
+      max-width: var(--media-max);
       margin-top: 0;
     }
     .science-item__media { width: 100%; flex-basis: auto; aspect-ratio: 16 / 10; }
     .science-item:not(.science-item--rev) .science-item__text,
     .science-item--rev .science-item__text {
-      margin: -24px 0 0;
-      padding: calc(var(--space-8) + 24px) var(--space-6) var(--space-6);
+      margin: calc(-1 * var(--sci-overlap)) 0 0;
+      padding: calc(var(--space-8) + var(--sci-overlap)) var(--space-6) var(--space-6);
     }
 
-    /* ── Solution: stack text above, phones below ── */
+    /* ── Solution: static stacked list — each step's text then its phone ──
+       The two desktop tracks (.sol-texts / .sol-filmstrip / its wrap) are
+       flattened with display:contents so their children become siblings in
+       .sol-stage; `order` interleaves text₀, phone₀, text₁, phone₁, … The
+       GSAP carousel that would otherwise position the filmstrip is gated to
+       ≥768, so nothing fights this layout. */
     .sol-stage {
       display: flex;
       flex-direction: column;
-      flex: 1; /* fill #solution's explicit height so 45%/flex:1 children resolve */
+      overflow: visible;
+      max-width: none;
     }
-
-    /* Text block: compact, top third — leaves the rest for big phones */
-    .sol-texts {
-      position: relative;
-      left: auto;
-      width: 100%;
-      height: 34%;
-      flex-shrink: 0;
-    }
+    .sol-texts,
+    .sol-filmstrip-wrap,
+    .sol-filmstrip { display: contents; }
 
     .sol-text {
-      position: absolute;
-      inset: 0;
+      position: static;
+      inset: auto;
+      opacity: 1;
+      width: 100%;
+      padding: 0 var(--container-pad);
+      margin: 0 0 var(--space-3);     /* text → its phone */
       justify-content: flex-start;
-      padding-top: var(--space-4);
-      padding-inline: var(--container-pad);
-      padding-right: var(--space-4);
       gap: var(--space-3);
     }
-
-    /* Smaller heading + body so the text fits its compact band */
     .sol-text :global(.panel-heading) { font-size: var(--text-2xl); }
-    .sol-body { font-size: var(--text-sm); }
+    .sol-body { font-size: var(--text-base); max-width: none; }
+    /* Restore the eyebrow→heading hug (desktop neutralised the flex gap). */
+    .sol-text .eyebrow { margin-bottom: 0; }
 
-    /* Phone filmstrip: fills the remaining ~two-thirds.
-       No justify-content — GSAP owns the horizontal x position. */
-    .sol-filmstrip-wrap {
-      position: relative;
-      left: auto; right: auto; top: auto; bottom: auto;
+    .sol-phone-item {
       width: 100%;
-      flex: 1;
-      overflow: hidden;
       display: flex;
-      align-items: center;
+      justify-content: center;
+      margin: 0 0 var(--space-12);    /* step → next step */
     }
-
-    /* Big phones on mobile — sized to fill the filmstrip height (the active
-       phone now sits at scale 1, so this height is the rendered height) */
-    .sol-phone-item { width: auto; }
     .sol-phone-device {
       width: auto;
-      height: min(54svh, 460px);
+      height: min(54svh, var(--media-max));
       aspect-ratio: 1 / 2;
       border-radius: 22px;
     }
 
+    /* Interleave the flattened tracks into per-step order */
+    .sol-text--0 { order: 0; }  .sol-phone-item--0 { order: 1; }
+    .sol-text--1 { order: 2; }  .sol-phone-item--1 { order: 3; }
+    .sol-text--2 { order: 4; }  .sol-phone-item--2 { order: 5; }
+    .sol-text--3 { order: 6; }  .sol-phone-item--3 { order: 7; }
+
+    .sol-dots { display: none; }   /* static list — no carousel */
   }
 
   /* ── Social proof: scroll-zone + quote cycling ───────── */
@@ -1664,6 +1732,52 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     startTimer();
   }
 
+  // ── Problem panel: mobile / portrait-tablet carousel ──────
+  // Below 1024px the desktop pen-line scroll animation is off (see CSS); the
+  // worries crossfade one at a time with indicator dots instead. Skipped under
+  // reduced motion, where CSS shows a static stacked list.
+  const sfMobile  = window.matchMedia('(max-width: 1023px)').matches;
+  const sfReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sfCarouselQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sf-quote'));
+  const sfCarouselDots   = Array.from(document.querySelectorAll<HTMLElement>('.sf-dot'));
+
+  if (sfMobile && !sfReduced && sfCarouselQuotes.length > 1) {
+    const count = sfCarouselQuotes.length;
+    let current = 0;
+    let timer: ReturnType<typeof setInterval>;
+
+    function showWorry(idx: number) {
+      current = (idx + count) % count;
+      sfCarouselQuotes.forEach((q, i) => q.classList.toggle('is-active', i === current));
+      sfCarouselDots.forEach((dot, i) => {
+        const active = i === current;
+        dot.classList.toggle('is-active', active);
+        dot.setAttribute('aria-selected', String(active));
+      });
+    }
+    const startWorry = () => { timer = setInterval(() => showWorry(current + 1), 5000); };
+    const resetWorry = () => { clearInterval(timer); startWorry(); };
+
+    sfCarouselDots.forEach((dot, i) => {
+      dot.addEventListener('click', () => { showWorry(i); resetWorry(); });
+    });
+
+    const sfSection = document.getElementById('problem');
+    sfSection?.addEventListener('focusin',  () => clearInterval(timer));
+    sfSection?.addEventListener('focusout', startWorry);
+
+    showWorry(0);
+    startWorry();
+  }
+
+  // ── Solution on phone: static stacked list, every step readable ──
+  // The GSAP carousel (gated ≥768) is what normally toggles aria-hidden on the
+  // inactive steps; at ≤767 all four are shown, so expose them all to AT.
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    document.querySelectorAll('.sol-text[aria-hidden="true"]')
+      .forEach((t) => t.removeAttribute('aria-hidden'));
+  }
+
   // ── GSAP: hero parallax + reveal fade-ins ─────────────────
   (window as any).gsapActive = true;
 
@@ -1710,7 +1824,8 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       const phoneDivs   = Array.from(document.querySelectorAll<HTMLElement>('.sol-phone-device'));
       const phoneItems  = Array.from(document.querySelectorAll<HTMLElement>('.sol-phone-item'));
 
-      if (solZone && solTexts.length > 1 && filmstrip && filmstripWrap) {
+      if (solZone && solTexts.length > 1 && filmstrip && filmstripWrap
+          && window.matchMedia('(min-width: 768px)').matches) {
         const solCount = solTexts.length;
 
         // On mobile the active phone sits at full scale (the CSS sizes it to
@@ -1809,11 +1924,12 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       // advances a single draw-front (cumulative stroke-dashoffset) AND pans a
       // camera so the active station stays centred — the line travels, holds
       // to scribble a shape, fades its quote in, then travels on. Disabled
-      // below 768px / reduced motion (CSS shows a static list).
+      // below 1024px / reduced motion (mobile + portrait tablet use the dot
+      // carousel below; reduced motion shows a static list).
       const sfZone = document.getElementById('problem-scroll-zone');
       const sfLine = document.getElementById('sf-line') as SVGSVGElement | null;
       const sfQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sf-quote'));
-      if (sfZone && sfLine && sfLine.parentElement && window.matchMedia('(min-width: 768px)').matches) {
+      if (sfZone && sfLine && sfLine.parentElement && window.matchMedia('(min-width: 1024px)').matches) {
         const SVGNS = 'http://www.w3.org/2000/svg';
         const wrap = sfLine.parentElement;
         const groups = Array.from(sfLine.querySelectorAll<SVGGElement>('g.sf-emotion'));

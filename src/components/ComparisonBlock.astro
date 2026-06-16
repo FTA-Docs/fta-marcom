@@ -142,36 +142,48 @@ const { cols, rows } = comparison;
     border-radius: 0 0 var(--radius-md) var(--radius-md);
   }
 
-  /* Mobile: fit the whole comparison within the viewport — no horizontal
-     scroll. Shrink type + padding so all four columns sit side by side. */
+  /* Mobile: keep the full comparison table but let it scroll horizontally.
+     Columns are sized so the row-label + the alignd column show by default with
+     a sliver of the next column as a scroll affordance (~2.25 columns). The
+     label column stays pinned while the option columns scroll. */
   @media (max-width: 767px) {
-    .cmp-table-wrap { overflow-x: visible; }
+    .cmp-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
     .cmp-table {
-      min-width: 0;
-      font-size: var(--text-xs);
-      table-layout: fixed;
+      /* 116 + 3×152 → wider than the viewport, so the wrap scrolls */
+      min-width: 572px;
+      font-size: var(--text-sm);
     }
 
     .cmp-table th,
     .cmp-table td {
-      padding: var(--space-3) var(--space-2);
+      padding: var(--space-3) var(--space-4);
       line-height: var(--leading-snug);
-      overflow-wrap: break-word;
-      /* Hyphenate at syllable breaks so narrow columns never split a word
-         mid-letter (e.g. "Coach-ing" rather than "Coachin g"). */
-      hyphens: auto;
+      hyphens: manual;           /* no forced mid-word breaks */
     }
 
-    /* Match the body size so each header word fits its narrow column on one
-       line; the bold serif still reads as a header against the cell text. */
-    .cmp-table thead th {
-      font-size: var(--text-xs);
-      letter-spacing: var(--tracking-normal);
-    }
+    /* Narrow label column, equal option columns */
+    .cmp-table thead th:first-child { width: 116px; }
+    .cmp-table thead th:not(:first-child) { width: 152px; }
 
-    /* Row-label column gets a bit more room; split the rest across options */
-    .cmp-table thead th:first-child { width: 26%; }
-    .cmp-table thead th:not(:first-child) { width: 24.6%; }
+    /* Uniform compact type across headers + the alignd cells */
+    .cmp-table thead th,
+    .cmp-table tbody th,
+    .cmp-table__alignd { font-size: var(--text-sm); }
+
+    /* Pin the label column; opaque bg so option cells scroll underneath it */
+    .cmp-table thead th:first-child,
+    .cmp-table th[scope="row"] {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: var(--white);
+    }
+    .cmp-table tbody tr:nth-child(odd) th[scope="row"] {
+      background: var(--light-beige);
+    }
   }
 </style>

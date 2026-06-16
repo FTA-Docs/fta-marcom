@@ -393,17 +393,21 @@ const { plans, valueHighlights, subheading } = pricing;
     // those proved unreliable to render). The swap's slide rides on the
     // position offsets in CSS; this only owns rotation + the fan spread.
     function applyFan() {
+      // Below desktop (portrait tablet) the stack column is narrow, so tighten
+      // the spread — the scroll-jacked fan stays, it just never crosses the
+      // panel edge. Desktop keeps the full spread.
+      const s = window.matchMedia('(min-width: 1024px)').matches ? 1 : 0.5;
       cards.forEach(card => {
         if (card.dataset.position === 'back') {
           // swing down-right and rotate further out to read as a 2nd card
           card.style.transform =
-            `translate(${(fan * 44).toFixed(1)}px, ${(fan * 16).toFixed(1)}px) ` +
-            `rotate(${(1.5 + fan * 4).toFixed(2)}deg)`;
+            `translate(${(fan * 44 * s).toFixed(1)}px, ${(fan * 16 * s).toFixed(1)}px) ` +
+            `rotate(${(1.5 + fan * 4 * s).toFixed(2)}deg)`;
         } else {
           // nudge up-left so the pair spreads like a hand of cards
           card.style.transform =
-            `translate(${(fan * -34).toFixed(1)}px, ${(fan * -6).toFixed(1)}px) ` +
-            `rotate(${(fan * -2.5).toFixed(2)}deg)`;
+            `translate(${(fan * -34 * s).toFixed(1)}px, ${(fan * -6 * s).toFixed(1)}px) ` +
+            `rotate(${(fan * -2.5 * s).toFixed(2)}deg)`;
         }
       });
     }

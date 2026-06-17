@@ -65,6 +65,9 @@ const { plans, valueHighlights, subheading } = pricing;
               </Fragment>
             ) : plan.description}
           </p>
+          {i === 0 && (
+            <a href={plan.cta.href} class="btn plan-card__cta">{plan.cta.label}</a>
+          )}
         </article>
       ))}
     </div>
@@ -90,6 +93,12 @@ const { plans, valueHighlights, subheading } = pricing;
 <style>
   .pricing-block {
     padding-bottom: var(--space-10);
+  }
+
+  /* On phone the #pricing panel owns the bottom gutter (mobile normalization),
+     so drop this extra padding to avoid doubling it. */
+  @media (max-width: 767px) {
+    .pricing-block { padding-bottom: 0; }
   }
 
   /* ── Two-column layout ── */
@@ -283,6 +292,10 @@ const { plans, valueHighlights, subheading } = pricing;
   }
   .plan-inline-link:hover { opacity: 0.65; }
 
+  /* In-card CTA — phone only; the desktop cards are the scroll-fanned stack
+     (the single CTA lives in the highlights column), so it stays hidden ≥768. */
+  .plan-card__cta { display: none; }
+
   /* ── Value highlights ── */
   .pricing-highlights__heading {
     font-family: var(--font-heading);
@@ -364,8 +377,29 @@ const { plans, valueHighlights, subheading } = pricing;
       width: 100%;
     }
 
+    /* Both cards use the brand green on phone — no fanned-depth tint. */
+    .plan-card[data-position="back"] {
+      background: var(--spring-leaf);
+    }
+
+    /* In-card CTA: bottom-left under the paragraph, in midnight. */
+    .plan-card__cta {
+      display: inline-flex;
+      align-self: flex-start;
+      margin-top: var(--space-2);
+      background-color: var(--midnight);
+      color: var(--pale-beige);
+      border-color: var(--midnight);
+    }
+    .plan-card__cta:hover {
+      background-color: color-mix(in srgb, var(--midnight) 86%, black);
+      border-color: color-mix(in srgb, var(--midnight) 86%, black);
+    }
+
     .value-highlights {
       grid-template-columns: 1fr;
+      /* Inset the checklist from the panel edges. */
+      padding-inline: var(--space-4);
     }
 
     .pricing-highlights {

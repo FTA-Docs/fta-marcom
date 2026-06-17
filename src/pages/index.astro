@@ -422,13 +422,16 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     }
 
     /* Solution joins normal flow on phone — a static stacked list, not the
-       scroll-jacked carousel (its GSAP timeline is gated to ≥768). The
-       scroll-zone is hidden so it leaves no blank space below. */
+       scroll-jacked carousel (its GSAP timeline is gated to ≥768). Without the
+       position reset it stays sticky (top:masthead) and pins the intro while
+       the science panel slides over it — hiding steps 2–4. The scroll-zone is
+       hidden so it leaves no blank space below. */
     :global(#solution) {
+      position: relative;
+      top: 0;
       height: auto;
       overflow: visible;
-      /* match the other in-flow panels' compact rhythm */
-      padding-block: var(--space-10) var(--space-16);
+      /* padding-block is set by the mobile normalization layer below */
     }
     .solution-scroll-zone { display: none; }
   }
@@ -600,6 +603,10 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       top: 0;
       height: auto;
       min-height: calc(100svh - var(--masthead-h));
+      /* The hero sits behind the fixed masthead, so clear it AND add the same
+         --space-12 gutter the other panels have — otherwise the headline butts
+         right up against the masthead. */
+      padding-top: calc(var(--masthead-h) + var(--space-12));
       padding-bottom: var(--space-12);
     }
     :global(#hero > .container) {
@@ -782,13 +789,15 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
     :global(#problem) { min-height: min(82svh, 640px); }
     .problem-stage { justify-content: center; }
-    .sf-center { justify-content: center; gap: var(--space-8); }
+    /* eyebrow → quote matches the site's eyebrow→heading rhythm */
+    .sf-center { justify-content: center; gap: var(--space-2); }
     .sf-quotes {
       position: relative;
       display: grid;
       place-items: center;
-      /* Reserve room for the longest worry so the panel doesn't jump on cycle */
-      min-height: 8.5em;
+      /* Reserve room for the longest worry so the panel doesn't jump on cycle
+         (3 lines at this width) — keeps the group compact without clipping. */
+      min-height: 7em;
       padding-inline: var(--container-pad);
     }
     .sf-quote {
@@ -1140,12 +1149,30 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       width: 100%;
       max-width: var(--media-max);
       margin-top: 0;
+      margin-left: 0;             /* drop the desktop rev-row right shift (78px) */
     }
-    .science-item__media { width: 100%; flex-basis: auto; aspect-ratio: 16 / 10; }
+    /* Both photos are a plain, equal-height 16/10 card. Reset the desktop
+       per-row flex-basis (the reversed row otherwise keeps its 300–410px basis
+       and renders much taller) and the resting stagger transforms (GSAP
+       parallax is gated ≥768). Two-class selectors so they beat the per-row
+       desktop media rules. */
+    .science-item:not(.science-item--rev) .science-item__media,
+    .science-item--rev .science-item__media {
+      width: 100%;
+      flex-basis: auto;
+      aspect-ratio: 16 / 10;
+      transform: none;
+    }
+    /* Two-class selectors so they beat the desktop per-row text rules — the
+       reversed row otherwise keeps transform:translateY(56px), which turns the
+       intended 24px text-on-photo overlap into a gap and breaks the rhythm. */
     .science-item:not(.science-item--rev) .science-item__text,
     .science-item--rev .science-item__text {
+      transform: none;
       margin: calc(-1 * var(--sci-overlap)) 0 0;
       padding: calc(var(--space-8) + var(--sci-overlap)) var(--space-6) var(--space-6);
+      /* Both cards share the warmer beige on phone (desktop alternates them). */
+      background: color-mix(in srgb, var(--almond-beige) 40%, var(--light-beige));
     }
 
     /* ── Solution: static stacked list — each step's text then its phone ──
@@ -1170,27 +1197,58 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       opacity: 1;
       width: 100%;
       padding: 0 var(--container-pad);
-      margin: 0 0 var(--space-3);     /* text → its phone */
+      margin: 0 0 var(--space-8);     /* text → its phone (breathing room above the mockup) */
       justify-content: flex-start;
-      gap: var(--space-3);
+      gap: 0;                          /* rhythm comes from element margins below */
     }
-    .sol-text :global(.panel-heading) { font-size: var(--text-2xl); }
+    /* Match the reference lockup: eyebrow→heading space-2, heading→body space-5 */
+    .sol-text :global(.panel-heading) {
+      font-size: var(--text-4xl);
+      margin-bottom: var(--space-5);
+    }
     .sol-body { font-size: var(--text-base); max-width: none; }
-    /* Restore the eyebrow→heading hug (desktop neutralised the flex gap). */
-    .sol-text .eyebrow { margin-bottom: 0; }
+    .sol-text .eyebrow { margin-bottom: var(--space-2); }
 
     .sol-phone-item {
+      --sol-phone-h: min(54svh, var(--media-max));
+      position: relative;
       width: 100%;
       display: flex;
       justify-content: center;
+      align-items: flex-start;        /* top-align so the crop removes the bottom */
+      /* Show ~the top two-thirds of the phone; the bottom third is cropped. */
+      height: calc(var(--sol-phone-h) * 2 / 3);
+      overflow: hidden;
       margin: 0 0 var(--space-12);    /* step → next step */
     }
     .sol-phone-device {
       width: auto;
-      height: min(54svh, var(--media-max));
+      height: var(--sol-phone-h);     /* full height; the bottom is clipped by the item */
       aspect-ratio: 1 / 2;
       border-radius: 22px;
     }
+    /* Faint beige rule the cropped phone sits on — fades out at both ends and
+       doubles as the separator to the next step / section. */
+    .sol-phone-item::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--color-border) 22%,
+        var(--color-border) 78%,
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    /* Last phone has no next step — drop its inter-step margin so the panel's
+       own bottom padding owns the gap to the next section (no doubling). */
+    .sol-phone-item:last-child { margin-bottom: 0; }
 
     /* Interleave the flattened tracks into per-step order */
     .sol-text--0 { order: 0; }  .sol-phone-item--0 { order: 1; }
@@ -1572,7 +1630,59 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     .plan-modal__header,
     .plan-track-wrap { padding-inline: var(--space-6); }
     .plan-modal__panel { padding-block: var(--space-8) var(--space-6); }
-    .plan-modal__heading { font-size: var(--text-2xl); }
+    .plan-modal__heading { font-size: var(--text-3xl); }
+
+    /* Phone: stack the 8 weeks and scroll the list vertically inside the
+       capped panel, instead of panning sideways. */
+    .plan-track-wrap {
+      flex: 1;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: none;
+      padding-bottom: var(--space-2);
+    }
+    .plan-track {
+      flex-direction: column;
+      width: auto;
+      padding-top: 0;
+      gap: var(--space-10);
+    }
+    .plan-wave { display: none; }   /* horizontal SVG wave — replaced below */
+    .plan-week {
+      flex: 0 0 auto;
+      width: 100%;
+      scroll-snap-align: none;
+    }
+    /* Dotted line connecting the weeks: a short segment bridges each week to
+       the next through the gap (centred on the icons), matching the desktop
+       wave's dotted stroke. */
+    .plan-week:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: var(--space-10);
+      background-image: repeating-linear-gradient(
+        to bottom,
+        var(--color-border-strong) 0 1.5px,
+        transparent 1.5px 10.5px
+      );
+      z-index: 0;
+    }
+
+    /* Vertical scroll now — swap the right-edge fade for a matching bottom one. */
+    .plan-modal__panel::after {
+      top: auto;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: auto;
+      height: 110px;
+      background: linear-gradient(to bottom, transparent, var(--color-bg) 80%);
+    }
   }
 
   /* ── Social proof: mobile overrides ── */
@@ -1580,12 +1690,46 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     .sp-quote__text {
       font-size: var(--text-xl);
     }
-    /* Quotes run several lines longer at this width — give the (fixed-height,
-       overflow-hidden) stage room so the attribution is never clipped. */
+    /* Tighter, in the spirit of the problem quotes: reserve only ~the tallest
+       quote's height (no vh-based slack that left the strip oversized) and pull
+       the dots in close underneath. */
     .sp-stage {
       height: auto;
-      min-height: clamp(160px, 30vh, 210px);
+      min-height: 150px;
     }
+    .sp-content { gap: var(--space-2); }
+    .sp-dots {
+      padding-top: var(--space-1);
+      padding-bottom: 0;
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════════════════
+     MOBILE NORMALIZATION (≤767px) — declared last so it wins the cascade.
+     Gives every panel one rhythm matching the About / Support-FAQ pages:
+     a symmetric padding-block gutter, content-sized height (no leftover
+     100svh / 82svh desktop stretch), and a single section-heading size.
+     Desktop (≥768px) keeps its scroll-stacked, full-viewport layout. */
+  @media (max-width: 767px) {
+    :global(#problem),
+    :global(#solution),
+    :global(#science),
+    :global(#pricing),
+    :global(#comparison) {
+      min-height: 0;
+      padding-block: var(--space-12);
+    }
+    /* Social proof carries its padding on the inner content wrapper. */
+    .sp-content { padding-block: var(--space-12); }
+
+    /* All section headings match the reference h2 size on phone. */
+    :global(#science) .panel-heading,
+    :global(#pricing) .panel-heading,
+    :global(#comparison) .panel-heading {
+      font-size: var(--text-4xl);
+    }
+    /* Hero headline steps down to the section-heading size on phone too. */
+    .hero-text h1 { font-size: var(--text-4xl); }
   }
 </style>
 
@@ -1803,17 +1947,21 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       gsap.registerPlugin(ScrollTrigger);
 
       // ── Parallax depth: hero content recedes as problem slides over it ──
-      gsap.to('#hero > .container > *', {
-        y: '-4%',
-        opacity: 0.5,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '#problem',
-          start: `top top+=${mastheadH}`,
-          end: `+=${window.innerHeight * 0.6}`,
-          scrub: 1,
-        },
-      });
+      // Desktop only — on phones the panels are static (no scroll-jack), so the
+      // hero stays put rather than fading/parallaxing under the next panel.
+      if (window.matchMedia('(min-width: 768px)').matches) {
+        gsap.to('#hero > .container > *', {
+          y: '-4%',
+          opacity: 0.5,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '#problem',
+            start: `top top+=${mastheadH}`,
+            end: `+=${window.innerHeight * 0.6}`,
+            scrub: 1,
+          },
+        });
+      }
 
       // ── Solution: scroll-driven inner section cycling ────
       const solZone     = document.getElementById('solution-scroll-zone');
@@ -2075,7 +2223,10 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       // offsets ('+=' / '-=') preserve the resting CSS transforms on the rev row.
       //   row 1 (photo + text):  photo bottom→top,  text right→left
       //   row 2 (text + photo):  text top→bottom,   photo left→right
-      gsap.utils.toArray<HTMLElement>('#science .science-item').forEach((el, i) => {
+      // Gated to ≥768: on phone the rows are a centred vertical stack and the
+      // relative '+=' offsets would leave residual transforms that overflow.
+      const sciDesktop = window.matchMedia('(min-width: 768px)').matches;
+      if (sciDesktop) gsap.utils.toArray<HTMLElement>('#science .science-item').forEach((el, i) => {
         const media = el.querySelector<HTMLElement>('.science-item__media');
         const text = el.querySelector<HTMLElement>('.science-item__text');
         const moves = i % 2 === 1

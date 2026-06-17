@@ -29,6 +29,13 @@ h4 { font-size: var(--text-2xl); }
 h5 { font-size: var(--text-xl); }
 h6 { font-size: var(--text-lg); }
 
+/* Phone: page h1s step down one rank so they don't dominate the small viewport
+   (matches the homepage hero). Components with their own h1 sizing (e.g. the
+   auth pages' .auth-heading) keep theirs via higher specificity. */
+@media (max-width: 767px) {
+  h1 { font-size: var(--text-4xl); }
+}
+
 p {
   font-size: var(--text-base);
   line-height: var(--leading-body);

@@ -20,7 +20,11 @@ const styleAttr = delay ? `--reveal-delay: ${delay}ms` : '';
 </Tag>
 
 <style>
-  @media (prefers-reduced-motion: no-preference) {
+  /* Desktop only (≥768px): on phones we keep motion minimal, so elements are
+     simply visible from the start — no fade/slide-in on scroll. The JS that
+     adds .is-revealed still runs but is an inert no-op without this hidden
+     state. */
+  @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
     [data-reveal]:not(.is-revealed) {
       opacity: 0;
       transform: translateY(1.5rem);

@@ -131,19 +131,39 @@ import siteData from '../../content/site.json';
       display: flex;
     }
 
+    /* Open: morph the three bars into an X (bars are 2px tall, 5px gap, so the
+       outer bars travel 7px to meet at the centre line, then rotate). */
+    .masthead__hamburger[aria-expanded='true'] .hamburger-bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .masthead__hamburger[aria-expanded='true'] .hamburger-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .masthead__hamburger[aria-expanded='true'] .hamburger-bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
     .masthead__nav {
       display: none;
+      /* Cover the whole viewport below the masthead, fully opaque. Absolute
+         (not fixed) so it's contained by the fixed .masthead regardless of the
+         masthead's backdrop-filter; top:100% drops it just under the bar and
+         the svh height fills the rest of the screen. */
       position: absolute;
       top: 100%;
       left: 0;
       right: 0;
-      background: var(--masthead-bg);
-      border-bottom: 1px solid var(--masthead-border);
+      height: calc(100svh - var(--masthead-h));
+      background: var(--white);
       flex-direction: column;
+      /* Centre the links + buttons as one group, then bias it upward: the
+         extra bottom padding shrinks the centring box from below, so the group
+         sits a little higher — more space under the buttons, less over the
+         links. */
+      justify-content: center;
       align-items: flex-start;
-      gap: 0;
-      padding: var(--space-4);
-      box-shadow: var(--shadow-lg);
+      gap: var(--space-8);
+      padding: var(--space-6) var(--space-6) var(--space-12);
     }
 
     .masthead__nav.is-open {
@@ -152,21 +172,21 @@ import siteData from '../../content/site.json';
 
     .masthead__nav-list {
       flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-1);
+      align-items: center;
+      gap: var(--space-2);
       width: 100%;
     }
 
     .masthead__nav-link {
       display: block;
       padding: var(--space-3) var(--space-2);
-      font-size: var(--text-base);
+      font-size: var(--text-lg);
+      line-height: var(--leading-snug);
+      text-align: center;
       width: 100%;
     }
 
     .masthead__actions {
-      padding-top: var(--space-4);
-      border-top: 1px solid var(--color-border);
       width: 100%;
       flex-direction: column;
     }

@@ -225,6 +225,12 @@ import siteData from '../../content/site.json';
     }
   });
 
+  // Close the menu when a link inside it is tapped — otherwise same-page anchor
+  // links (e.g. /#pricing) just scroll and leave the panel open over the page.
+  nav?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => closeNav());
+  });
+
   document.addEventListener('click', (event) => {
     if (!nav || !hamburger) return;
     const target = event.target as Node;

@@ -6,6 +6,7 @@ import ComparisonBlock from '../components/ComparisonBlock.astro';
 import Reveal from '../components/Reveal.astro';
 import homeData from '../../content/home.json';
 import planTimeline from '../../content/plan-timeline.json';
+import { emotionPaths } from '../lib/emotions';
 
 // Wavy dotted connector for the 8-week plan timeline (coded, not an image).
 // WEEK_W must match the .plan-week width in CSS so icon centres line up.
@@ -28,27 +29,9 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
 // draws each motif (line-by-line), then rewinds it as the next draws.
 // Pull the real emotion SVGs in raw and keep just their <path> markup
 // (drop the <svg> wrapper + white background rect). CSS recolours them.
-const emotionSvgs = import.meta.glob('/public/emotions/*.svg', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-}) as Record<string, string>;
 // Cap each motif's concentric arcs (evenly downsampled) so dense emotions
 // don't "scribble in place" — keeps the shape's spread, calms the busyness.
 const SF_MAX_ARCS = 6;
-const emotionPaths = (name: string): string => {
-  const raw = (emotionSvgs[`/public/emotions/${name}.svg`] ?? '')
-    .replace(/<svg[^>]*>/, '')
-    .replace(/<\/svg>/, '')
-    .replace(/<rect[^>]*\/>/g, '');
-  const paths = raw.match(/<path[\s\S]*?\/>/g) ?? [];
-  if (paths.length <= SF_MAX_ARCS) return paths.join('');
-  const kept: string[] = [];
-  for (let i = 0; i < SF_MAX_ARCS; i++) {
-    kept.push(paths[Math.round((i * (paths.length - 1)) / (SF_MAX_ARCS - 1))]);
-  }
-  return kept.join('');
-};
 
 // One long horizontal "pen line": each worry is a station far apart on a wide
 // track; a wavy connector links them. As you scroll, the draw-front advances
@@ -66,7 +49,12 @@ const sfStationX = (i: number) => SF_PAD + i * SF_STATION_DX;
 const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
 ---
 
-<BaseLayout title="alignd" loadGSAP={true} bodyClass="page-home">
+<BaseLayout
+  title="alignd"
+  description="Get a personalized, evidence-based plan to reduce concerning tech behaviors, cut conflict, and align your family on a shared vision of digital health."
+  loadGSAP={true}
+  bodyClass="page-home"
+>
 
   <!-- HERO — sticky z-index:1, CSS handles stacking -->
   <Panel id="hero" class="panel-page" background="default">
@@ -107,7 +95,10 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       </ul>
 
       <div class="sf-center">
-        <h2 class="eyebrow sf-eyebrow">{homeData.problem.heading}</h2>
+        <!-- Real section heading for the a11y outline; the visible pill below is
+             a decorative duplicate (every other panel uses <p class="eyebrow">). -->
+        <h2 class="sr-only">{homeData.problem.heading}</h2>
+        <p class="eyebrow sf-eyebrow" aria-hidden="true">{homeData.problem.heading}</p>
 
         <div class="sf-line-wrap">
           <!-- Wide track: JS pans it horizontally so the active station centres -->
@@ -127,7 +118,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
                 class="sf-emotion"
                 data-i={i}
                 transform={`translate(${sfStationX(i) - SF_C} ${sfStationY(i) - SF_C}) scale(${SF_SCALE})`}
-                set:html={emotionPaths(q.emotion)}
+                set:html={emotionPaths(q.emotion, SF_MAX_ARCS)}
               />
             ))}
           </svg>
@@ -243,7 +234,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
-                set:html={emotionPaths('Balance')}
+                set:html={emotionPaths('Balance', SF_MAX_ARCS)}
               />
             )}
           </div>
@@ -477,7 +468,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     display: inline-block;
     align-self: flex-start;
     font-family: var(--font-body);
-    font-size: 0.65rem;
+    font-size: var(--text-eyebrow);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
@@ -561,7 +552,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   .hero-img {
     position: absolute;
     inset: 0;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-media);
     background-image: url('/soccer2.jpg');
     background-size: cover;
     background-position: center;
@@ -580,6 +571,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   /* "Alignment" motif — pollen, oversized, highlighting the player and
      breaking out of the photo into the surrounding space. */
   .hero-alignment {
+    display: none; /* motif over hero photo hidden — re-enable by removing this line */
     position: absolute;
     width: 138%;
     height: auto;
@@ -1017,6 +1009,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   /* "Balance" emotion motif — pollen line over the Proven-Approach photo,
      centred on it and spilling past its edges. */
   .science-deco {
+    display: none; /* motif over science photo hidden — re-enable by removing this line */
     position: absolute;
     left: 50%;
     top: 50%;
@@ -1064,7 +1057,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
 
   .science-item__media {
     aspect-ratio: 1 / 1;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-media);
     background-color: var(--pale-beige);
     background-image: var(--card-img, linear-gradient(135deg, var(--pale-beige), var(--almond-beige)));
     background-size: cover;
@@ -1087,7 +1080,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
 
   .science-item__text {
     background: var(--light-beige);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-media);
     padding: var(--space-8);
     display: flex;
     flex-direction: column;
@@ -1738,27 +1731,57 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   const mastheadH = (document.querySelector('.masthead') as HTMLElement)?.offsetHeight ?? 64;
   const panelH = () => window.innerHeight - mastheadH;
 
+  // ── Modal focus management (shared) ───────────────────────────
+  // Keyboard users must not be able to Tab out behind an open dialog, and focus
+  // must return to whatever opened it on close (WCAG 2.4.3 / 2.1.2).
+  const getFocusable = (container: HTMLElement): HTMLElement[] =>
+    Array.from(
+      container.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter(el => el.offsetParent !== null);
+
+  function trapTab(e: KeyboardEvent, modal: HTMLElement) {
+    if (e.key !== 'Tab') return;
+    const focusable = getFocusable(modal);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
   // ── Video modal ───────────────────────────────────────────────
   const videoModal = document.getElementById('video-modal');
   // Move to body to escape any stacking context
   if (videoModal) document.body.appendChild(videoModal);
 
   const videoBtn = document.getElementById('watch-video-btn');
-  const closeVideoBtn = videoModal?.querySelector('.video-modal__close');
+  const closeVideoBtn = videoModal?.querySelector<HTMLElement>('.video-modal__close');
   const videoBackdrop = videoModal?.querySelector('.video-modal__backdrop');
+  let videoReturnFocus: HTMLElement | null = null;
 
   function openVideoModal() {
+    videoReturnFocus = document.activeElement as HTMLElement;
     videoModal?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    closeVideoBtn?.focus();
   }
   function closeVideoModal() {
     videoModal?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    videoReturnFocus?.focus();
   }
 
   videoBtn?.addEventListener('click', openVideoModal);
   closeVideoBtn?.addEventListener('click', closeVideoModal);
   videoBackdrop?.addEventListener('click', closeVideoModal);
+  videoModal?.addEventListener('keydown', e => trapTab(e, videoModal));
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoModal?.getAttribute('aria-hidden') === 'false') closeVideoModal();
   });
@@ -1769,23 +1792,28 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   if (planModal) document.body.appendChild(planModal);
 
   const planOpenBtns = document.querySelectorAll('[data-open-plan]');
-  const planClose = planModal?.querySelector('.plan-modal__close');
+  const planClose = planModal?.querySelector<HTMLElement>('.plan-modal__close');
   const planBackdrop = planModal?.querySelector('.plan-modal__backdrop');
   const planTrackWrap = planModal?.querySelector('.plan-track-wrap') as HTMLElement | null;
+  let planReturnFocus: HTMLElement | null = null;
 
   function openPlanModal() {
+    planReturnFocus = document.activeElement as HTMLElement;
     planModal?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     if (planTrackWrap) planTrackWrap.scrollLeft = 0; // always start at week 1
+    planClose?.focus();
   }
   function closePlanModal() {
     planModal?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    planReturnFocus?.focus();
   }
 
   planOpenBtns.forEach(btn => btn.addEventListener('click', openPlanModal));
   planClose?.addEventListener('click', closePlanModal);
   planBackdrop?.addEventListener('click', closePlanModal);
+  planModal?.addEventListener('keydown', e => trapTab(e, planModal));
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && planModal?.getAttribute('aria-hidden') === 'false') closePlanModal();
   });
@@ -1810,6 +1838,11 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       if (!target) return;
       e.preventDefault();
       window.scrollTo({ top: Math.max(0, getFlowTop(target) - mastheadH), behavior: 'smooth' });
+      // Move keyboard focus to the target so AT/keyboard users land there too
+      // (smooth-scroll alone leaves focus on the link). tabindex=-1 makes the
+      // section programmatically focusable without adding it to the tab order.
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
     });
   });
 
@@ -1819,6 +1852,8 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
 
   if (spQuotes.length > 1) {
     const quoteCount = spQuotes.length;
+    // Respect reduced-motion: keep dot navigation, but don't auto-advance.
+    const spReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let current = 0;
     let timer: ReturnType<typeof setInterval>;
 
@@ -1850,6 +1885,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     }
 
     function startTimer() {
+      if (spReduced) return; // no auto-advance under reduced-motion
       timer = setInterval(advance, 8000);
     }
 

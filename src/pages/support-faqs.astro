@@ -10,7 +10,7 @@ import faqData from '../../content/faqs.json';
 
   <Panel size="sm">
     <Reveal><p class="eyebrow">{faqData.eyebrow}</p></Reveal>
-    <Reveal delay={100}><h1>Support & FAQs</h1></Reveal>
+    <Reveal delay={100}><h1>{faqData.heading}</h1></Reveal>
     <Reveal delay={150}><p class="lead">{faqData.intro} {faqData.contactNote} <a href={`mailto:${faqData.contactEmail}`}>{faqData.contactEmail}</a>. {faqData.responseTime}</p></Reveal>
   </Panel>
 

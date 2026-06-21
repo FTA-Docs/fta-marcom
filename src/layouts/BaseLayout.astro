@@ -7,22 +7,28 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   canonical?: string;
   loadGSAP?: boolean;
   bodyClass?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
   description = 'alignd helps families navigate care coordination across education, health, and development.',
-  ogImage = '/og-default.jpg',
+  ogImage = '/soccer2.jpg',
+  ogImageAlt = 'alignd — personalized, evidence-based plans for family digital wellness',
   canonical,
   loadGSAP = false,
   bodyClass = '',
+  noindex = false,
 } = Astro.props;
 
 const siteUrl = 'https://alignd.care';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
+// OG/Twitter images must be absolute URLs — resolve relative paths against the site origin.
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
 const fullTitle = title === 'alignd' ? title : title + ' | alignd';
 const jsonLd = JSON.stringify([
   {
@@ -31,7 +37,7 @@ const jsonLd = JSON.stringify([
     name: 'Family Technology Advisors, Inc.',
     alternateName: 'alignd',
     url: siteUrl,
-    logo: siteUrl + '/logo.svg',
+    logo: siteUrl + '/alignd_logo_fullcolor.svg',
     contactPoint: [
       {
         '@type': 'ContactPoint',
@@ -58,6 +64,7 @@ const jsonLd = JSON.stringify([
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -69,7 +76,8 @@ const jsonLd = JSON.stringify([
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:site_name" content="alignd" />
 
     <!-- Twitter Card -->
@@ -77,7 +85,8 @@ const jsonLd = JSON.stringify([
     <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <!-- JSON-LD -->
     <script type="application/ld+json" set:html={jsonLd} />

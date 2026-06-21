@@ -1,18 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Panel from '../components/Panel.astro';
+import notFound from '../../content/404.json';
 ---
 
-<BaseLayout title="Page Not Found" description="The page you're looking for doesn't exist.">
+<BaseLayout title="Page Not Found" description="The page you're looking for doesn't exist." noindex={true}>
 
   <Panel>
     <div class="not-found">
-      <span class="not-found__code" aria-hidden="true">404</span>
-      <h1>Page not found</h1>
-      <p>The page you're looking for doesn't exist or has been moved.</p>
+      <span class="not-found__code" aria-hidden="true">{notFound.code}</span>
+      <h1>{notFound.heading}</h1>
+      <p>{notFound.body}</p>
       <div class="not-found__actions">
-        <a href="/" class="btn btn--primary">Go Home</a>
-        <a href="/support-faqs" class="btn btn--secondary">Visit Support</a>
+        <a href="/" class="btn btn--primary">{notFound.homeLabel}</a>
+        <a href="/support-faqs" class="btn btn--secondary">{notFound.supportLabel}</a>
       </div>
     </div>
   </Panel>

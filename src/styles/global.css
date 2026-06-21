@@ -14,7 +14,7 @@
 .eyebrow {
   display: inline-block;
   font-family: var(--font-body);
-  font-size: 0.65rem;
+  font-size: var(--text-eyebrow);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;

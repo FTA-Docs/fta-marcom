@@ -10,7 +10,7 @@
   --dark-grey:      #3B3F46;
   --midnight:       #1B263E;
   --spring-leaf:    #669D5B;   /* Primary brand / primary buttons */
-  --forest:         color-mix(in srgb, #669D5B 55%, #1B263E); /* deep brand green for text on light bg */
+  --forest:         color-mix(in srgb, var(--spring-leaf) 55%, var(--midnight)); /* deep brand green for text on light bg */
   --pollen:         #F3C27D;
   --roman-coffee:   #7A5848;
   --red:            #D54848;
@@ -52,7 +52,7 @@
   --color-secondary-text:  var(--dark-grey);
 
   /* ── Masthead ────────────────────────────────────────────── */
-  --masthead-bg:     color-mix(in srgb, var(--white) 72%, transparent);
+  --masthead-bg:     var(--white);
   --masthead-text:   var(--dark-grey);
   --masthead-border: color-mix(in srgb, var(--dark-grey) 8%, transparent);
 
@@ -78,6 +78,7 @@
   --weight-heading:  500;
 
   /* ── Type scale (fluid via clamp) ───────────────────────── */
+  --text-eyebrow: 0.65rem; /* uppercase pill section-label (.eyebrow) */
   --text-2xs:  0.6875rem;  /* fixed micro-label (footer contact labels) */
   --text-xs:   clamp(0.75rem,   0.72rem + 0.11vw, 0.8125rem);
   --text-sm:   clamp(0.875rem,  0.85rem + 0.11vw, 0.9375rem);

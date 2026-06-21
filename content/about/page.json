@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "title": "About",
+    "description": "Learn about alignd's mission, coaching team, and the behavioral science behind our approach to family digital wellness."
+  },
+  "mission": {
+    "eyebrow": "About alignd",
+    "heading": "Our Mission",
+    "imageAlt": "Teenagers playing music together"
+  },
+  "clinical": {
+    "heading": "Clinical Experience",
+    "placeholder": "Photo",
+    "caption": "Dr. Michael Rich, in clinic"
+  },
+  "comb": {
+    "heading": "About COM-B"
+  },
+  "technology": {
+    "heading": "Our Technology",
+    "inputsLabel": "Inputs",
+    "outputsLabel": "Outputs"
+  },
+  "team": {
+    "heading": "Founding Team",
+    "bioButton": "View Bio",
+    "bioButtonAria": "View bio for {name}",
+    "modalCloseAria": "Close bio",
+    "linkedinLabel": "LinkedIn"
+  }
+}

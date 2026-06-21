@@ -28,8 +28,8 @@ import siteData from '../../content/site.json';
         ))}
       </ul>
       <div class="masthead__actions">
-        <a href={siteData.cta.signIn.href} class="btn btn--secondary">Sign In</a>
-        <a href={siteData.cta.getStarted.href} class="btn btn--primary">Get Started</a>
+        <a href={siteData.cta.signIn.href} class="btn btn--secondary">{siteData.cta.signIn.label}</a>
+        <a href={siteData.cta.getStarted.href} class="btn btn--primary">{siteData.cta.getStarted.label}</a>
       </div>
     </nav>
   </div>
@@ -44,7 +44,6 @@ import siteData from '../../content/site.json';
     z-index: var(--z-masthead);
     height: var(--masthead-h);
     background-color: var(--masthead-bg);
-    backdrop-filter: blur(8px);
   }
 
   .masthead__inner {

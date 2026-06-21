@@ -50,9 +50,20 @@ const shadows = ['--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl'];
 const zindex = ['--z-below', '--z-base', '--z-raised', '--z-overlay', '--z-masthead', '--z-modal'];
 const transitions = ['--transition-fast', '--transition-base', '--transition-slow'];
 
+// UI line-icon set (24×24 viewBox, currentColor, round caps/joins). `mode`
+// controls stroke vs fill rendering; `mixed` icons carry their own attributes.
+const icons = [
+  { label: 'Chevron', mode: 'stroke', view: '0 0 16 16', paths: '<path d="M4 6l4 4 4-4"/>' },
+  { label: 'Arrow', mode: 'stroke', view: '0 0 24 24', paths: '<path d="M4 12h15M13 6l6 6-6 6"/>' },
+  { label: 'Capability', mode: 'stroke', view: '0 0 24 24', paths: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/>' },
+  { label: 'Opportunity', mode: 'stroke', view: '0 0 24 24', paths: '<path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3zM4 7.5 12 12m0 0 8-4.5M12 12v9"/>' },
+  { label: 'Motivation', mode: 'fill', view: '0 0 24 24', paths: '<path d="M12 20s-6.5-4.3-9-8.1C1.2 9 2.6 5.6 6 5.6c2 0 3.1 1.2 4 2.3.9-1.1 2-2.3 4-2.3 3.4 0 4.8 3.4 3 6.3-2.5 3.8-9 8.1-9 8.1z"/>' },
+  { label: 'Play', mode: 'mixed', view: '0 0 64 64', paths: '<circle cx="32" cy="32" r="31" fill="none" stroke="currentColor" stroke-width="2"/><path d="M26 22l20 10-20 10V22z" fill="currentColor"/>' },
+];
+
 const toc = [
   ['logo', 'Logo'], ['colors', 'Colors'], ['type', 'Typography'], ['spacing', 'Spacing'],
-  ['radius', 'Radius'], ['shadow', 'Shadow'], ['system', 'Z-index & motion'],
+  ['radius', 'Radius'], ['shadow', 'Shadow'], ['photo', 'Photo treatment'], ['icons', 'Icons'], ['system', 'Z-index & motion'],
   ['buttons', 'Buttons'], ['elements', 'Text elements'], ['patterns', 'Patterns'],
 ];
 ---
@@ -236,6 +247,33 @@ const toc = [
           <figure class="ds-tile" data-var={t}>
             <div class="ds-shadow-box" style={`box-shadow: var(${t})`}></div>
             <figcaption><code class="ds-name">{t}</code></figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── PHOTO TREATMENT ── -->
+    <section id="photo" class="ds-section">
+      <div class="ds-section__head"><h2>Photo treatment</h2><p class="ds-note">Applied to every content photo &amp; feature card.</p></div>
+      <div class="ds-photo">
+        <div class="ds-photo__card" aria-hidden="true"></div>
+        <dl class="ds-defs ds-photo__specs">
+          <div class="ds-def"><dt>Corner radius</dt><dd><code class="ds-name">--radius-media</code> · 24px</dd></div>
+          <div class="ds-def"><dt>Clip</dt><dd><code class="ds-name">overflow: hidden</code></dd></div>
+          <div class="ds-def"><dt>Tint overlay</dt><dd><code class="ds-name">--spring-leaf</code> @ 22–25%</dd></div>
+          <div class="ds-def"><dt>Aspect (cards)</dt><dd><code class="ds-name">1 / 1</code></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ── ICONS ── -->
+    <section id="icons" class="ds-section">
+      <div class="ds-section__head"><h2>Icons</h2><p class="ds-note">Line icons — 24×24 viewBox, <code>currentColor</code>, round caps/joins, ~1.5–2 stroke.</p></div>
+      <div class="ds-icons">
+        {icons.map(ic => (
+          <figure class={`ds-icon ds-icon--${ic.mode}`}>
+            <svg viewBox={ic.view} aria-hidden="true" set:html={ic.paths} />
+            <figcaption><code class="ds-name">{ic.label}</code></figcaption>
           </figure>
         ))}
       </div>
@@ -553,6 +591,62 @@ const toc = [
     background: var(--color-bg);
     border-radius: var(--radius-md);
   }
+
+  /* ── Photo treatment ── */
+  .ds-photo {
+    display: grid;
+    grid-template-columns: minmax(200px, 320px) 1fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  /* Live replica of the site-wide photo treatment */
+  .ds-photo__card {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-media);
+    overflow: hidden;
+    background-image: url('/soccer2.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  .ds-photo__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--spring-leaf) 22%, transparent);
+    pointer-events: none;
+  }
+  .ds-photo__specs { align-self: center; }
+  @media (max-width: 640px) {
+    .ds-photo { grid-template-columns: 1fr; }
+  }
+
+  /* ── Icons ── */
+  .ds-icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--space-6);
+  }
+  .ds-icon {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--space-4);
+    background: var(--color-surface-raised);
+    border-radius: var(--radius-md);
+    color: var(--color-accent);
+  }
+  .ds-icon svg { width: 28px; height: 28px; }
+  .ds-icon--stroke svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ds-icon--fill svg { fill: currentColor; stroke: none; }
 
   /* ── Defs (z-index / transitions) ── */
   .ds-defs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-3); margin: 0; }

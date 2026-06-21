@@ -4,7 +4,6 @@
 :root {
   /* ── Raw palette ─────────────────────────────────────────── */
   --white:          #FFFFFF;
-  --light-grey:     #EFEFEF;
   --secondary-grey: #9F9F9F;
   --prime-grey:     #5A5A5A;
   --dark-grey:      #3B3F46;
@@ -14,12 +13,9 @@
   --pollen:         #F3C27D;
   --roman-coffee:   #7A5848;
   --red:            #D54848;
-  --perry-blue:     #8FABD8;
-  --dusk-blue:      #4D5D81;
   --light-beige:    #FEFAF7;
   --pale-beige:     #FCF6F1;
   --taupe-beige:    #F8F2ED;
-  --base-beige:     #FFF3E9;
   --heavy-beige:    #F4E8DC;
   --almond-beige:   #ECD8C8;
   --blush:          #FEEEEE;
@@ -35,7 +31,6 @@
   --color-text:         var(--prime-grey);
   --color-text-muted:   var(--secondary-grey);
   --color-text-subtle:  var(--secondary-grey);
-  --color-text-inverse: var(--white);
 
   /* ── Border colors ──────────────────────────────────────── */
   --color-border:        var(--almond-beige);
@@ -54,15 +49,12 @@
   /* ── Masthead ────────────────────────────────────────────── */
   --masthead-bg:     var(--white);
   --masthead-text:   var(--dark-grey);
-  --masthead-border: color-mix(in srgb, var(--dark-grey) 8%, transparent);
 
   /* ── Footer ──────────────────────────────────────────────── */
   --footer-bg:         var(--midnight);
   --footer-text:       var(--almond-beige);
   --footer-text-muted: color-mix(in srgb, var(--almond-beige) 58%, var(--midnight));
   --footer-border:     color-mix(in srgb, var(--almond-beige) 16%, transparent);
-  --footer-link:       var(--almond-beige);
-  --footer-link-hover: var(--pollen);
 
   /* ── Font families ──────────────────────────────────────── */
   --font-body:    'Figtree', system-ui, -apple-system, sans-serif;
@@ -119,16 +111,7 @@
   --form-error-fill:     var(--blush);
   --form-error-text:     var(--dark-grey);
 
-  /* ── Status colors ───────────────────────────────────────── */
-  --color-status-error:   var(--red);
-  --color-status-warning: var(--roman-coffee);
-  --color-status-caution: var(--pollen);
-  --color-status-success: var(--spring-leaf);
-
   /* ── Shadows ─────────────────────────────────────────────── */
   --shadow-color: 27 38 62;   /* --midnight RGB */
   --shadow-sm: 0 1px 2px 0 rgb(var(--shadow-color) / 0.06);
-  --shadow-md: 0 4px 6px -1px rgb(var(--shadow-color) / 0.10), 0 2px 4px -2px rgb(var(--shadow-color) / 0.06);
-  --shadow-lg: 0 10px 15px -3px rgb(var(--shadow-color) / 0.10), 0 4px 6px -4px rgb(var(--shadow-color) / 0.06);
-  --shadow-xl: 0 20px 25px -5px rgb(var(--shadow-color) / 0.10), 0 8px 10px -6px rgb(var(--shadow-color) / 0.06);
 }

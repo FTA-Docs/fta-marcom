@@ -6,20 +6,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 // page reflects the skin automatically — change a token and it updates here.
 
 const palette = [
-  '--white', '--light-grey', '--secondary-grey', '--prime-grey', '--dark-grey', '--midnight',
-  '--spring-leaf', '--forest', '--pollen', '--roman-coffee', '--red', '--perry-blue', '--dusk-blue',
-  '--light-beige', '--pale-beige', '--taupe-beige', '--base-beige', '--heavy-beige', '--almond-beige', '--blush',
+  '--white', '--secondary-grey', '--prime-grey', '--dark-grey', '--midnight',
+  '--spring-leaf', '--forest', '--pollen', '--roman-coffee', '--red',
+  '--light-beige', '--pale-beige', '--taupe-beige', '--heavy-beige', '--almond-beige', '--blush',
 ];
 
 const colorGroups = [
   ['Surfaces',       ['--color-bg', '--color-surface', '--color-surface-raised', '--color-surface-overlay']],
-  ['Text',           ['--color-heading', '--color-text', '--color-text-muted', '--color-text-subtle', '--color-text-inverse']],
+  ['Text',           ['--color-heading', '--color-text', '--color-text-muted', '--color-text-subtle']],
   ['Borders',        ['--color-border', '--color-border-strong']],
   ['Accent · primary', ['--color-accent', '--color-accent-hover', '--color-accent-text']],
   ['Secondary',      ['--color-secondary', '--color-secondary-hover', '--color-secondary-text']],
-  ['Status',         ['--color-status-error', '--color-status-warning', '--color-status-caution', '--color-status-success']],
-  ['Masthead',       ['--masthead-bg', '--masthead-text', '--masthead-border']],
-  ['Footer',         ['--footer-bg', '--footer-text', '--footer-text-muted', '--footer-border', '--footer-link', '--footer-link-hover']],
+  ['Masthead',       ['--masthead-bg', '--masthead-text']],
+  ['Footer',         ['--footer-bg', '--footer-text', '--footer-text-muted', '--footer-border']],
 ];
 
 const fonts = [
@@ -41,13 +40,13 @@ const leadings = ['--leading-tight', '--leading-snug', '--leading-normal', '--le
 const trackings = ['--tracking-tight', '--tracking-snug', '--tracking-normal', '--tracking-wide', '--tracking-wider'];
 
 const spacing = [
-  '--space-1', '--space-2', '--space-3', '--space-4', '--space-5', '--space-6', '--space-7',
-  '--space-8', '--space-9', '--space-10', '--space-11', '--space-12', '--space-14', '--space-16', '--space-20', '--space-24',
+  '--space-1', '--space-2', '--space-3', '--space-4', '--space-5', '--space-6',
+  '--space-8', '--space-10', '--space-12', '--space-14', '--space-16', '--space-20',
 ];
 
 const radii = ['--radius-sm', '--radius-md', '--radius-media', '--radius-full'];
-const shadows = ['--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl'];
-const zindex = ['--z-below', '--z-base', '--z-raised', '--z-overlay', '--z-masthead', '--z-modal'];
+const shadows = ['--shadow-sm'];
+const zindex = ['--z-masthead'];
 const transitions = ['--transition-fast', '--transition-base', '--transition-slow'];
 
 // UI line-icon set — one system: 24×24 viewBox, currentColor, round caps/joins,

@@ -118,7 +118,7 @@
         "period": "/month",
         "image": "/Wrap-Up_ Intake Chat.png",
         "imageFocus": "17%",
-        "description": "Keep the momentum going. For the cost of a movie ticket or pizza, you can continue to work towards and maintain optimal digital health as your child and the technologies that surround them continue to evolve.",
+        "description": "Keep the momentum going. For the cost of a streaming subscription, you can continue to work towards and maintain optimal digital health as your child and the technologies that surround them continue to evolve.",
         "cta": {
           "label": "Get Started",
           "href": "#"
@@ -127,9 +127,9 @@
       }
     ],
     "valueHighlights": [
-      "A personalized behavior change plan. ",
+      "A plan made for you and your child. ",
       "24/7 real-time AI coaching. ",
-      "Unlimited clinical team messaging. Replies within 24 hrs.  ",
+      "Unlimited clinical team messaging.  ",
       "Plan updates based on your feedback.",
       "Cancel anytime."
     ]

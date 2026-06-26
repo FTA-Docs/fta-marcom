@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "https://marcom-dev.fta.care/admin",
+      "permanent": false
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://marcom-dev.fta.care/admin/:path*",
+      "permanent": false
+    }
+  ],
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "astro",

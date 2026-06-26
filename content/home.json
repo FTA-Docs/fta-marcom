@@ -1,6 +1,6 @@
 {
   "hero": {
-    "headline": "Your child's relationship with technology can change real fast.",
+    "headline": "Your child's relationship with technology can change.",
     "subheadline": "You're not powerless. Get a personalized, evidence-based behavior change plan made to minimize concerning behaviors, reduce conflict and align you and your child on a shared vision of digital health.",
     "cta": {
       "label": "Watch Video",
@@ -40,31 +40,31 @@
   "solution": {
     "sections": [
       {
-        "eyebrow": "Personalized from day one",
+        "eyebrow": "Evidence based",
         "title": "A Plan for You & Your Child",
         "linkPhrase": "8-week plans",
-        "body": "We combine our team's leading pediatric digital health expertise with AI‑powered personalization to create 8-week plans designed to drive measurable change.",
+        "body": "We combine our team's leading pediatric digital health expertise with AI‑powered personalization to create 8-week plans designed to replace time spent on concerning digital behaviors with healthier activities that matter to your child.",
         "phones": 3,
         "screen": "/Plan_ Overview.png"
       },
       {
         "eyebrow": "It starts with you",
         "title": "Share What Matters",
-        "body": "Tell us about your child's current relationship with technology, your family's goals, and what you've already tried. The more we know, the better we can tailor a plan that actually fits your family.",
+        "body": "Tell us about your child's current relationship with technology, how it's impacting their life, other activities they might enjoy and what you've already tried to foster change. The more we know, the better your plan will perform.",
         "phones": 2,
         "screen": "/Wrap-Up_ Intake Chat.png"
       },
       {
         "eyebrow": "At your own pace",
         "title": "Use & Tune",
-        "body": "Work through your personalized 8-week plan week by week, completing structured tasks at your own pace. Quick check-in surveys along the way help us refine your guidance as your situation evolves.",
+        "body": "Work through your personalized 8-week plan week by week, completing structured tasks at your own pace. Regular check-in surveys along the way help us refine your plan as you learn more about what works best for you and your child.  ",
         "phones": 2,
         "screen": "/pressed.png"
       },
       {
         "eyebrow": "Never on your own",
         "title": "Always Be Supported",
-        "body": "Ali, our AI assistant, is available any time to answer questions or help you navigate a difficult moment. When you need a human, our coaching team is a message away.",
+        "body": "You can consult with your AI guide anytime, share how things are going and update your plan if/as needed. And of course you can reach out to a member of our clinical team with questions or to help you navigate if you get stuck. We're just a message away.",
         "phones": 3,
         "screen": "/Wrap-Up_ Intake Chat.png"
       }
@@ -105,7 +105,7 @@
         "period": "one-time",
         "image": "/Plan_ Overview.png",
         "linkPhrase": "eight structured weeks",
-        "description": "A personalized digital wellness plan built around your child's habits and your family's goals — delivered in eight structured weeks with AI coaching and expert guidance every step of the way.",
+        "description": "A personalized, living plan built around your child's habits and your digital wellness goals — delivered in eight structured weeks with AI coaching and expert human support every step of the way.",
         "cta": {
           "label": "Get Started",
           "href": "#"
@@ -118,7 +118,7 @@
         "period": "/month",
         "image": "/Wrap-Up_ Intake Chat.png",
         "imageFocus": "17%",
-        "description": "Keep the momentum going. For less than the cost of a single coaching session, continue accessing Ali, your coaching team, and ongoing micro-plans as your child grows and your situation evolves.",
+        "description": "Keep the momentum going. For the cost of a streaming subscription, you can continue to work towards and maintain optimal digital health as your child and the technologies that surround them continue to evolve.",
         "cta": {
           "label": "Get Started",
           "href": "#"
@@ -127,28 +127,28 @@
       }
     ],
     "valueHighlights": [
-      "24/7 AI coaching available any time via chat",
-      "Unlimited coaching team messaging (async)",
-      "Weekly check-ins that adapt to your plan",
-      "Plan updates based on your progress",
-      "Cancel anytime"
+      "A plan made for you and your child. ",
+      "24/7 real-time AI coaching. ",
+      "Unlimited clinical team messaging.  ",
+      "Plan updates based on your feedback.",
+      "Cancel anytime."
     ]
   },
   "comparison": {
-    "eyebrow": "How we compare",
-    "heading": "How alignd compares",
-    "subheading": "Coaching that builds lasting habits — not another session to schedule or app to police.",
+    "eyebrow": "Targeted Behavior Change",
+    "heading": "How Alignd Compares",
+    "subheading": "Guidance that builds lasting habits — not another session to schedule or app to police.",
     "cols": [
-      "alignd",
-      "Traditional Coaching",
+      "Alignd",
+      "Talk Therapy",
       "Parental Control Tech"
     ],
     "rows": [
       {
         "label": "Goal",
-        "alignd": "Build lasting digital habits and a healthier relationship with tech",
-        "traditional": "Address issues through periodic conversation",
-        "parentalTech": "Restrict and monitor screen access"
+        "alignd": "Focus on concerning behaviors and reducing conflict. ",
+        "traditional": "Focus on underlying psycho-social issues.  ",
+        "parentalTech": "Can increase conflict and inhibit lasting change. "
       },
       {
         "label": "Cost",
@@ -200,7 +200,7 @@
         "attribution": "Mother of two"
       },
       {
-        "quote": "Ali answered my questions at 11pm when I was spiraling. Having that support available made all the difference.",
+        "quote": "I got answers to my questions at 11pm when I was spiraling. Having that support available made all the difference.",
         "attribution": "Parent"
       },
       {

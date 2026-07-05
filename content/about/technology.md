@@ -1,3 +1,5 @@
-alignd pairs clinical expertise with AI to deliver guidance that's genuinely personal. Every plan is shaped by what you tell us about your family, the science behind behavior change, and the lessons drawn from families like yours.
+At Alignd, we’ve created a technical platform that can provide personalized, evidence-based, digital health behavior change plans and guidance *affordably and at scale*. 
 
-The result is a system that adapts as you go — turning a rich set of inputs into a personalized plan, timely updates, and in-the-moment support whenever you need it.
+Our approach places AI “frontier models” like Anthropic’s Claude and Open AI’s Chat GPT inside a much larger, multi-layered system of proprietary knowledge, clinical guardrails, structured domain modeling, longitudinal memory and lifecycle management. 
+
+**You can think of it this way: The frontier model is the engine. Alignd is the vehicle, the road, the map, and (along with you) the driver.**

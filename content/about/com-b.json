@@ -1,8 +1,20 @@
 {
-  "center": "Behaviour",
+  "center": "Behavior",
   "nodes": [
-    { "key": "capability", "label": "Capability", "desc": "Do they have the skills and know-how?" },
-    { "key": "opportunity", "label": "Opportunity", "desc": "Does their environment make it possible?" },
-    { "key": "motivation", "label": "Motivation", "desc": "Do they want to follow through?" }
+    {
+      "key": "capability",
+      "label": "Capability",
+      "desc": "Do they have the skills and know-how?"
+    },
+    {
+      "key": "opportunity",
+      "label": "Opportunity",
+      "desc": "Does their environment make it possible?"
+    },
+    {
+      "key": "motivation",
+      "label": "Motivation",
+      "desc": "Do they want to follow through?"
+    }
   ]
 }

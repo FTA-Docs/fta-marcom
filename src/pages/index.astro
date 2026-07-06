@@ -617,11 +617,11 @@ const SF_MAX_ARCS = 6;
   }
 
   /* Scroll zone — its height sets how much scroll the worries span (the JS maps
-     scroll position to the active worry). ~0.5 screen per worry feels snappy
-     without racing past them. */
+     scroll position to the active worry). ~0.68 screen per worry: enough to read
+     each without racing past, and the JS keeps all five in range. */
   .problem-scroll-zone {
-    height: calc(var(--quote-count) * 0.55 * (100vh  - var(--masthead-h)));
-    height: calc(var(--quote-count) * 0.55 * (100svh - var(--masthead-h)));
+    height: calc(var(--quote-count) * 0.7 * (100vh  - var(--masthead-h)));
+    height: calc(var(--quote-count) * 0.7 * (100svh - var(--masthead-h)));
   }
 
   /* One worry at a time, stacked in one grid cell. Each worry fills the width

@@ -78,11 +78,13 @@ const SF_MAX_ARCS = 6;
         <h2 class="sr-only">{homeData.problem.heading}</h2>
         <p class="eyebrow sf-eyebrow" aria-hidden="true">{homeData.problem.heading}</p>
 
-        <!-- One centred worry at a time; JS crossfades the active one -->
+        <!-- One worry at a time; JS slides the active one in as you scroll -->
         <div class="sf-carousel">
           <div class="sf-quotes" aria-hidden="true">
             {homeData.problem.quotes.map((q, i) => (
-              <p class={`sf-quote${i === 0 ? ' is-active' : ''}`} data-i={i}>"{q.quote}"</p>
+              <p class={`sf-quote${i === 0 ? ' is-active' : ''}`} data-i={i}>
+                <span class="sf-quote__text">"{q.quote}"</span>
+              </p>
             ))}
           </div>
         </div>
@@ -269,7 +271,7 @@ const SF_MAX_ARCS = 6;
     </div>
   </section>
 
-  <!-- Video modal -->
+  <!-- Video modal — DORMANT: kept for when the hero "Watch Video" button returns (see script) -->
   <div class="video-modal" id="video-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Watch video">
     <div class="video-modal__backdrop"></div>
     <div class="video-modal__panel">
@@ -614,24 +616,40 @@ const SF_MAX_ARCS = 6;
     width: 100%;
   }
 
-  /* Scroll zone — its scrolled distance maps to which worry is shown. Each
-     worry gets ~0.8 of a screen of scroll (see the GSAP ScrollTrigger). */
+  /* Scroll zone — its height sets how much scroll the worries span (the JS maps
+     scroll position to the active worry). ~0.5 screen per worry feels snappy
+     without racing past them. */
   .problem-scroll-zone {
-    height: calc(var(--quote-count) * 0.8 * (100vh  - var(--masthead-h)));
-    height: calc(var(--quote-count) * 0.8 * (100svh - var(--masthead-h)));
+    height: calc(var(--quote-count) * 0.55 * (100vh  - var(--masthead-h)));
+    height: calc(var(--quote-count) * 0.55 * (100svh - var(--masthead-h)));
   }
 
-  /* One worry at a time, stacked in one grid cell; JS crossfades the active */
+  /* One worry at a time, stacked in one grid cell. Each worry fills the width
+     and glides horizontally — like the customer-success quotes near the page
+     foot — clipped so only the active one shows. JS drives which is active as
+     the reader scrolls (no autoplay). */
   .sf-quotes {
     display: grid;
-    place-items: center;
+    overflow: hidden;
     /* reserve room for the tallest worry so the group doesn't jump on cycle */
     min-height: 5em;
-    padding-inline: var(--container-pad);
   }
   .sf-quote {
     grid-area: 1 / 1;
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--container-pad);
+    /* upcoming waits off to the right; active is centred; past has exited left.
+       Solid slide (no fade), matching the social-proof carousel's motion. */
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .sf-quote.is-active { transform: translateX(0); }
+  .sf-quote.is-past { transform: translateX(-100%); }
+
+  .sf-quote__text {
     max-width: min(94vw, 24ch);
     font-family: var(--font-heading);
     font-weight: 400;
@@ -642,14 +660,7 @@ const SF_MAX_ARCS = 6;
     color: var(--roman-coffee);
     text-align: center;
     text-wrap: balance;
-    /* Worries slide in from the right and exit to the left as you scroll.
-       Default (upcoming) state: waiting just off to the right. */
-    opacity: 0;
-    transform: translateX(3rem);
-    transition: opacity 0.6s ease, transform 0.6s ease;
   }
-  .sf-quote.is-active { opacity: 1; transform: translateX(0); }
-  .sf-quote.is-past { opacity: 0; transform: translateX(-3rem); }
 
   .sf-dots {
     display: flex;
@@ -672,7 +683,7 @@ const SF_MAX_ARCS = 6;
 
   /* Phones + portrait tablets: smaller quote, reserve room for ~3 lines */
   @media (max-width: 1023px) {
-    .sf-quote {
+    .sf-quote__text {
       font-size: var(--text-3xl);
       max-width: min(90vw, 18ch);
     }
@@ -698,17 +709,16 @@ const SF_MAX_ARCS = 6;
       align-items: center;
       gap: var(--space-10);
       min-height: 0;
+      overflow: visible;
       padding-block: var(--space-8);
     }
-    /* All states flatten to a static, readable stack (no slide/fade). */
+    /* All states flatten to a static, readable stack (no slide). */
     .sf-quote,
     .sf-quote.is-active,
     .sf-quote.is-past {
       grid-area: auto;
-      opacity: 1;
       transform: none;
       transition: none;
-      font-size: var(--text-3xl);
     }
     .sf-dots { display: none; }
   }
@@ -1673,6 +1683,10 @@ const SF_MAX_ARCS = 6;
   }
 
   // ── Video modal ───────────────────────────────────────────────
+  // DORMANT: the hero "Watch Video" trigger was removed for now, so #watch-video-btn
+  // is absent and this modal never opens (the ?. below no-ops). Kept wired so
+  // restoring the button re-enables it. Remove this block + markup + CSS if the
+  // video is dropped for good.
   const videoModal = document.getElementById('video-modal');
   // Move to body to escape any stacking context
   if (videoModal) document.body.appendChild(videoModal);
@@ -1829,9 +1843,71 @@ const SF_MAX_ARCS = 6;
   }
 
   // ── Problem panel "Sound Familiar?": scroll-driven, not auto-playing ──
-  // The worries cross-fade one at a time as the reader scrolls the problem
-  // scroll zone (see the GSAP ScrollTrigger below, gated ≥768). On phones and
-  // under reduced motion there's no scroll-jack — CSS shows a static list.
+  // The panel is pinned (CSS sticky); as the reader scrolls the problem scroll
+  // zone, each worry slides in one at a time. Driven by a plain scroll listener
+  // (not GSAP) so the range is measured live from the real element positions:
+  // the cycle runs from the moment the panel pins until just before the
+  // solution panel slides up over it, so all worries are seen in sequence.
+  // Gated ≥768 and motion-OK; phones / reduced-motion get the static CSS list.
+  {
+    const sfProblemZone = document.getElementById('problem-scroll-zone');
+    const sfQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sf-quote'));
+    const sfDots   = Array.from(document.querySelectorAll<HTMLElement>('.sf-dot'));
+    const sfMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (sfProblemZone && sfQuotes.length > 1 && sfMotion
+        && window.matchMedia('(min-width: 768px)').matches) {
+      const sfCount = sfQuotes.length;
+      // Hold the last worry this fraction of a screen before the solution covers it
+      const SF_TAIL = 0.6;
+      let sfCurrent = -1;
+
+      const setWorry = (idx: number) => {
+        const i = Math.max(0, Math.min(sfCount - 1, idx));
+        if (i === sfCurrent) return;
+        sfCurrent = i;
+        sfQuotes.forEach((q, k) => {
+          q.classList.toggle('is-active', k === i);
+          q.classList.toggle('is-past', k < i);
+        });
+        sfDots.forEach((dot, k) => {
+          const active = k === i;
+          dot.classList.toggle('is-active', active);
+          dot.setAttribute('aria-selected', String(active));
+        });
+      };
+
+      // Scroll span over which the worries cycle — measured live so it tracks
+      // the real layout (zone isn't sticky, so its position is reliable).
+      const sfRange = () => {
+        const winH = window.innerHeight;
+        const zoneTop = sfProblemZone.getBoundingClientRect().top + window.scrollY;
+        const pinStart = zoneTop - winH;                          // panel finishes pinning
+        const solTop = zoneTop + sfProblemZone.offsetHeight;      // solution panel flow-top
+        const coverCentre = solTop - (mastheadH + winH) / 2;      // solution reaches the centre
+        const cycleEnd = coverCentre - SF_TAIL * (winH - mastheadH);
+        return { pinStart, span: Math.max(1, cycleEnd - pinStart) };
+      };
+
+      const updateWorry = () => {
+        const { pinStart, span } = sfRange();
+        const p = (window.scrollY - pinStart) / span;
+        setWorry(Math.floor(Math.max(0, Math.min(0.9999, p)) * sfCount));
+      };
+
+      window.addEventListener('scroll', updateWorry, { passive: true });
+      window.addEventListener('resize', updateWorry);
+      updateWorry();
+
+      // Dots jump to the middle of their worry's band
+      sfDots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          const { pinStart, span } = sfRange();
+          window.scrollTo({ top: Math.max(0, pinStart + ((i + 0.5) / sfCount) * span), behavior: 'smooth' });
+        });
+      });
+    }
+  }
 
   // ── Solution on phone: static stacked list, every step readable ──
   // The GSAP carousel (gated ≥768) is what normally toggles aria-hidden on the
@@ -1879,61 +1955,6 @@ const SF_MAX_ARCS = 6;
             end: `+=${window.innerHeight * 0.6}`,
             scrub: 1,
           },
-        });
-      }
-
-      // ── Problem: scroll-driven worry cross-fade (no autoplay) ────
-      // The panel is pinned (CSS sticky); scrolling the problem scroll zone
-      // maps to which worry shows. Gated ≥768 — phones/reduced-motion use the
-      // static CSS list. Each worry gets an equal band of the zone's scroll.
-      const sfZone   = document.getElementById('problem-scroll-zone');
-      const sfQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sf-quote'));
-      const sfDots   = Array.from(document.querySelectorAll<HTMLElement>('.sf-dot'));
-
-      const sfProblem = document.getElementById('problem');
-      if (sfZone && sfProblem && sfQuotes.length > 1
-          && window.matchMedia('(min-width: 768px)').matches) {
-        const sfCount = sfQuotes.length;
-        // Each worry sets its neighbours' resting positions so they slide in
-        // from the right and exit to the left (past → left, upcoming → right).
-        const setWorry = (idx: number) => {
-          const i = Math.max(0, Math.min(sfCount - 1, idx));
-          sfQuotes.forEach((q, k) => {
-            q.classList.toggle('is-active', k === i);
-            q.classList.toggle('is-past', k < i);
-          });
-          sfDots.forEach((dot, k) => {
-            const active = k === i;
-            dot.classList.toggle('is-active', active);
-            dot.setAttribute('aria-selected', String(active));
-          });
-        };
-
-        // The scrub distance is the scroll zone's height; finishing the cycle a
-        // little early (SF_FINISH) holds the last worry on-screen before the
-        // solution panel begins sliding up over this one.
-        const SF_FINISH = 0.82;
-        const scrubDist = () => sfCount * 0.8 * panelH();
-
-        ScrollTrigger.create({
-          trigger: sfProblem,
-          start: `top top+=${mastheadH}`,   // begins the moment the panel pins
-          end: () => `+=${scrubDist()}`,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onUpdate(self) {
-            const p = Math.min(1, self.progress / SF_FINISH);
-            setWorry(Math.floor(p * sfCount));
-          },
-        });
-
-        // Dots jump to where their worry is centred within the scrub range
-        sfDots.forEach((dot, i) => {
-          dot.addEventListener('click', () => {
-            const pinTop = getFlowTop(sfProblem) - mastheadH;
-            const frac = ((i + 0.5) / sfCount) * SF_FINISH;
-            window.scrollTo({ top: Math.max(0, pinTop + frac * scrubDist()), behavior: 'smooth' });
-          });
         });
       }
 

@@ -1,3 +1,3 @@
-Our approach is grounded in **COM-B**, a behavioral science model developed at University College London. It holds that lasting change requires three things working together — Capability, Opportunity, and Motivation.
+Our plans are structured using COM-B, a behavioral science framework developed by researchers at University College London. Over 15+ years, it has demonstrated significant success in promoting exercise and physical activity, improving diet, enhancing medication adherence and in smoking cessation. 
 
-alignd is designed to support all three: closing knowledge gaps, reducing everyday friction, and building the motivation to follow through — so new habits hold long after the plan ends.
+COM-B holds that behavior change requires three factors working together — Capability, Opportunity, and Motivation. It's not a tool for persuading someone to change. It's a tool designed to close knowledge gaps, reduce everyday friction and build the motivation to follow through — so new habits hold long after the plan ends.

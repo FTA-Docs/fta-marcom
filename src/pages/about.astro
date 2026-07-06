@@ -114,9 +114,9 @@ import { emotionPaths } from '../lib/emotions';
     </div>
   </Panel>
 
-  <!-- Our Technology — centered headline + body, schematic below -->
+  <!-- Our Technology — intro + "Five Structural Layers" table -->
   <Panel background="surface" class="about-pad">
-    <div class="about-section about-section--center">
+    <div class="about-section">
       <Reveal><h2>{pageData.technology.heading}</h2></Reveal>
       <Reveal delay={100}>
         <div class="prose about-prose-narrow">
@@ -124,31 +124,51 @@ import { emotionPaths } from '../lib/emotions';
         </div>
       </Reveal>
       <Reveal delay={150}>
-        <div class="tech-flow">
-          <div class="tech-col">
-            <span class="tech-col__head">{pageData.technology.inputsLabel}</span>
-            {techData.inputs.map(i => <span class="tech-chip">{i}</span>)}
-          </div>
-
-          <svg class="tech-arrow" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 12h15M13 6l6 6-6 6"/>
-          </svg>
-
-          <div class="tech-engine">
-            <span class="tech-engine__label">{techData.engineLabel}</span>
-            <span class="tech-engine__sub">{techData.engineSub}</span>
-          </div>
-
-          <svg class="tech-arrow" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 12h15M13 6l6 6-6 6"/>
-          </svg>
-
-          <div class="tech-col">
-            <span class="tech-col__head">{pageData.technology.outputsLabel}</span>
-            {techData.outputs.map(o => <span class="tech-chip">{o}</span>)}
-          </div>
+        <div class="tech-layers">
+          <hr class="tech-rule" />
+          <button type="button" class="tech-layers__link" data-open-tech>{techData.linkText}</button>
+          <p class="tech-layers__intro">
+            {techData.layersIntro.includes(techData.linkPhrase) ? (
+              <Fragment>
+                {techData.layersIntro.split(techData.linkPhrase)[0]}
+                <button type="button" class="tech-inline-link" data-open-tech>{techData.linkPhrase}</button>
+                {techData.layersIntro.split(techData.linkPhrase)[1]}
+              </Fragment>
+            ) : techData.layersIntro}
+          </p>
         </div>
       </Reveal>
+    </div>
+
+    <!-- Technology deep-dive modal: the five structural layers table -->
+    <div class="tech-modal" id="tech-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tech-modal-heading">
+      <div class="tech-modal__backdrop"></div>
+      <div class="tech-modal__panel">
+        <button class="tech-modal__close" aria-label="Close">&times;</button>
+        <div class="tech-modal__header">
+          <h2 id="tech-modal-heading" class="tech-modal__heading">{techData.modalHeading}</h2>
+        </div>
+        <div class="tech-table-wrap">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th scope="col">{techData.cols[0]}</th>
+                <th scope="col">{techData.cols[1]}</th>
+                <th scope="col">{techData.cols[2]}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {techData.layers.map(layer => (
+                <tr>
+                  <th scope="row">{layer.name}</th>
+                  <td>{layer.adds}</td>
+                  <td>{layer.why}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </Panel>
 
@@ -217,11 +237,6 @@ import { emotionPaths } from '../lib/emotions';
     margin-top: 0;
     margin-bottom: var(--space-5);
   }
-
-  /* Technology section: centered headline + body (schematic keeps its own layout) */
-  .about-section--center { text-align: center; }
-  .about-section--center .about-prose-narrow { margin-inline: auto; }
-  .about-section--center .tech-flow { text-align: initial; }
 
   /* Body copy matches the homepage hero sub: base size, full text color */
   .prose :global(p) {
@@ -411,80 +426,164 @@ import { emotionPaths } from '../lib/emotions';
     color: var(--color-text);
   }
 
-  /* ── Technology schematic (coded): inputs → AI → outputs ── */
-  .tech-flow {
-    margin-top: var(--space-10);
-    display: flex;
-    align-items: center;
-    gap: var(--space-5);
+  /* ── Technology "Five Structural Layers" table ──
+     Borrows the homepage comparison table's striping + typography; no
+     highlighted (green) column here — every row is an Alignd layer. */
+  .tech-layers { margin-top: var(--space-10); }
+
+  /* Short divider echoing the doc's rule between the intro and the deep-dive */
+  .tech-rule {
+    border: none;
+    border-top: 1px solid var(--color-border-strong);
+    width: 96px;
+    margin: 0 0 var(--space-8);
   }
 
-  .tech-col {
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+  /* "Take a closer look" — heading-scale link that opens the layers modal */
+  .tech-layers__link {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-xl);
+    color: var(--color-accent);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 0 var(--space-3);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity var(--transition-fast);
+  }
+  .tech-layers__link:hover { opacity: 0.7; }
+  .tech-layers__link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
-  .tech-col__head {
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wider);
-    color: var(--color-text-muted);
-    text-align: center;
-    margin-bottom: var(--space-1);
-  }
-
-  .tech-chip {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-bg);
-    padding: var(--space-3) var(--space-4);
-    font-size: var(--text-sm);
-    line-height: var(--leading-snug);
+  .tech-layers__intro {
     color: var(--color-text);
-    text-align: center;
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    margin: 0;
   }
 
-  .tech-arrow {
-    flex: 0 0 auto;
-    width: 28px;
-    height: 28px;
-    fill: none;
-    stroke: var(--color-text-subtle);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  /* Inline "five structural layers" link inside the intro copy */
+  .tech-inline-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+  }
+  .tech-inline-link:hover { opacity: 0.7; }
+  .tech-inline-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
-  .tech-engine {
-    flex: 0 0 auto;
-    align-self: center;
-    display: flex;
-    flex-direction: column;
+  .tech-table-wrap { overflow-x: auto; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    font-size: var(--text-sm);
+    /* Three text columns need room; scrolls horizontally on narrower screens. */
+    min-width: 760px;
+  }
+
+  .tech-table th,
+  .tech-table td {
+    padding: var(--space-3) var(--space-5);
+    text-align: left;
+    vertical-align: top;
+    line-height: var(--leading-normal);
+  }
+
+  /* Layer-name column narrower; the two explanation columns split the rest */
+  .tech-table thead th:first-child,
+  .tech-table tbody th { width: 26%; }
+
+  /* Zebra striping, matching the comparison table */
+  .tech-table tbody tr:nth-child(odd) td,
+  .tech-table tbody tr:nth-child(odd) th {
+    background: var(--light-beige);
+  }
+
+  .tech-table thead th {
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-heading);
+  }
+
+  .tech-table tbody th {
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text);
+    vertical-align: top;
+  }
+
+  .tech-table td { color: var(--color-text); }
+
+  /* ── Technology deep-dive modal (holds the five-layers table) ── */
+  .tech-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal, 100);
     align-items: center;
     justify-content: center;
-    text-align: center;
-    gap: var(--space-1);
-    background: var(--color-accent);
-    color: var(--color-accent-text);
-    border-radius: var(--radius-md);
-    padding: var(--space-6) var(--space-5);
-    min-width: 8.5rem;
+  }
+  .tech-modal[aria-hidden="false"] { display: flex; }
+
+  .tech-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--midnight) 65%, transparent);
   }
 
-  .tech-engine__label {
+  .tech-modal__panel {
+    position: relative;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+    width: min(1100px, calc(100% - var(--space-6)));
+    max-height: min(90vh, 820px);
+    padding: var(--space-10) var(--space-8) var(--space-8);
+    overflow: auto;
+  }
+
+  .tech-modal__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    background: none;
+    border: none;
+    font-size: var(--text-xl);
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-text-muted);
+  }
+  .tech-modal__close:hover { color: var(--color-text); }
+
+  .tech-modal__header { margin-bottom: var(--space-6); }
+
+  .tech-modal__heading {
     font-family: var(--font-heading);
     font-weight: var(--weight-heading);
     font-size: var(--text-2xl);
-    line-height: 1;
-  }
-
-  .tech-engine__sub {
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    opacity: 0.85;
+    color: var(--color-heading);
+    margin: 0;
   }
 
   .team-intro {
@@ -664,17 +763,36 @@ import { emotionPaths } from '../lib/emotions';
 
     .about-figure__frame { aspect-ratio: 3 / 2; }
 
-    .tech-flow {
-      flex-direction: column;
-      align-items: stretch;
+    /* Technology table: scroll horizontally; pin the layer-name column so the
+       descriptions scroll underneath it (mirrors the comparison table). */
+    .tech-table {
+      min-width: 640px;
+      font-size: var(--text-sm);
+    }
+    .tech-table th,
+    .tech-table td {
+      padding: var(--space-3) var(--space-4);
+      line-height: var(--leading-snug);
+    }
+    .tech-table thead th:first-child,
+    .tech-table tbody th { width: 148px; }
+    .tech-table thead th:first-child,
+    .tech-table th[scope="row"] {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: var(--color-bg);
+    }
+    .tech-table tbody tr:nth-child(odd) th[scope="row"] {
+      background: var(--light-beige);
     }
 
-    .tech-arrow {
-      align-self: center;
-      transform: rotate(90deg);
+    /* Modal fills more of the small screen so the table has room */
+    .tech-modal__panel {
+      width: calc(100% - var(--space-4));
+      max-height: 92vh;
+      padding: var(--space-8) var(--space-5) var(--space-5);
     }
-
-    .tech-engine { align-self: center; }
   }
 
   @media (max-width: 640px) {
@@ -685,61 +803,76 @@ import { emotionPaths } from '../lib/emotions';
 </style>
 
 <script define:vars={{ teamData }}>
-  const modal = document.getElementById('bio-modal');
-  const modalName = modal.querySelector('.bio-modal__name');
-  const modalTitle = modal.querySelector('.bio-modal__title');
-  const modalBio = modal.querySelector('.bio-modal__bio');
-  const modalAvatar = modal.querySelector('.bio-modal__avatar');
-  const modalLinkedin = modal.querySelector('.bio-modal__linkedin');
-  const modalClose = modal.querySelector('.bio-modal__close');
-  let returnFocus = null;
+  // Shared modal wiring: focus return + trap (WCAG 2.4.3 / 2.1.2), Escape and
+  // backdrop close, and body-scroll lock. Returns { open, close }. Relies on the
+  // BEM convention that the close button / backdrop end in __close / __backdrop.
+  function createModal(modalEl) {
+    const closeBtn = modalEl.querySelector('[class*="__close"]');
+    const backdrop = modalEl.querySelector('[class*="__backdrop"]');
+    let returnFocus = null;
 
-  // Keep keyboard focus inside the open dialog (WCAG 2.4.3 / 2.1.2).
-  const getFocusable = () =>
-    Array.from(
-      modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
-    ).filter(el => el.offsetParent !== null);
+    const focusable = () =>
+      Array.from(
+        modalEl.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+      ).filter(el => el.offsetParent !== null);
 
-  function openModal(id) {
-    const member = teamData.members.find(m => m.id === id);
-    if (!member) return;
-    modalName.textContent = member.name;
-    modalTitle.textContent = member.title;
-    modalBio.textContent = member.bio;
-    modalAvatar.innerHTML = member.headshot
-      ? `<img src="${member.headshot}" alt="${member.name}" />`
-      : '';
-    modalLinkedin.href = member.linkedin || '#';
-    returnFocus = document.activeElement;
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    modalClose.focus();
+    function open() {
+      returnFocus = document.activeElement;
+      modalEl.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      (closeBtn || modalEl).focus();
+    }
+    function close() {
+      modalEl.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (returnFocus) returnFocus.focus();
+    }
+
+    closeBtn?.addEventListener('click', close);
+    backdrop?.addEventListener('click', close);
+    modalEl.addEventListener('keydown', e => {
+      if (e.key !== 'Tab') return;
+      const f = focusable();
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modalEl.getAttribute('aria-hidden') === 'false') close();
+    });
+
+    return { open, close };
   }
 
-  function closeModal() {
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (returnFocus) returnFocus.focus();
+  // ── Founding-team bio modal ──
+  const bioModalEl = document.getElementById('bio-modal');
+  if (bioModalEl) {
+    const bioModal = createModal(bioModalEl);
+    document.querySelectorAll('.team-bio-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const member = teamData.members.find(m => m.id === btn.dataset.id);
+        if (!member) return;
+        bioModalEl.querySelector('.bio-modal__name').textContent = member.name;
+        bioModalEl.querySelector('.bio-modal__title').textContent = member.title;
+        bioModalEl.querySelector('.bio-modal__bio').textContent = member.bio;
+        bioModalEl.querySelector('.bio-modal__avatar').innerHTML = member.headshot
+          ? `<img src="${member.headshot}" alt="${member.name}" />`
+          : '';
+        bioModalEl.querySelector('.bio-modal__linkedin').href = member.linkedin || '#';
+        bioModal.open();
+      });
+    });
   }
 
-  document.querySelectorAll('.team-bio-btn').forEach(btn => {
-    btn.addEventListener('click', () => openModal(btn.dataset.id));
-  });
-
-  modalClose.addEventListener('click', closeModal);
-  modal.querySelector('.bio-modal__backdrop').addEventListener('click', closeModal);
-
-  modal.addEventListener('keydown', e => {
-    if (e.key !== 'Tab') return;
-    const f = getFocusable();
-    if (!f.length) return;
-    const first = f[0];
-    const last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
-  });
+  // ── Technology "closer look" modal (holds the five-layers table) ──
+  const techModalEl = document.getElementById('tech-modal');
+  if (techModalEl) {
+    // Move to body so it escapes any transformed ancestor (Reveal) stacking.
+    document.body.appendChild(techModalEl);
+    const techModal = createModal(techModalEl);
+    document.querySelectorAll('[data-open-tech]').forEach(btn =>
+      btn.addEventListener('click', techModal.open));
+  }
 </script>

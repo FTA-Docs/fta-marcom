@@ -1,18 +1,34 @@
 {
-  "engineLabel": "alignd",
-  "engineSub": "behavioral AI",
-  "inputs": [
-    "Parent-provided profile & feedback",
-    "Clinical research & intelligence",
-    "Anonymized member experiences",
-    "Safety rules & guardrails",
-    "Clinical team input, when needed",
-    "COM-B behavioral framework"
-  ],
-  "outputs": [
-    "Personalized 8-week plans",
-    "Plan updates as you progress",
-    "Ad-hoc guidance",
-    "In-the-moment situation triage"
+  "linkText": "Take a closer look",
+  "linkPhrase": "five structural layers",
+  "modalHeading": "Five structural layers",
+  "layersIntro": "With many AI-powered tools designed for consumers, a determined user could reproduce about 70% of the experience with some good prompts. This is not true with Alignd. In our technical architecture, five structural layers sit between the user and the raw model, each adding value the model cannot supply on its own.",
+  "cols": ["Layer", "What it adds", "Why a frontier model alone can't do it"],
+  "layers": [
+    {
+      "name": "1. Corpus council (multi-persona deliberation)",
+      "adds": "Independent expert perspectives + clinical escalation guardrails synthesized into one answer",
+      "why": "A single model produces one voice with no internal check; “prompt-stuffing” to “act as a panel” is unreliable and unauditable"
+    },
+    {
+      "name": "2. Proprietary knowledge corpus + retrieval",
+      "adds": "Traceable content and answers grounded in a body of 30+ years of clinical interactions and research.",
+      "why": "The model only knows its public training data; it has no access to Alignd's clinical knowledge."
+    },
+    {
+      "name": "3. Domain modeling (COM-B program structure)",
+      "adds": "Plans are structured and mapped to a validated, clinically-coherent 8-week plan schema",
+      "why": "A model returns prose; it has no concept of a program lifecycle, week themes, or task variants to enforce"
+    },
+    {
+      "name": "4. Longitudinal memory & state",
+      "adds": "An evolving per-family record: intake, plan versions, weekly check-ins, conversation history",
+      "why": "Frontier chats are stateless between sessions and forget everything once context scrolls off"
+    },
+    {
+      "name": "5. Lifecycle engagement engine",
+      "adds": "28+ behaviorally-triggered nudges across email, SMS, and in-app that drive adherence",
+      "why": "The model can't reach out, can't track time, and can't run a multi-week accountability loop"
+    }
   ]
 }

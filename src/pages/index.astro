@@ -24,29 +24,10 @@ for (let i = 0; i < planWeeks.length - 1; i++) {
   wavePath += ` C ${x0 + WEEK_W * 0.4} ${peakY}, ${x0 + WEEK_W * 0.6} ${peakY}, ${x1} ${WAVE_BASE}`;
 }
 
-// ── "Sound Familiar?" — pinned panel; each worry sits in a talk bubble
-// with its negative-emotion motif drawn in pollen behind it. Scrolling
-// draws each motif (line-by-line), then rewinds it as the next draws.
-// Pull the real emotion SVGs in raw and keep just their <path> markup
-// (drop the <svg> wrapper + white background rect). CSS recolours them.
-// Cap each motif's concentric arcs (evenly downsampled) so dense emotions
-// don't "scribble in place" — keeps the shape's spread, calms the busyness.
+// "Sound Familiar?" worries crossfade one at a time (carousel script + CSS
+// below). SF_MAX_ARCS caps each emotion motif's concentric arcs (evenly
+// downsampled) — still used by the science-panel deco motif.
 const SF_MAX_ARCS = 6;
-
-// One long horizontal "pen line": each worry is a station far apart on a wide
-// track; a wavy connector links them. As you scroll, the draw-front advances
-// and a camera pans the track so the active station stays centred — the line
-// travels, stops to scribble a shape, shows its quote, then travels on. Only
-// one shape + one quote is ever in view. Geometry is px (viewBox is 1:1).
-const sfCount = homeData.problem.quotes.length;
-const SF_BAND_H = 580;        // track height
-const SF_SCALE = 1.8;         // motif scale (native viewBox ~298, centre ~149)
-const SF_C = 149 * SF_SCALE;  // motif centre after scaling
-const SF_STATION_DX = 1550;   // horizontal gap between station centres (travel length)
-const SF_PAD = 660;           // lead-in/out so first/last can centre
-const SF_TRACK_W = SF_PAD * 2 + (sfCount - 1) * SF_STATION_DX;
-const sfStationX = (i: number) => SF_PAD + i * SF_STATION_DX;
-const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
 ---
 
 <BaseLayout
@@ -59,14 +40,11 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   <!-- HERO — sticky z-index:1, CSS handles stacking -->
   <Panel id="hero" class="panel-page" background="default">
     <div class="hero-text">
-      <Reveal><h1>{homeData.hero.headline}</h1></Reveal>
+      <Reveal><h1 set:html={homeData.hero.headline}></h1></Reveal>
       <Reveal delay={100}><p class="hero__sub">{homeData.hero.subheadline}</p></Reveal>
       <Reveal delay={250}>
         <div class="hero__actions">
-          <button id="watch-video-btn" class="btn btn--primary" type="button">
-            {homeData.hero.cta.label}
-          </button>
-          <a href={homeData.hero.cta2.href} class="btn btn--secondary">
+          <a href={homeData.hero.cta2.href} class="btn btn--primary">
             {homeData.hero.cta2.label}
           </a>
         </div>
@@ -100,33 +78,13 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
         <h2 class="sr-only">{homeData.problem.heading}</h2>
         <p class="eyebrow sf-eyebrow" aria-hidden="true">{homeData.problem.heading}</p>
 
-        <div class="sf-line-wrap">
-          <!-- Wide track: JS pans it horizontally so the active station centres -->
-          <svg
-            class="sf-line"
-            id="sf-line"
-            width={SF_TRACK_W}
-            height={SF_BAND_H}
-            viewBox={`0 0 ${SF_TRACK_W} ${SF_BAND_H}`}
-            style={`width:${SF_TRACK_W}px;height:${SF_BAND_H}px`}
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            {homeData.problem.quotes.map((q, i) => (
-              <g
-                class="sf-emotion"
-                data-i={i}
-                transform={`translate(${sfStationX(i) - SF_C} ${sfStationY(i) - SF_C}) scale(${SF_SCALE})`}
-                set:html={emotionPaths(q.emotion, SF_MAX_ARCS)}
-              />
-            ))}
-          </svg>
-
-          <!-- One centred quote at a time; JS fades the active worry in -->
+        <!-- One worry at a time; JS slides the active one in as you scroll -->
+        <div class="sf-carousel">
           <div class="sf-quotes" aria-hidden="true">
             {homeData.problem.quotes.map((q, i) => (
-              <p class={`sf-quote${i === 0 ? ' is-active' : ''}`} data-i={i}>"{q.quote}"</p>
+              <p class={`sf-quote${i === 0 ? ' is-active' : ''}`} data-i={i}>
+                <span class="sf-quote__text">"{q.quote}"</span>
+              </p>
             ))}
           </div>
         </div>
@@ -147,7 +105,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
       </div>
     </div>
   </Panel>
-  <!-- Scroll zone follows the panel — gives GSAP room to cross-fade the quotes -->
+  <!-- Scroll zone — scroll distance maps to which worry is shown (no autoplay) -->
   <div
     id="problem-scroll-zone"
     class="problem-scroll-zone"
@@ -313,7 +271,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     </div>
   </section>
 
-  <!-- Video modal -->
+  <!-- Video modal — DORMANT: kept for when the hero "Watch Video" button returns (see script) -->
   <div class="video-modal" id="video-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Watch video">
     <div class="video-modal__backdrop"></div>
     <div class="video-modal__panel">
@@ -524,6 +482,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     letter-spacing: var(--tracking-snug);
     margin: 0;
   }
+  .hero-text h1 :global(em) { font-style: italic; }
 
   .hero__sub {
     font-size: var(--text-base);
@@ -619,7 +578,7 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   }
 
 
-  /* ── Problem: scattered Material-shape worries ───────── */
+  /* ── Problem: "Sound Familiar?" worry carousel ───────── */
   .sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0;
     margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
@@ -634,17 +593,9 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     justify-content: center;
     gap: var(--space-6);
     width: 100%;
-    /* visible so the motif can break past the bubble (stays within the panel) */
-    overflow: visible;
   }
 
-  /* Scroll zone — vertical scroll distance maps to the draw/rewind sequence */
-  .problem-scroll-zone {
-    height: calc(var(--quote-count) * 1.4 * (100vh  - var(--masthead-h)));
-    height: calc(var(--quote-count) * 1.4 * (100svh - var(--masthead-h)));
-  }
-
-  /* Eyebrow ("Sound Familiar?") + quote, centred as one group in the panel */
+  /* Eyebrow ("Sound Familiar?") + quote + dots, centred as one group */
   .sf-center {
     flex: 1;
     width: 100%;
@@ -652,58 +603,53 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
   .sf-eyebrow {
     align-self: center;
     margin: 0;
-    position: relative;
-    z-index: 2; /* always above the line */
-    transform: translateY(186px); /* nudge down off the masthead, sat close to the quotes below */
   }
 
-  /* Camera viewport — clips the wide track; JS pans the track inside it */
-  .sf-line-wrap {
+  .sf-carousel {
     position: relative;
     width: 100%;
-    height: 580px;
-    overflow: hidden;
-    transform: translateY(-55px); /* lift the line + quotes as a set */
   }
 
-  /* The wide pen-line track (rendered at natural px width; JS translates X) */
-  .sf-line {
-    position: absolute;
-    left: 0;
-    top: 0;
-    max-width: none; /* override the global svg { max-width:100% } reset */
-    color: var(--pollen);
-    overflow: visible;
-    will-change: transform;
-  }
-  /* arcs + JS-generated connectors share one crisp 1px pollen stroke */
-  .sf-line :global(path) {
-    stroke: currentColor;
-    stroke-width: 1;
-    vector-effect: non-scaling-stroke;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  /* Scroll zone — its height sets how much scroll the worries span (the JS maps
+     scroll position to the active worry). ~0.68 screen per worry: enough to read
+     each without racing past, and the JS keeps all five in range. */
+  .problem-scroll-zone {
+    height: calc(var(--quote-count) * 0.7 * (100vh  - var(--masthead-h)));
+    height: calc(var(--quote-count) * 0.7 * (100svh - var(--masthead-h)));
   }
 
-  /* One quote at a time, centred in the viewport; JS fades the active one */
+  /* One worry at a time, stacked in one grid cell. Each worry fills the width
+     and glides horizontally — like the customer-success quotes near the page
+     foot — clipped so only the active one shows. JS drives which is active as
+     the reader scrolls (no autoplay). */
   .sf-quotes {
-    position: absolute;
-    inset: 0;
     display: grid;
-    place-items: center;
-    padding-inline: var(--container-pad);
-    pointer-events: none;
+    overflow: hidden;
+    /* reserve room for the tallest worry so the group doesn't jump on cycle */
+    min-height: 5em;
   }
   .sf-quote {
     grid-area: 1 / 1;
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--container-pad);
+    /* upcoming waits off to the right; active is centred; past has exited left.
+       Solid slide (no fade), matching the social-proof carousel's motion. */
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .sf-quote.is-active { transform: translateX(0); }
+  .sf-quote.is-past { transform: translateX(-100%); }
+
+  .sf-quote__text {
     max-width: min(94vw, 24ch);
     font-family: var(--font-heading);
     font-weight: 400;
@@ -714,14 +660,10 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     color: var(--roman-coffee);
     text-align: center;
     text-wrap: balance;
-    opacity: 0;
   }
-  .sf-quote.is-active { opacity: 1; }
 
-  /* Indicator dots — hidden on desktop (the traveling line signals progress);
-     revealed only for the mobile / portrait-tablet carousel below. */
   .sf-dots {
-    display: none;
+    display: flex;
     justify-content: center;
     gap: var(--space-3);
     margin-top: var(--space-2);
@@ -739,76 +681,60 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   .sf-dot.is-active { background: var(--color-accent); transform: scale(1.4); }
   .sf-dot:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
 
-  /* ≤1023px (phones + portrait tablets) and reduced motion: drop the desktop
-     pen-line track + scroll-jack. The panel sits in normal flow. */
-  @media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+  /* Phones + portrait tablets: smaller quote, reserve room for ~3 lines */
+  @media (max-width: 1023px) {
+    .sf-quote__text {
+      font-size: var(--text-3xl);
+      max-width: min(90vw, 18ch);
+    }
+    .sf-quotes { min-height: 7em; }
+  }
+
+  /* Phones + reduced motion: no scroll-jack. The panel returns to normal flow
+     and the worries stack as a static, readable list — each is simply seen as
+     the reader scrolls past. (Landscape tablets ≥768 keep the pinned
+     scroll-driven cross-fade.) */
+  @media (max-width: 767px), (prefers-reduced-motion: reduce) {
     :global(#problem) {
       position: relative;
+      top: 0;
       height: auto;
       min-height: 0;
       overflow: visible;
     }
     .problem-scroll-zone { display: none; }
-    /* Drop the desktop nudges that positioned the eyebrow + line against the
-       animated track — here the eyebrow sits as a normal heading. */
-    .sf-eyebrow { transform: none; }
-    .sf-line-wrap { height: auto; overflow: visible; transform: none; }
-    .sf-line { display: none; }
-  }
-
-  /* Reduced motion (any width): no carousel — show the worries as a simple
-     centred, readable, stacked list. */
-  @media (prefers-reduced-motion: reduce) {
     .sf-quotes {
-      position: static;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: var(--space-12);
+      gap: var(--space-10);
+      min-height: 0;
+      overflow: visible;
       padding-block: var(--space-8);
     }
-    .sf-quote {
+    /* All states flatten to a static, readable stack (no slide). */
+    .sf-quote,
+    .sf-quote.is-active,
+    .sf-quote.is-past {
       grid-area: auto;
-      opacity: 1;
-      font-size: var(--text-3xl);
+      transform: none;
+      transition: none;
     }
     .sf-dots { display: none; }
   }
 
-  /* Mobile + portrait tablet (motion OK): one worry at a time, crossfading,
-     with dots. Eyebrow + quote + dots centre as one breathable group inside a
-     bounded panel — no scroll-jacking, no full-viewport stack. */
-  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
-    :global(#problem) { min-height: min(82svh, 640px); }
-    .problem-stage { justify-content: center; }
-    /* eyebrow → quote matches the site's eyebrow→heading rhythm */
-    .sf-center { justify-content: center; gap: var(--space-2); }
-    .sf-quotes {
-      position: relative;
-      display: grid;
-      place-items: center;
-      /* Reserve room for the longest worry so the panel doesn't jump on cycle
-         (3 lines at this width) — keeps the group compact without clipping. */
-      min-height: 7em;
-      padding-inline: var(--container-pad);
-    }
-    .sf-quote {
-      grid-area: 1 / 1;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-      font-size: var(--text-3xl);
-      max-width: min(90vw, 18ch);
-    }
-    .sf-quote.is-active { opacity: 1; }
-    .sf-dots { display: flex; }
-  }
-
 
   /* ── Solution: 4-section inner carousel ─────────────── */
+  /* Height = one panel per transition ((sol-count - 1)), which the GSAP
+     timeline scrubs across, PLUS a trailing --sol-tail of a screen. The
+     timeline finishes within the first part, so that tail is pure hold: the
+     LAST step stays frozen on screen as you keep scrolling, before the science
+     panel slides up over it (stops readers scrolling past the final step). */
   .solution-scroll-zone {
+    --sol-tail: 0.6;
     /* panel lives before this zone, so subtract one panel-height */
-    height: calc((var(--sol-count) - 1) * (100vh  - var(--masthead-h)));
-    height: calc((var(--sol-count) - 1) * (100svh - var(--masthead-h)));
+    height: calc((var(--sol-count) - 1 + var(--sol-tail)) * (100vh  - var(--masthead-h)));
+    height: calc((var(--sol-count) - 1 + var(--sol-tail)) * (100svh - var(--masthead-h)));
   }
 
   .sol-stage {
@@ -1757,6 +1683,10 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
   }
 
   // ── Video modal ───────────────────────────────────────────────
+  // DORMANT: the hero "Watch Video" trigger was removed for now, so #watch-video-btn
+  // is absent and this modal never opens (the ?. below no-ops). Kept wired so
+  // restoring the button re-enables it. Remove this block + markup + CSS if the
+  // video is dropped for good.
   const videoModal = document.getElementById('video-modal');
   // Move to body to escape any stacking context
   if (videoModal) document.body.appendChild(videoModal);
@@ -1912,42 +1842,71 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
     startTimer();
   }
 
-  // ── Problem panel: mobile / portrait-tablet carousel ──────
-  // Below 1024px the desktop pen-line scroll animation is off (see CSS); the
-  // worries crossfade one at a time with indicator dots instead. Skipped under
-  // reduced motion, where CSS shows a static stacked list.
-  const sfMobile  = window.matchMedia('(max-width: 1023px)').matches;
-  const sfReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const sfCarouselQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sf-quote'));
-  const sfCarouselDots   = Array.from(document.querySelectorAll<HTMLElement>('.sf-dot'));
+  // ── Problem panel "Sound Familiar?": scroll-driven, not auto-playing ──
+  // The panel is pinned (CSS sticky); as the reader scrolls the problem scroll
+  // zone, each worry slides in one at a time. Driven by a plain scroll listener
+  // (not GSAP) so the range is measured live from the real element positions:
+  // the cycle runs from the moment the panel pins until just before the
+  // solution panel slides up over it, so all worries are seen in sequence.
+  // Gated ≥768 and motion-OK; phones / reduced-motion get the static CSS list.
+  {
+    const sfProblemZone = document.getElementById('problem-scroll-zone');
+    const sfQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sf-quote'));
+    const sfDots   = Array.from(document.querySelectorAll<HTMLElement>('.sf-dot'));
+    const sfMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (sfMobile && !sfReduced && sfCarouselQuotes.length > 1) {
-    const count = sfCarouselQuotes.length;
-    let current = 0;
-    let timer: ReturnType<typeof setInterval>;
+    if (sfProblemZone && sfQuotes.length > 1 && sfMotion
+        && window.matchMedia('(min-width: 768px)').matches) {
+      const sfCount = sfQuotes.length;
+      // Hold the last worry this fraction of a screen before the solution covers it
+      const SF_TAIL = 0.6;
+      let sfCurrent = -1;
 
-    function showWorry(idx: number) {
-      current = (idx + count) % count;
-      sfCarouselQuotes.forEach((q, i) => q.classList.toggle('is-active', i === current));
-      sfCarouselDots.forEach((dot, i) => {
-        const active = i === current;
-        dot.classList.toggle('is-active', active);
-        dot.setAttribute('aria-selected', String(active));
+      const setWorry = (idx: number) => {
+        const i = Math.max(0, Math.min(sfCount - 1, idx));
+        if (i === sfCurrent) return;
+        sfCurrent = i;
+        sfQuotes.forEach((q, k) => {
+          q.classList.toggle('is-active', k === i);
+          q.classList.toggle('is-past', k < i);
+        });
+        sfDots.forEach((dot, k) => {
+          const active = k === i;
+          dot.classList.toggle('is-active', active);
+          dot.setAttribute('aria-selected', String(active));
+        });
+      };
+
+      // Scroll span over which the worries cycle — measured live so it tracks
+      // the real layout (zone isn't sticky, so its position is reliable).
+      const sfRange = () => {
+        const winH = window.innerHeight;
+        const zoneTop = sfProblemZone.getBoundingClientRect().top + window.scrollY;
+        const pinStart = zoneTop - winH;                          // panel finishes pinning
+        const solTop = zoneTop + sfProblemZone.offsetHeight;      // solution panel flow-top
+        const coverCentre = solTop - (mastheadH + winH) / 2;      // solution reaches the centre
+        const cycleEnd = coverCentre - SF_TAIL * (winH - mastheadH);
+        return { pinStart, span: Math.max(1, cycleEnd - pinStart) };
+      };
+
+      const updateWorry = () => {
+        const { pinStart, span } = sfRange();
+        const p = (window.scrollY - pinStart) / span;
+        setWorry(Math.floor(Math.max(0, Math.min(0.9999, p)) * sfCount));
+      };
+
+      window.addEventListener('scroll', updateWorry, { passive: true });
+      window.addEventListener('resize', updateWorry);
+      updateWorry();
+
+      // Dots jump to the middle of their worry's band
+      sfDots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          const { pinStart, span } = sfRange();
+          window.scrollTo({ top: Math.max(0, pinStart + ((i + 0.5) / sfCount) * span), behavior: 'smooth' });
+        });
       });
     }
-    const startWorry = () => { timer = setInterval(() => showWorry(current + 1), 5000); };
-    const resetWorry = () => { clearInterval(timer); startWorry(); };
-
-    sfCarouselDots.forEach((dot, i) => {
-      dot.addEventListener('click', () => { showWorry(i); resetWorry(); });
-    });
-
-    const sfSection = document.getElementById('problem');
-    sfSection?.addEventListener('focusin',  () => clearInterval(timer));
-    sfSection?.addEventListener('focusout', startWorry);
-
-    showWorry(0);
-    startWorry();
   }
 
   // ── Solution on phone: static stacked list, every step readable ──
@@ -2099,156 +2058,6 @@ const sfStationY = () => SF_BAND_H / 2;  // shapes large + vertically centred
               behavior: 'smooth',
             });
           });
-        });
-      }
-
-      // ── Problem: a traveling pen line, one shape + one quote at a time ──
-      // Panel is pinned. The motifs are far-apart stations on a wide track,
-      // bridged by wavy connectors into one unbroken polyline. Scrolling
-      // advances a single draw-front (cumulative stroke-dashoffset) AND pans a
-      // camera so the active station stays centred — the line travels, holds
-      // to scribble a shape, fades its quote in, then travels on. Disabled
-      // below 1024px / reduced motion (mobile + portrait tablet use the dot
-      // carousel below; reduced motion shows a static list).
-      const sfZone = document.getElementById('problem-scroll-zone');
-      const sfLine = document.getElementById('sf-line') as SVGSVGElement | null;
-      const sfQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sf-quote'));
-      if (sfZone && sfLine && sfLine.parentElement && window.matchMedia('(min-width: 1024px)').matches) {
-        const SVGNS = 'http://www.w3.org/2000/svg';
-        const wrap = sfLine.parentElement;
-        const groups = Array.from(sfLine.querySelectorAll<SVGGElement>('g.sf-emotion'));
-
-        // Point on a path, mapped into the SVG root (viewBox) coordinate space
-        const rootPoint = (path: SVGPathElement, len: number) => {
-          const p = path.getPointAtLength(len);
-          const m = path.getCTM();
-          return m ? { x: m.a * p.x + m.c * p.y + m.e, y: m.b * p.x + m.d * p.y + m.f } : p;
-        };
-        // Each station's centre x in track coords (viewBox px = rendered px)
-        const stationCX = groups.map((g) => {
-          const bb = g.getBBox();
-          const m = g.getCTM()!;
-          return m.a * (bb.x + bb.width / 2) + m.c * (bb.y + bb.height / 2) + m.e;
-        });
-
-        // Ordered arcs (station L→R, doc order within), tagged with station
-        const arcs: { p: SVGPathElement; si: number }[] = [];
-        groups.forEach((g, si) =>
-          g.querySelectorAll<SVGPathElement>('path').forEach((p) => arcs.push({ p, si })));
-
-        // Build the unbroken polyline: arc → connector → arc …  Between two
-        // stations the connector is a wavy curve (the "travel"); within a
-        // station it's a short straight hop (part of the scribble).
-        const ordered: { el: SVGElement; si: number }[] = [];
-        arcs.forEach((arc, k) => {
-          if (k > 0) {
-            const prev = arcs[k - 1];
-            const a = rootPoint(prev.p, prev.p.getTotalLength());
-            const b = rootPoint(arc.p, 0);
-            const c = document.createElementNS(SVGNS, 'path');
-            if (prev.si !== arc.si) {
-              // long multi-hump wave between stations — the "travel" stroke
-              const dx = b.x - a.x;
-              const HUMPS = 2.5;
-              const AMP = 120;
-              const SAMP = 40;
-              let d = `M ${a.x.toFixed(1)} ${a.y.toFixed(1)}`;
-              for (let t = 1; t <= SAMP; t++) {
-                const f = t / SAMP;
-                const x = a.x + dx * f;
-                const y = a.y + (b.y - a.y) * f + AMP * Math.sin(f * HUMPS * Math.PI);
-                d += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
-              }
-              c.setAttribute('d', d);
-            } else {
-              c.setAttribute('d', `M ${a.x} ${a.y} L ${b.x} ${b.y}`);
-            }
-            c.setAttribute('class', 'sf-connector');
-            sfLine.appendChild(c);
-            ordered.push({ el: c, si: prev.si === arc.si ? arc.si : -1 });
-          }
-          ordered.push({ el: arc.p, si: arc.si });
-        });
-
-        // Prime every segment hidden; record cumulative starts + total length.
-        // NOTE: vector-effect:non-scaling-stroke measures the dash in screen px,
-        // but getTotalLength() is in the path's LOCAL units — and the motif arcs
-        // sit inside a scale() group. Multiply by the element's CTM scale so the
-        // dash length matches the on-screen stroke (otherwise arcs never hide).
-        let total = 0;
-        const segs = ordered.map((o) => {
-          const m = o.el.getCTM();
-          const sc = m ? Math.hypot(m.a, m.b) : 1;
-          const len = (o.el as SVGGeometryElement).getTotalLength() * sc;
-          o.el.style.strokeDasharray = String(len);
-          o.el.style.strokeDashoffset = String(len);
-          const s = total;
-          total += len;
-          return { ...o, len, s };
-        });
-        // Per-station draw range (first arc start → last arc end)
-        const N = groups.length;
-        const stStart = Array(N).fill(Infinity);
-        const stEnd = Array(N).fill(0);
-        segs.forEach((s) => {
-          if (s.si < 0) return;
-          stStart[s.si] = Math.min(stStart[s.si], s.s);
-          stEnd[s.si] = Math.max(stEnd[s.si], s.s + s.len);
-        });
-
-        const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-        const FADE = 260; // length units over which a quote fades in/out
-
-        // Even pacing: split the draw into equal phases (shape, travel, shape,
-        // …) so every quote dwells the same regardless of its line-length. The
-        // pen just speeds up on longer shapes and slows on shorter ones.
-        const Dbounds = [stStart[0]];
-        for (let k = 0; k < N; k++) {
-          Dbounds.push(stEnd[k]);
-          if (k < N - 1) Dbounds.push(stStart[k + 1]);
-        }
-        const PHASES = Dbounds.length - 1; // shapes + travels
-
-        ScrollTrigger.create({
-          trigger: sfZone,
-          start: 'top bottom',   // begin as soon as the panel is fully in view
-          end: 'bottom bottom',  // ...through the end of the scroll zone
-          scrub: 1, // ease the draw-front so each connector visibly draws into its shape
-          invalidateOnRefresh: true,
-          onUpdate(self) {
-            // finish the whole line a bit before the end so the last shape
-            // holds complete before the next panel slides in
-            const SF_FINISH = 0.85;
-            const dp = Math.min(1, self.progress / SF_FINISH); // 0→1 draw progress
-            const fp = dp * PHASES;
-            const pi = Math.min(PHASES - 1, Math.floor(fp));
-            const D = lerp(Dbounds[pi], Dbounds[pi + 1], fp - pi); // equal scroll per phase
-
-            // 1) advance the single draw-front along the whole polyline
-            for (const s of segs) {
-              const drawn = D - s.s;
-              s.el.style.strokeDashoffset = String(drawn <= 0 ? s.len : drawn >= s.len ? 0 : s.len - drawn);
-            }
-
-            // 2) pan the camera: hold on a station while scribbling, lerp along
-            //    the connector while traveling between stations
-            let camX = stationCX[0];
-            if (D >= stEnd[N - 1]) camX = stationCX[N - 1];
-            else for (let k = 0; k < N; k++) {
-              if (D <= stEnd[k]) { camX = stationCX[k]; break; }
-              if (k < N - 1 && D < stStart[k + 1]) {
-                camX = lerp(stationCX[k], stationCX[k + 1], (D - stEnd[k]) / (stStart[k + 1] - stEnd[k]));
-                break;
-              }
-            }
-            sfLine.style.transform = `translateX(${wrap.clientWidth / 2 - camX}px)`;
-
-            // 3) fade in the quote of whichever station the front is on
-            sfQuotes.forEach((q, k) => {
-              const dist = D < stStart[k] ? stStart[k] - D : D > stEnd[k] ? D - stEnd[k] : 0;
-              q.style.opacity = String(Math.max(0, Math.min(1, 1 - dist / FADE)));
-            });
-          },
         });
       }
 

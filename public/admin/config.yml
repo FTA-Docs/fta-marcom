@@ -286,20 +286,25 @@ collections:
         fields:
           - { label: Body, name: body, widget: markdown }
 
-      - label: Technology (diagram labels)
+      - label: Technology (five layers modal)
         name: technology-data
         file: content/about/technology.json
         fields:
-          - { label: Engine Label, name: engineLabel, widget: string }
-          - { label: Engine Sub-label, name: engineSub, widget: string }
-          - label: Inputs
-            name: inputs
+          - { label: Modal Link Text, name: linkText, widget: string }
+          - { label: Link Phrase (highlighted words), name: linkPhrase, widget: string }
+          - { label: Modal Heading, name: modalHeading, widget: string }
+          - { label: Layers Intro, name: layersIntro, widget: text }
+          - label: Table Column Headers
+            name: cols
             widget: list
-            field: { label: Input, name: input, widget: string }
-          - label: Outputs
-            name: outputs
+            field: { label: Header, name: header, widget: string }
+          - label: Layers
+            name: layers
             widget: list
-            field: { label: Output, name: output, widget: string }
+            fields:
+              - { label: Layer Name, name: name, widget: string }
+              - { label: What it adds, name: adds, widget: text }
+              - { label: "Why a frontier model alone can't do it", name: why, widget: text }
 
       - label: Founding Team (intro copy)
         name: founding-team

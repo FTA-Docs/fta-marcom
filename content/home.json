@@ -1,6 +1,6 @@
 {
   "hero": {
-    "headline": "Your child's relationship with technology can change.",
+    "headline": "Your child's relationship with technology <em>can</em> change.",
     "subheadline": "You're not powerless. Get a personalized, evidence-based behavior change plan made to minimize concerning behaviors, reduce conflict and align you and your child on a shared vision of digital health.",
     "cta": {
       "label": "Watch Video",
@@ -145,46 +145,40 @@
     ],
     "rows": [
       {
-        "label": "Goal",
-        "alignd": "Reduce concerning behaviors, arrive at shared vision of digital health. ",
-        "traditional": "Address underlying psycho-social issues.  ",
-        "parentalTech": "Monitor and inhibit technology use. "
+        "label": "Focus",
+        "alignd": "Reduce concerning behaviors & conflict, arrive at shared vision of digital health",
+        "traditional": "Understand & address underlying psychological drivers of behaviors",
+        "parentalTech": "Monitor & restrict technology use"
+      },
+      {
+        "label": "Evidence Base",
+        "alignd": "30+ years of clinical work & research focused specifically on digital health",
+        "traditional": "Typically little experience addressing digital behaviors & fostering digital health",
+        "parentalTech": "Built to view & limit, not drive lasting behavior change or digital health"
+      },
+      {
+        "label": "Personalization",
+        "alignd": "Plans based on your child, goals, schedule & ongoing feedback",
+        "traditional": "Based on your child & individual clinician training, approach, style",
+        "parentalTech": "Based on tech to be monitored & time, not your child or you"
+      },
+      {
+        "label": "Time Commitment",
+        "alignd": "Typically 45–90 mins per week, you decide when",
+        "traditional": "Most often 1–2 sessions per week, 45–50 minutes each at fixed times",
+        "parentalTech": "Quick set-up, with monitoring, rule-update & conflict resolution time varying widely"
+      },
+      {
+        "label": "Availability",
+        "alignd": "Start now; 24/7 AI consults & plan updates, same day expert human support",
+        "traditional": "Can take weeks to find therapist & book, therapist's schedule drives availability",
+        "parentalTech": "Quick to implement, no/little access to expert behavior change guidance"
       },
       {
         "label": "Cost",
         "alignd": "$149 one-time + optional $15/month",
         "traditional": "$150–$400/session; 8–12 sessions minimum ($1,200–$4,800+)",
-        "parentalTech": "$50–$160/year, billed indefinitely"
-      },
-      {
-        "label": "Time commitment",
-        "alignd": "Typically 45 minutes to 2 hours per week on your schedule",
-        "traditional": "45-50-min sessions, 1-3 times per week, fixed schedule",
-        "parentalTech": "Typically quick to install; monitoring and rule-tweaking falls on you"
-      },
-      {
-        "label": "Availability",
-        "alignd": "Start now; 24/7 clinically responsible AI coaching, same day expert human support ",
-        "traditional": "Typically takes weeks to find and book first appointment",
-        "parentalTech": "Quick to implement, no/little access to expert behavior change guidance"
-      },
-      {
-        "label": "Personalization",
-        "alignd": "Plans built for your child, your goals and your schedule ",
-        "traditional": "Based on training/approach",
-        "parentalTech": "One-size-fits-all filters and time limits"
-      },
-      {
-        "label": "Family involvement",
-        "alignd": "Whole-family approach built into every plan",
-        "traditional": "Typically parent-only in sessions",
-        "parentalTech": "Parent-controlled; often feels like surveillance to kids"
-      },
-      {
-        "label": "Evidence base",
-        "alignd": "Grounded in the COM-B behavioral science framework",
-        "traditional": "Varies by practitioner",
-        "parentalTech": "Built for blocking, not behavior change"
+        "parentalTech": "$50–$350 per year, depending on providing company & plan"
       }
     ]
   },

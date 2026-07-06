@@ -114,9 +114,9 @@ import { emotionPaths } from '../lib/emotions';
     </div>
   </Panel>
 
-  <!-- Our Technology — centered headline + body, schematic below -->
+  <!-- Our Technology — intro + "Five Structural Layers" table -->
   <Panel background="surface" class="about-pad">
-    <div class="about-section about-section--center">
+    <div class="about-section">
       <Reveal><h2>{pageData.technology.heading}</h2></Reveal>
       <Reveal delay={100}>
         <div class="prose about-prose-narrow">
@@ -124,28 +124,29 @@ import { emotionPaths } from '../lib/emotions';
         </div>
       </Reveal>
       <Reveal delay={150}>
-        <div class="tech-flow">
-          <div class="tech-col">
-            <span class="tech-col__head">{pageData.technology.inputsLabel}</span>
-            {techData.inputs.map(i => <span class="tech-chip">{i}</span>)}
-          </div>
-
-          <svg class="tech-arrow" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 12h15M13 6l6 6-6 6"/>
-          </svg>
-
-          <div class="tech-engine">
-            <span class="tech-engine__label">{techData.engineLabel}</span>
-            <span class="tech-engine__sub">{techData.engineSub}</span>
-          </div>
-
-          <svg class="tech-arrow" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 12h15M13 6l6 6-6 6"/>
-          </svg>
-
-          <div class="tech-col">
-            <span class="tech-col__head">{pageData.technology.outputsLabel}</span>
-            {techData.outputs.map(o => <span class="tech-chip">{o}</span>)}
+        <div class="tech-layers">
+          <hr class="tech-rule" />
+          <h3 class="tech-layers__head">{techData.layersHeading}</h3>
+          <p class="tech-layers__intro">{techData.layersIntro}</p>
+          <div class="tech-table-wrap">
+            <table class="tech-table">
+              <thead>
+                <tr>
+                  <th scope="col">{techData.cols[0]}</th>
+                  <th scope="col">{techData.cols[1]}</th>
+                  <th scope="col">{techData.cols[2]}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {techData.layers.map(layer => (
+                  <tr>
+                    <th scope="row">{layer.name}</th>
+                    <td>{layer.adds}</td>
+                    <td>{layer.why}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </Reveal>
@@ -217,11 +218,6 @@ import { emotionPaths } from '../lib/emotions';
     margin-top: 0;
     margin-bottom: var(--space-5);
   }
-
-  /* Technology section: centered headline + body (schematic keeps its own layout) */
-  .about-section--center { text-align: center; }
-  .about-section--center .about-prose-narrow { margin-inline: auto; }
-  .about-section--center .tech-flow { text-align: initial; }
 
   /* Body copy matches the homepage hero sub: base size, full text color */
   .prose :global(p) {
@@ -411,81 +407,81 @@ import { emotionPaths } from '../lib/emotions';
     color: var(--color-text);
   }
 
-  /* ── Technology schematic (coded): inputs → AI → outputs ── */
-  .tech-flow {
-    margin-top: var(--space-10);
-    display: flex;
-    align-items: center;
-    gap: var(--space-5);
+  /* ── Technology "Five Structural Layers" table ──
+     Borrows the homepage comparison table's striping + typography; no
+     highlighted (green) column here — every row is an Alignd layer. */
+  .tech-layers { margin-top: var(--space-10); }
+
+  /* Short divider echoing the doc's rule between the intro and the deep-dive */
+  .tech-rule {
+    border: none;
+    border-top: 1px solid var(--color-border-strong);
+    width: 96px;
+    margin: 0 0 var(--space-8);
   }
 
-  .tech-col {
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .tech-col__head {
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wider);
-    color: var(--color-text-muted);
-    text-align: center;
-    margin-bottom: var(--space-1);
-  }
-
-  .tech-chip {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-bg);
-    padding: var(--space-3) var(--space-4);
-    font-size: var(--text-sm);
-    line-height: var(--leading-snug);
-    color: var(--color-text);
-    text-align: center;
-  }
-
-  .tech-arrow {
-    flex: 0 0 auto;
-    width: 28px;
-    height: 28px;
-    fill: none;
-    stroke: var(--color-text-subtle);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .tech-engine {
-    flex: 0 0 auto;
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: var(--space-1);
-    background: var(--color-accent);
-    color: var(--color-accent-text);
-    border-radius: var(--radius-md);
-    padding: var(--space-6) var(--space-5);
-    min-width: 8.5rem;
-  }
-
-  .tech-engine__label {
+  .tech-layers__head {
     font-family: var(--font-heading);
-    font-weight: var(--weight-heading);
-    font-size: var(--text-2xl);
-    line-height: 1;
+    font-weight: var(--weight-semibold);
+    font-size: var(--text-xl);
+    color: var(--color-heading);
+    margin: 0 0 var(--space-2);
   }
 
-  .tech-engine__sub {
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    opacity: 0.85;
+  .tech-layers__intro {
+    color: var(--color-text);
+    line-height: var(--leading-normal);
+    max-width: 64ch;
+    margin: 0 0 var(--space-6);
   }
+
+  .tech-table-wrap { overflow-x: auto; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    font-size: var(--text-sm);
+    /* Three text columns need room; scrolls horizontally on narrower screens. */
+    min-width: 760px;
+  }
+
+  .tech-table th,
+  .tech-table td {
+    padding: var(--space-3) var(--space-5);
+    text-align: left;
+    vertical-align: top;
+    line-height: var(--leading-normal);
+  }
+
+  /* Layer-name column narrower; the two explanation columns split the rest */
+  .tech-table thead th:first-child,
+  .tech-table tbody th { width: 26%; }
+
+  /* Zebra striping, matching the comparison table */
+  .tech-table tbody tr:nth-child(odd) td,
+  .tech-table tbody tr:nth-child(odd) th {
+    background: var(--light-beige);
+  }
+
+  .tech-table thead th {
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-heading);
+  }
+
+  .tech-table tbody th {
+    font-family: var(--font-heading);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text);
+    vertical-align: top;
+  }
+
+  .tech-table td { color: var(--color-text); }
 
   .team-intro {
     max-width: 64ch;
@@ -664,17 +660,29 @@ import { emotionPaths } from '../lib/emotions';
 
     .about-figure__frame { aspect-ratio: 3 / 2; }
 
-    .tech-flow {
-      flex-direction: column;
-      align-items: stretch;
+    /* Technology table: scroll horizontally; pin the layer-name column so the
+       descriptions scroll underneath it (mirrors the comparison table). */
+    .tech-table {
+      min-width: 640px;
+      font-size: var(--text-sm);
     }
-
-    .tech-arrow {
-      align-self: center;
-      transform: rotate(90deg);
+    .tech-table th,
+    .tech-table td {
+      padding: var(--space-3) var(--space-4);
+      line-height: var(--leading-snug);
     }
-
-    .tech-engine { align-self: center; }
+    .tech-table thead th:first-child,
+    .tech-table tbody th { width: 148px; }
+    .tech-table thead th:first-child,
+    .tech-table th[scope="row"] {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: var(--color-surface);
+    }
+    .tech-table tbody tr:nth-child(odd) th[scope="row"] {
+      background: var(--light-beige);
+    }
   }
 
   @media (max-width: 640px) {

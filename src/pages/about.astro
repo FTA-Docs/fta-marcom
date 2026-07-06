@@ -126,30 +126,49 @@ import { emotionPaths } from '../lib/emotions';
       <Reveal delay={150}>
         <div class="tech-layers">
           <hr class="tech-rule" />
-          <h3 class="tech-layers__head">{techData.layersHeading}</h3>
-          <p class="tech-layers__intro">{techData.layersIntro}</p>
-          <div class="tech-table-wrap">
-            <table class="tech-table">
-              <thead>
-                <tr>
-                  <th scope="col">{techData.cols[0]}</th>
-                  <th scope="col">{techData.cols[1]}</th>
-                  <th scope="col">{techData.cols[2]}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {techData.layers.map(layer => (
-                  <tr>
-                    <th scope="row">{layer.name}</th>
-                    <td>{layer.adds}</td>
-                    <td>{layer.why}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <button type="button" class="tech-layers__link" data-open-tech>{techData.linkText}</button>
+          <p class="tech-layers__intro">
+            {techData.layersIntro.includes(techData.linkPhrase) ? (
+              <Fragment>
+                {techData.layersIntro.split(techData.linkPhrase)[0]}
+                <button type="button" class="tech-inline-link" data-open-tech>{techData.linkPhrase}</button>
+                {techData.layersIntro.split(techData.linkPhrase)[1]}
+              </Fragment>
+            ) : techData.layersIntro}
+          </p>
         </div>
       </Reveal>
+    </div>
+
+    <!-- Technology deep-dive modal: the five structural layers table -->
+    <div class="tech-modal" id="tech-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tech-modal-heading">
+      <div class="tech-modal__backdrop"></div>
+      <div class="tech-modal__panel">
+        <button class="tech-modal__close" aria-label="Close">&times;</button>
+        <div class="tech-modal__header">
+          <h2 id="tech-modal-heading" class="tech-modal__heading">{techData.modalHeading}</h2>
+        </div>
+        <div class="tech-table-wrap">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th scope="col">{techData.cols[0]}</th>
+                <th scope="col">{techData.cols[1]}</th>
+                <th scope="col">{techData.cols[2]}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {techData.layers.map(layer => (
+                <tr>
+                  <th scope="row">{layer.name}</th>
+                  <td>{layer.adds}</td>
+                  <td>{layer.why}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </Panel>
 
@@ -420,19 +439,53 @@ import { emotionPaths } from '../lib/emotions';
     margin: 0 0 var(--space-8);
   }
 
-  .tech-layers__head {
+  /* "Take a closer look" — heading-scale link that opens the layers modal */
+  .tech-layers__link {
+    display: inline-block;
     font-family: var(--font-heading);
     font-weight: var(--weight-semibold);
     font-size: var(--text-xl);
-    color: var(--color-heading);
-    margin: 0 0 var(--space-2);
+    color: var(--color-accent);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 0 var(--space-3);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity var(--transition-fast);
+  }
+  .tech-layers__link:hover { opacity: 0.7; }
+  .tech-layers__link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   .tech-layers__intro {
     color: var(--color-text);
     line-height: var(--leading-normal);
     max-width: 64ch;
-    margin: 0 0 var(--space-6);
+    margin: 0;
+  }
+
+  /* Inline "five structural layers" link inside the intro copy */
+  .tech-inline-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+  }
+  .tech-inline-link:hover { opacity: 0.7; }
+  .tech-inline-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   .tech-table-wrap { overflow-x: auto; }
@@ -482,6 +535,56 @@ import { emotionPaths } from '../lib/emotions';
   }
 
   .tech-table td { color: var(--color-text); }
+
+  /* ── Technology deep-dive modal (holds the five-layers table) ── */
+  .tech-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal, 100);
+    align-items: center;
+    justify-content: center;
+  }
+  .tech-modal[aria-hidden="false"] { display: flex; }
+
+  .tech-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--midnight) 65%, transparent);
+  }
+
+  .tech-modal__panel {
+    position: relative;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+    width: min(1100px, calc(100% - var(--space-6)));
+    max-height: min(90vh, 820px);
+    padding: var(--space-10) var(--space-8) var(--space-8);
+    overflow: auto;
+  }
+
+  .tech-modal__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    background: none;
+    border: none;
+    font-size: var(--text-xl);
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-text-muted);
+  }
+  .tech-modal__close:hover { color: var(--color-text); }
+
+  .tech-modal__header { margin-bottom: var(--space-6); }
+
+  .tech-modal__heading {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    font-size: var(--text-2xl);
+    color: var(--color-heading);
+    margin: 0;
+  }
 
   .team-intro {
     max-width: 64ch;
@@ -678,10 +781,17 @@ import { emotionPaths } from '../lib/emotions';
       position: sticky;
       left: 0;
       z-index: 2;
-      background: var(--color-surface);
+      background: var(--color-bg);
     }
     .tech-table tbody tr:nth-child(odd) th[scope="row"] {
       background: var(--light-beige);
+    }
+
+    /* Modal fills more of the small screen so the table has room */
+    .tech-modal__panel {
+      width: calc(100% - var(--space-4));
+      max-height: 92vh;
+      padding: var(--space-8) var(--space-5) var(--space-5);
     }
   }
 
@@ -750,4 +860,50 @@ import { emotionPaths } from '../lib/emotions';
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
   });
+
+  // ── Technology "closer look" modal (holds the five-layers table) ──
+  const techModal = document.getElementById('tech-modal');
+  if (techModal) {
+    // Move to body so it escapes any transformed ancestor (Reveal) stacking.
+    document.body.appendChild(techModal);
+    const techOpeners = document.querySelectorAll('[data-open-tech]');
+    const techClose = techModal.querySelector('.tech-modal__close');
+    const techBackdrop = techModal.querySelector('.tech-modal__backdrop');
+    let techReturnFocus = null;
+
+    const techFocusable = () =>
+      Array.from(
+        techModal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+      ).filter(el => el.offsetParent !== null);
+
+    function openTech() {
+      techReturnFocus = document.activeElement;
+      techModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      techClose.focus();
+    }
+    function closeTech() {
+      techModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (techReturnFocus) techReturnFocus.focus();
+    }
+
+    techOpeners.forEach(btn => btn.addEventListener('click', openTech));
+    techClose.addEventListener('click', closeTech);
+    techBackdrop.addEventListener('click', closeTech);
+
+    techModal.addEventListener('keydown', e => {
+      if (e.key !== 'Tab') return;
+      const f = techFocusable();
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && techModal.getAttribute('aria-hidden') === 'false') closeTech();
+    });
+  }
 </script>

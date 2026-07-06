@@ -803,107 +803,76 @@ import { emotionPaths } from '../lib/emotions';
 </style>
 
 <script define:vars={{ teamData }}>
-  const modal = document.getElementById('bio-modal');
-  const modalName = modal.querySelector('.bio-modal__name');
-  const modalTitle = modal.querySelector('.bio-modal__title');
-  const modalBio = modal.querySelector('.bio-modal__bio');
-  const modalAvatar = modal.querySelector('.bio-modal__avatar');
-  const modalLinkedin = modal.querySelector('.bio-modal__linkedin');
-  const modalClose = modal.querySelector('.bio-modal__close');
-  let returnFocus = null;
+  // Shared modal wiring: focus return + trap (WCAG 2.4.3 / 2.1.2), Escape and
+  // backdrop close, and body-scroll lock. Returns { open, close }. Relies on the
+  // BEM convention that the close button / backdrop end in __close / __backdrop.
+  function createModal(modalEl) {
+    const closeBtn = modalEl.querySelector('[class*="__close"]');
+    const backdrop = modalEl.querySelector('[class*="__backdrop"]');
+    let returnFocus = null;
 
-  // Keep keyboard focus inside the open dialog (WCAG 2.4.3 / 2.1.2).
-  const getFocusable = () =>
-    Array.from(
-      modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
-    ).filter(el => el.offsetParent !== null);
-
-  function openModal(id) {
-    const member = teamData.members.find(m => m.id === id);
-    if (!member) return;
-    modalName.textContent = member.name;
-    modalTitle.textContent = member.title;
-    modalBio.textContent = member.bio;
-    modalAvatar.innerHTML = member.headshot
-      ? `<img src="${member.headshot}" alt="${member.name}" />`
-      : '';
-    modalLinkedin.href = member.linkedin || '#';
-    returnFocus = document.activeElement;
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    modalClose.focus();
-  }
-
-  function closeModal() {
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (returnFocus) returnFocus.focus();
-  }
-
-  document.querySelectorAll('.team-bio-btn').forEach(btn => {
-    btn.addEventListener('click', () => openModal(btn.dataset.id));
-  });
-
-  modalClose.addEventListener('click', closeModal);
-  modal.querySelector('.bio-modal__backdrop').addEventListener('click', closeModal);
-
-  modal.addEventListener('keydown', e => {
-    if (e.key !== 'Tab') return;
-    const f = getFocusable();
-    if (!f.length) return;
-    const first = f[0];
-    const last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') closeModal();
-  });
-
-  // ── Technology "closer look" modal (holds the five-layers table) ──
-  const techModal = document.getElementById('tech-modal');
-  if (techModal) {
-    // Move to body so it escapes any transformed ancestor (Reveal) stacking.
-    document.body.appendChild(techModal);
-    const techOpeners = document.querySelectorAll('[data-open-tech]');
-    const techClose = techModal.querySelector('.tech-modal__close');
-    const techBackdrop = techModal.querySelector('.tech-modal__backdrop');
-    let techReturnFocus = null;
-
-    const techFocusable = () =>
+    const focusable = () =>
       Array.from(
-        techModal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        modalEl.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
       ).filter(el => el.offsetParent !== null);
 
-    function openTech() {
-      techReturnFocus = document.activeElement;
-      techModal.setAttribute('aria-hidden', 'false');
+    function open() {
+      returnFocus = document.activeElement;
+      modalEl.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      techClose.focus();
+      (closeBtn || modalEl).focus();
     }
-    function closeTech() {
-      techModal.setAttribute('aria-hidden', 'true');
+    function close() {
+      modalEl.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
-      if (techReturnFocus) techReturnFocus.focus();
+      if (returnFocus) returnFocus.focus();
     }
 
-    techOpeners.forEach(btn => btn.addEventListener('click', openTech));
-    techClose.addEventListener('click', closeTech);
-    techBackdrop.addEventListener('click', closeTech);
-
-    techModal.addEventListener('keydown', e => {
+    closeBtn?.addEventListener('click', close);
+    backdrop?.addEventListener('click', close);
+    modalEl.addEventListener('keydown', e => {
       if (e.key !== 'Tab') return;
-      const f = techFocusable();
+      const f = focusable();
       if (!f.length) return;
       const first = f[0];
       const last = f[f.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
-
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && techModal.getAttribute('aria-hidden') === 'false') closeTech();
+      if (e.key === 'Escape' && modalEl.getAttribute('aria-hidden') === 'false') close();
     });
+
+    return { open, close };
+  }
+
+  // ── Founding-team bio modal ──
+  const bioModalEl = document.getElementById('bio-modal');
+  if (bioModalEl) {
+    const bioModal = createModal(bioModalEl);
+    document.querySelectorAll('.team-bio-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const member = teamData.members.find(m => m.id === btn.dataset.id);
+        if (!member) return;
+        bioModalEl.querySelector('.bio-modal__name').textContent = member.name;
+        bioModalEl.querySelector('.bio-modal__title').textContent = member.title;
+        bioModalEl.querySelector('.bio-modal__bio').textContent = member.bio;
+        bioModalEl.querySelector('.bio-modal__avatar').innerHTML = member.headshot
+          ? `<img src="${member.headshot}" alt="${member.name}" />`
+          : '';
+        bioModalEl.querySelector('.bio-modal__linkedin').href = member.linkedin || '#';
+        bioModal.open();
+      });
+    });
+  }
+
+  // ── Technology "closer look" modal (holds the five-layers table) ──
+  const techModalEl = document.getElementById('tech-modal');
+  if (techModalEl) {
+    // Move to body so it escapes any transformed ancestor (Reveal) stacking.
+    document.body.appendChild(techModalEl);
+    const techModal = createModal(techModalEl);
+    document.querySelectorAll('[data-open-tech]').forEach(btn =>
+      btn.addEventListener('click', techModal.open));
   }
 </script>

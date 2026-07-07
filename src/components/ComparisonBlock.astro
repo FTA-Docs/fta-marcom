@@ -21,28 +21,34 @@ const { cols, rows } = comparison;
 ---
 
 <div class="comparison-block">
-  <div class="cmp-table-wrap">
-    <table class="cmp-table">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col" class="cmp-table__alignd">{cols[0]}</th>
-          <th scope="col">{cols[1]}</th>
-          <th scope="col">{cols[2]}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map(row => (
+  <div class="cmp-table-scroll">
+    <div class="cmp-table-wrap">
+      <table class="cmp-table">
+        <thead>
           <tr>
-            <th scope="row">{row.label}</th>
-            <td class="cmp-table__alignd">{row.alignd}</td>
-            <td>{row.traditional}</td>
-            <td>{row.parentalTech}</td>
+            <th scope="col"></th>
+            <th scope="col" class="cmp-table__alignd">{cols[0]}</th>
+            <th scope="col">{cols[1]}</th>
+            <th scope="col">{cols[2]}</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {rows.map(row => (
+            <tr>
+              <th scope="row">{row.label}</th>
+              <td class="cmp-table__alignd">{row.alignd}</td>
+              <td>{row.traditional}</td>
+              <td>{row.parentalTech}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   </div>
+  <p class="cmp-scroll-hint" aria-hidden="true">
+    <span>Swipe to see more</span>
+    <span class="cmp-scroll-hint__arrow">→</span>
+  </p>
 </div>
 
 <style>
@@ -53,6 +59,11 @@ const { cols, rows } = comparison;
   .cmp-table-wrap {
     overflow-x: auto;
   }
+
+  /* Horizontal-scroll cue (mobile only — see the ≤767 block). On desktop the
+     table fits its column, so the fade and hint stay hidden. */
+  .cmp-table-scroll { position: relative; }
+  .cmp-scroll-hint { display: none; }
 
   .cmp-table {
     width: 100%;
@@ -185,5 +196,57 @@ const { cols, rows } = comparison;
     .cmp-table tbody tr:nth-child(odd) th[scope="row"] {
       background: var(--light-beige);
     }
+
+    /* Right-edge fade signals the table continues past the viewport; it clears
+       once the reader scrolls to the end (JS toggles .is-scrolled-end). */
+    .cmp-table-scroll::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 44px;
+      background: linear-gradient(to right, transparent, var(--white));
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity var(--transition-base);
+    }
+    .cmp-table-scroll.is-scrolled-end::after { opacity: 0; }
+
+    /* "Swipe to see more" hint under the table, matching the About-page modal. */
+    .cmp-scroll-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      margin: var(--space-4) 0 0;
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      transition: opacity var(--transition-base);
+    }
+    .cmp-scroll-hint__arrow { animation: cmp-hint-nudge 1.4s ease-in-out infinite; }
+    .cmp-table-scroll.is-scrolled-end ~ .cmp-scroll-hint { opacity: 0; }
+    @keyframes cmp-hint-nudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(4px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cmp-scroll-hint__arrow { animation: none; }
+    }
   }
 </style>
+
+<script>
+  // Show the fade + "swipe" hint until the table is scrolled to its right end.
+  document.querySelectorAll<HTMLElement>('.cmp-table-scroll').forEach((scroll) => {
+    const wrap = scroll.querySelector<HTMLElement>('.cmp-table-wrap');
+    if (!wrap) return;
+    const refresh = () => {
+      const atEnd = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 4;
+      scroll.classList.toggle('is-scrolled-end', atEnd);
+    };
+    wrap.addEventListener('scroll', refresh, { passive: true });
+    window.addEventListener('resize', refresh);
+    refresh();
+  });
+</script>

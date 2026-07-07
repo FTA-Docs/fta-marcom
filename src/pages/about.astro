@@ -147,26 +147,32 @@ import { emotionPaths } from '../lib/emotions';
         <div class="tech-modal__header">
           <h2 id="tech-modal-heading" class="tech-modal__heading">{techData.modalHeading}</h2>
         </div>
-        <div class="tech-table-wrap">
-          <table class="tech-table">
-            <thead>
-              <tr>
-                <th scope="col">{techData.cols[0]}</th>
-                <th scope="col">{techData.cols[1]}</th>
-                <th scope="col">{techData.cols[2]}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {techData.layers.map(layer => (
+        <div class="tech-table-scroll">
+          <div class="tech-table-wrap">
+            <table class="tech-table">
+              <thead>
                 <tr>
-                  <th scope="row">{layer.name}</th>
-                  <td>{layer.adds}</td>
-                  <td>{layer.why}</td>
+                  <th scope="col">{techData.cols[0]}</th>
+                  <th scope="col">{techData.cols[1]}</th>
+                  <th scope="col">{techData.cols[2]}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {techData.layers.map(layer => (
+                  <tr>
+                    <th scope="row">{layer.name}</th>
+                    <td>{layer.adds}</td>
+                    <td>{layer.why}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
+        <p class="tech-scroll-hint" aria-hidden="true">
+          <span>Swipe to see more</span>
+          <span class="tech-scroll-hint__arrow">→</span>
+        </p>
       </div>
     </div>
   </Panel>
@@ -481,6 +487,11 @@ import { emotionPaths } from '../lib/emotions';
 
   .tech-table-wrap { overflow-x: auto; }
 
+  /* Horizontal-scroll cue (mobile only — see the ≤767 block). On desktop the
+     table fits the modal, so the fade and hint stay hidden. */
+  .tech-table-scroll { position: relative; }
+  .tech-scroll-hint { display: none; }
+
   .tech-table {
     width: 100%;
     border-collapse: separate;
@@ -766,7 +777,7 @@ import { emotionPaths } from '../lib/emotions';
       line-height: var(--leading-snug);
     }
     .tech-table thead th:first-child,
-    .tech-table tbody th { width: 148px; }
+    .tech-table tbody th { width: 124px; }
     .tech-table thead th:first-child,
     .tech-table th[scope="row"] {
       position: sticky;
@@ -776,6 +787,47 @@ import { emotionPaths } from '../lib/emotions';
     }
     .tech-table tbody tr:nth-child(odd) th[scope="row"] {
       background: var(--light-beige);
+    }
+    /* Narrow the middle column so the third column's edge peeks into view,
+       backing up the fade + hint below. */
+    .tech-table thead th:nth-child(2),
+    .tech-table tbody td:first-of-type { width: 150px; }
+
+    /* Right-edge fade signals the table continues past the viewport; it clears
+       once the reader scrolls to the end (JS toggles .is-scrolled-end). */
+    .tech-table-scroll::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 44px;
+      background: linear-gradient(to right, transparent, var(--color-bg));
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity var(--transition-base);
+    }
+    .tech-table-scroll.is-scrolled-end::after { opacity: 0; }
+
+    /* Explicit hint naming the hidden column, so it's obvious one exists. */
+    .tech-scroll-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      margin: var(--space-4) 0 0;
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      transition: opacity var(--transition-base);
+    }
+    .tech-scroll-hint__arrow { transform: translateX(0); animation: tech-hint-nudge 1.4s ease-in-out infinite; }
+    .tech-table-scroll.is-scrolled-end ~ .tech-scroll-hint { opacity: 0; }
+    @keyframes tech-hint-nudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(4px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tech-scroll-hint__arrow { animation: none; }
     }
 
     /* Modal fills more of the small screen so the table has room */
@@ -863,7 +915,24 @@ import { emotionPaths } from '../lib/emotions';
     // Move to body so it escapes any transformed ancestor (Reveal) stacking.
     document.body.appendChild(techModalEl);
     const techModal = createModal(techModalEl);
+
+    // Horizontal-scroll cue: show the fade + "swipe" hint until the table is
+    // scrolled to its right end. clientWidth/scrollWidth are only meaningful
+    // once the modal is visible, so refresh on open (rAF) and on scroll/resize.
+    const techScroll = techModalEl.querySelector('.tech-table-scroll');
+    const techWrap = techModalEl.querySelector('.tech-table-wrap');
+    const refreshCue = () => {
+      if (!techScroll || !techWrap) return;
+      const atEnd = techWrap.scrollLeft + techWrap.clientWidth >= techWrap.scrollWidth - 4;
+      techScroll.classList.toggle('is-scrolled-end', atEnd);
+    };
+    techWrap?.addEventListener('scroll', refreshCue, { passive: true });
+    window.addEventListener('resize', refreshCue);
+
     document.querySelectorAll('[data-open-tech]').forEach(btn =>
-      btn.addEventListener('click', techModal.open));
+      btn.addEventListener('click', () => {
+        techModal.open();
+        requestAnimationFrame(refreshCue);
+      }));
   }
 </script>

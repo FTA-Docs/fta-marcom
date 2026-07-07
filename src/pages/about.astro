@@ -125,7 +125,6 @@ import { emotionPaths } from '../lib/emotions';
       </Reveal>
       <Reveal delay={150}>
         <div class="tech-layers">
-          <hr class="tech-rule" />
           <button type="button" class="tech-layers__link" data-open-tech>{techData.linkText}</button>
           <p class="tech-layers__intro">
             {techData.layersIntro.includes(techData.linkPhrase) ? (
@@ -429,15 +428,7 @@ import { emotionPaths } from '../lib/emotions';
   /* ── Technology "Five Structural Layers" table ──
      Borrows the homepage comparison table's striping + typography; no
      highlighted (green) column here — every row is an Alignd layer. */
-  .tech-layers { margin-top: var(--space-10); }
-
-  /* Short divider echoing the doc's rule between the intro and the deep-dive */
-  .tech-rule {
-    border: none;
-    border-top: 1px solid var(--color-border-strong);
-    width: 96px;
-    margin: 0 0 var(--space-8);
-  }
+  .tech-layers { margin-top: var(--space-8); }
 
   /* "Take a closer look" — heading-scale link that opens the layers modal */
   .tech-layers__link {

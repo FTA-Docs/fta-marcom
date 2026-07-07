@@ -363,11 +363,19 @@ const SF_MAX_ARCS = 6;
      is never obscured by a higher-z-index panel sliding over it early. */
   @media (max-width: 767px) {
     :global(#hero),
-    :global(#problem),
     :global(#science),
     :global(#pricing) {
       position: relative;
       top: 0;
+    }
+
+    /* Problem panel stays pinned on phones too, so the scroll-driven
+       "Sound Familiar?" carousel works exactly as it does on tablet/desktop.
+       .panel-page's mobile reset (global.css) drops the height/overflow, so
+       restore them here — the sliding worries must be clipped to one screen. */
+    :global(#problem) {
+      height: calc(100svh - var(--masthead-h));
+      overflow: hidden;
     }
 
     /* Solution joins normal flow on phone — a static stacked list, not the
@@ -617,11 +625,13 @@ const SF_MAX_ARCS = 6;
   }
 
   /* Scroll zone — its height sets how much scroll the worries span (the JS maps
-     scroll position to the active worry). ~0.68 screen per worry: enough to read
-     each without racing past, and the JS keeps all five in range. */
+     scroll position to the active worry). ~0.7 screen per worry, plus --sf-lead
+     of extra scroll the JS gives the first quote so it doesn't fly past on
+     arrival (must match SF_LEAD in the script). */
   .problem-scroll-zone {
-    height: calc(var(--quote-count) * 0.7 * (100vh  - var(--masthead-h)));
-    height: calc(var(--quote-count) * 0.7 * (100svh - var(--masthead-h)));
+    --sf-lead: 0.5;
+    height: calc((var(--quote-count) * 0.7 + var(--sf-lead)) * (100vh  - var(--masthead-h)));
+    height: calc((var(--quote-count) * 0.7 + var(--sf-lead)) * (100svh - var(--masthead-h)));
   }
 
   /* One worry at a time, stacked in one grid cell. Each worry fills the width
@@ -690,11 +700,11 @@ const SF_MAX_ARCS = 6;
     .sf-quotes { min-height: 7em; }
   }
 
-  /* Phones + reduced motion: no scroll-jack. The panel returns to normal flow
+  /* Reduced motion only: no scroll-jack. The panel returns to normal flow
      and the worries stack as a static, readable list — each is simply seen as
-     the reader scrolls past. (Landscape tablets ≥768 keep the pinned
-     scroll-driven cross-fade.) */
-  @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+     the reader scrolls past. All widths with motion OK (phones included) keep
+     the pinned scroll-driven cross-fade. */
+  @media (prefers-reduced-motion: reduce) {
     :global(#problem) {
       position: relative;
       top: 0;
@@ -730,11 +740,16 @@ const SF_MAX_ARCS = 6;
      timeline finishes within the first part, so that tail is pure hold: the
      LAST step stays frozen on screen as you keep scrolling, before the science
      panel slides up over it (stops readers scrolling past the final step). */
+  /* Height = the timeline's scroll length + a trailing hold, all measured in
+     screen-heights. Must match the JS pacing constants (LEAD / DWELL+TRANS /
+     tail): timeline runs for LEAD + (count-1)·step, then --sol-tail holds the
+     last step frozen before the science panel slides up over it. */
   .solution-scroll-zone {
-    --sol-tail: 0.6;
-    /* panel lives before this zone, so subtract one panel-height */
-    height: calc((var(--sol-count) - 1 + var(--sol-tail)) * (100vh  - var(--masthead-h)));
-    height: calc((var(--sol-count) - 1 + var(--sol-tail)) * (100svh - var(--masthead-h)));
+    --sol-lead: 0.24;   /* leading hold on step 0            (JS LEAD)          */
+    --sol-step: 0.90;   /* per later step: hold 0.67 + slide 0.23 (JS DWELL+TRANS) */
+    --sol-tail: 0.6;    /* frozen hold on the last step                          */
+    height: calc((var(--sol-lead) + (var(--sol-count) - 1) * var(--sol-step) + var(--sol-tail)) * (100vh  - var(--masthead-h)));
+    height: calc((var(--sol-lead) + (var(--sol-count) - 1) * var(--sol-step) + var(--sol-tail)) * (100svh - var(--masthead-h)));
   }
 
   .sol-stage {
@@ -755,6 +770,13 @@ const SF_MAX_ARCS = 6;
     display: flex;
     align-items: center;
     overflow: hidden; /* clips sliding text so sections never visually overlap */
+    /* Opaque panel-colored occluder above the filmstrip: the text column and
+       the 55% filmstrip share a ~64px band, so during a transition a ghosted
+       phone would otherwise paint over the incoming heading. Matching the panel
+       token makes this an invisible occluder — phones slide behind it and
+       dissolve into the beige (seamless), and the heading stays crisp. */
+    background: var(--light-beige);
+    z-index: 2;
   }
 
   .sol-text {
@@ -793,6 +815,7 @@ const SF_MAX_ARCS = 6;
     display: flex;
     align-items: center;
     overflow: hidden;
+    z-index: 1; /* sits below .sol-texts so phones never cover the heading */
   }
 
   .sol-filmstrip {
@@ -1848,18 +1871,23 @@ const SF_MAX_ARCS = 6;
   // (not GSAP) so the range is measured live from the real element positions:
   // the cycle runs from the moment the panel pins until just before the
   // solution panel slides up over it, so all worries are seen in sequence.
-  // Gated ≥768 and motion-OK; phones / reduced-motion get the static CSS list.
+  // Runs at every width when motion is OK — phones get the same scroll-driven
+  // carousel as tablet/desktop; only reduced-motion falls back to the static list.
   {
     const sfProblemZone = document.getElementById('problem-scroll-zone');
     const sfQuotes = Array.from(document.querySelectorAll<HTMLElement>('.sf-quote'));
     const sfDots   = Array.from(document.querySelectorAll<HTMLElement>('.sf-dot'));
     const sfMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (sfProblemZone && sfQuotes.length > 1 && sfMotion
-        && window.matchMedia('(min-width: 768px)').matches) {
+    if (sfProblemZone && sfQuotes.length > 1 && sfMotion) {
       const sfCount = sfQuotes.length;
       // Hold the last worry this fraction of a screen before the solution covers it
       const SF_TAIL = 0.6;
+      // Extra hold on the FIRST worry (in screens). Unlike the Solution panel,
+      // this cycle starts the instant the panel pins — the first quote gets no
+      // entrance linger — so it needs its own lead-in or it flies past on arrival.
+      // Must match --sf-lead in the CSS (the zone height reserves this scroll).
+      const SF_LEAD = 0.5;
       let sfCurrent = -1;
 
       const setWorry = (idx: number) => {
@@ -1889,21 +1917,29 @@ const SF_MAX_ARCS = 6;
         return { pinStart, span: Math.max(1, cycleEnd - pinStart) };
       };
 
+      // Worry 0 owns a lead-in band of (SF_LEAD + base); worries 1…n each own
+      // one `base`. The zone is taller by SF_LEAD, so `base` stays the same
+      // ~0.67 screen the later worries had — only the first quote lingers longer.
       const updateWorry = () => {
         const { pinStart, span } = sfRange();
-        const p = (window.scrollY - pinStart) / span;
-        setWorry(Math.floor(Math.max(0, Math.min(0.9999, p)) * sfCount));
+        const s = window.scrollY - pinStart;                        // 0…span
+        const lead = SF_LEAD * (window.innerHeight - mastheadH);    // first-quote lead
+        const base = Math.max(1, (span - lead) / sfCount);          // per-quote share
+        setWorry(s < lead + base ? 0 : 1 + Math.floor((s - lead - base) / base));
       };
 
       window.addEventListener('scroll', updateWorry, { passive: true });
       window.addEventListener('resize', updateWorry);
       updateWorry();
 
-      // Dots jump to the middle of their worry's band
+      // Dots jump to the middle of their worry's band (band 0 is wider by the lead)
       sfDots.forEach((dot, i) => {
         dot.addEventListener('click', () => {
           const { pinStart, span } = sfRange();
-          window.scrollTo({ top: Math.max(0, pinStart + ((i + 0.5) / sfCount) * span), behavior: 'smooth' });
+          const lead = SF_LEAD * (window.innerHeight - mastheadH);
+          const base = Math.max(1, (span - lead) / sfCount);
+          const centre = i === 0 ? (lead + base) / 2 : lead + base * (i + 0.5);
+          window.scrollTo({ top: Math.max(0, pinStart + centre), behavior: 'smooth' });
         });
       });
     }
@@ -1997,20 +2033,35 @@ const SF_MAX_ARCS = 6;
           i === 0 ? { scale: PH_ACTIVE, opacity: 1 } : { scale: PH_INACTIVE, opacity: 0.45 }
         ));
 
-        // Even pacing: every section gets an identical dwell, separated by
-        // equal-length transitions — including a leading dwell before the first
-        // transition and a trailing dwell after the last, so section 4 rests on
-        // screen before the panel unpins, mirroring section 1's entrance.
-        const TRANS = 0.28;   // scroll fraction spent moving between sections
-        const DWELL = 0.72;   // scroll fraction each section holds, still
-        const total = DWELL * solCount + TRANS * (solCount - 1);
+        // Pacing — values are in units of one screen-height of scroll (the
+        // ScrollTrigger end below is `total × panelH`, so 1 timeline unit = 1
+        // panelH). Every step slides identically (TRANS) and each later step
+        // holds the same (DWELL); a full step ≈ 0.68 screen, matching the pace
+        // of the "Sound Familiar?" worries above.
+        //   LEAD is a deliberately short hold on step 0: the intro already gets
+        //   ~a full screen of on-screen time as the panel slides up and pins, so
+        //   a full DWELL on top of that made the first step feel stuck.
+        // Keep these in sync with --sol-lead / --sol-step / --sol-tail in the
+        // CSS — the scroll-zone height is derived from the same numbers.
+        const TRANS = 0.23;   // screens of scroll spent sliding between steps
+        const DWELL = 0.67;   // screens each later step holds, still — matches the
+                              //   "Sound Familiar?" worries (0.67) so the two
+                              //   carousels feel identical; the last step's hold +
+                              //   the 0.6 tail below = 1.27, mirroring the last worry.
+        const LEAD  = 0.24;   // screens step 0 holds before the first slide — kept
+                              //   short on purpose: the panel's slide-up entrance
+                              //   already gives step 0 ~1 screen of linger that the
+                              //   worries' first quote never gets (its cycle starts
+                              //   right at the pin), so a full DWELL here would make
+                              //   the intro feel stuck.
+        const total = LEAD + (solCount - 1) * (DWELL + TRANS);
         const solTl = gsap.timeline({ paused: true });
         // Reserve the full duration so the trailing dwell exists — nothing
         // animates during it, so GSAP would otherwise trim the timeline short.
         solTl.to({}, { duration: total }, 0);
 
         for (let i = 0; i < solCount - 1; i++) {
-          const t = DWELL * (i + 1) + TRANS * i;   // transition i fires after section i's dwell
+          const t = LEAD + i * (DWELL + TRANS);   // transition i fires after step i's hold
 
           // Slide the full text block (eyebrow included) out as the next slides in
           solTl.to(solTexts[i],     { xPercent: -100, ease: 'power2.inOut', duration: TRANS }, t);
@@ -2027,7 +2078,7 @@ const SF_MAX_ARCS = 6;
         ScrollTrigger.create({
           trigger: solZone,
           start: `top top+=${mastheadH}`,
-          end: () => `+=${(solCount - 1) * panelH()}`,
+          end: () => `+=${total * panelH()}`,
           scrub: 1,
           invalidateOnRefresh: true,
           animation: solTl,
@@ -2037,7 +2088,7 @@ const SF_MAX_ARCS = 6;
             const time = self.progress * total;
             let idx = 0;
             for (let i = 0; i < solCount - 1; i++) {
-              if (time >= DWELL * (i + 1) + TRANS * i + TRANS / 2) idx = i + 1;
+              if (time >= LEAD + i * (DWELL + TRANS) + TRANS / 2) idx = i + 1;
             }
             solDots.forEach((dot, i) => {
               const active = i === idx;
@@ -2050,11 +2101,16 @@ const SF_MAX_ARCS = 6;
           },
         });
 
+        // Scroll a dot to the middle of its step's hold (steps are no longer
+        // evenly 1-screen apart — step 0's LEAD hold is shorter).
+        const dwellCenter = (i: number) => i === 0
+          ? LEAD / 2
+          : LEAD + (i - 1) * (DWELL + TRANS) + TRANS + DWELL / 2;
         solDots.forEach((dot, i) => {
           dot.addEventListener('click', () => {
             const zoneTop = getFlowTop(solZone);
             window.scrollTo({
-              top: Math.max(0, zoneTop - mastheadH + i * panelH()),
+              top: Math.max(0, zoneTop - mastheadH + dwellCenter(i) * panelH()),
               behavior: 'smooth',
             });
           });

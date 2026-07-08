@@ -1,12 +1,12 @@
 {
   "linkText": "Take a closer look",
   "linkPhrase": "five structural layers",
-  "modalHeading": "Five structural layers",
+  "modalHeading": "Alignd Architecture / 5 Layers",
   "layersIntro": "With many AI-powered tools designed for consumers, a determined user could reproduce about 70% of the experience with some good prompts. This is not true with Alignd. In our technical architecture, five structural layers sit between the user and the raw model, each adding value the model cannot supply on its own.",
   "cols": [
     "Layer",
     "What it adds",
-    "Why frontier models alone can't do it"
+    "Why a frontier model alone can't do it"
   ],
   "layers": [
     {

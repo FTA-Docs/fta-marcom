@@ -641,8 +641,11 @@ const SF_MAX_ARCS = 6;
   .sf-quotes {
     display: grid;
     overflow: hidden;
-    /* reserve room for the tallest worry so the group doesn't jump on cycle */
-    min-height: 5em;
+    /* Reserve room for the tallest worry (3 lines) so the group doesn't jump
+       on cycle. Measured from the quote's OWN font size — not the container's
+       em — so it scales with the --text-5xl clamp; the extra 0.4 line-box
+       keeps descenders clear of the overflow-clip edge. */
+    min-height: calc(var(--text-5xl) * var(--leading-tight) * 3.6);
   }
   .sf-quote {
     grid-area: 1 / 1;
@@ -697,7 +700,8 @@ const SF_MAX_ARCS = 6;
       font-size: var(--text-3xl);
       max-width: min(90vw, 18ch);
     }
-    .sf-quotes { min-height: 7em; }
+    /* Reserve for 3 lines at the smaller quote size (see note above). */
+    .sf-quotes { min-height: calc(var(--text-3xl) * var(--leading-tight) * 3.6); }
   }
 
   /* Reduced motion only: no scroll-jack. The panel returns to normal flow
@@ -1215,12 +1219,15 @@ const SF_MAX_ARCS = 6;
     padding-block: var(--space-10) var(--space-6);
   }
 
-  /* Stage clips the sliding quotes; height sized to quote content */
+  /* Stage clips the sliding quotes horizontally. Height reserves the tallest
+     quote (up to 3 lines + attribution), measured from the quote's OWN font
+     size so it tracks the --text-3xl clamp and never crops as quotes wrap to
+     more lines on narrower viewports (a fixed vh band did). */
   .sp-stage {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: clamp(100px, 14vh, 160px);
+    min-height: calc(var(--text-3xl) * var(--leading-tight) * 3 + var(--space-10));
   }
 
   /* Each quote fills the stage; JS drives transform */
@@ -1632,12 +1639,11 @@ const SF_MAX_ARCS = 6;
     .sp-quote__text {
       font-size: var(--text-xl);
     }
-    /* Tighter, in the spirit of the problem quotes: reserve only ~the tallest
-       quote's height (no vh-based slack that left the strip oversized) and pull
-       the dots in close underneath. */
+    /* Reserve the tallest quote from the (smaller) phone font size — quotes
+       wrap to ~5 lines on the narrowest phones, so measure from --text-xl and
+       never crop. Dots pull in close underneath. */
     .sp-stage {
-      height: auto;
-      min-height: 150px;
+      min-height: calc(var(--text-xl) * var(--leading-tight) * 5 + var(--space-10));
     }
     .sp-content { gap: var(--space-2); }
     .sp-dots {

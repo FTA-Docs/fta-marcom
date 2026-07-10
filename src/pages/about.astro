@@ -125,15 +125,9 @@ import { emotionPaths } from '../lib/emotions';
       </Reveal>
       <Reveal delay={150}>
         <div class="tech-layers">
-          <button type="button" class="tech-layers__link" data-open-tech>{techData.linkText}</button>
           <p class="tech-layers__intro">
-            {techData.layersIntro.includes(techData.linkPhrase) ? (
-              <Fragment>
-                {techData.layersIntro.split(techData.linkPhrase)[0]}
-                <button type="button" class="tech-inline-link" data-open-tech>{techData.linkPhrase}</button>
-                {techData.layersIntro.split(techData.linkPhrase)[1]}
-              </Fragment>
-            ) : techData.layersIntro}
+            {techData.layersIntro}{' '}
+            <button type="button" class="tech-inline-link" data-open-tech>{techData.linkText}</button>
           </p>
         </div>
       </Reveal>
@@ -436,29 +430,6 @@ import { emotionPaths } from '../lib/emotions';
      highlighted (green) column here — every row is an Alignd layer. */
   .tech-layers { margin-top: var(--space-8); }
 
-  /* "Take a closer look" — heading-scale link that opens the layers modal */
-  .tech-layers__link {
-    display: inline-block;
-    font-family: var(--font-heading);
-    font-weight: var(--weight-semibold);
-    font-size: var(--text-xl);
-    color: var(--color-accent);
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0 0 var(--space-3);
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: opacity var(--transition-fast);
-  }
-  .tech-layers__link:hover { opacity: 0.7; }
-  .tech-layers__link:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
   .tech-layers__intro {
     color: var(--color-text);
     line-height: var(--leading-normal);
@@ -466,7 +437,7 @@ import { emotionPaths } from '../lib/emotions';
     margin: 0;
   }
 
-  /* Inline "five structural layers" link inside the intro copy */
+  /* Inline "Take a closer look" link at the end of the intro copy */
   .tech-inline-link {
     background: none;
     border: none;
@@ -559,7 +530,7 @@ import { emotionPaths } from '../lib/emotions';
     position: relative;
     background: var(--color-bg);
     border-radius: var(--radius-md);
-    width: min(1100px, calc(100% - var(--space-6)));
+    width: min(1220px, calc(100% - var(--space-6)));
     max-height: min(90vh, 820px);
     padding: var(--space-10) var(--space-8) var(--space-8);
     overflow: auto;

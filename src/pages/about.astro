@@ -56,9 +56,11 @@ import { emotionPaths } from '../lib/emotions';
       <Reveal delay={150} class="about-split__visual">
         <figure class="about-figure about-figure--circle">
           <div class="about-figure__frame">
-            <span class="about-figure__placeholder">{pageData.clinical.placeholder}</span>
+            {pageData.clinical.image
+              ? <img src={pageData.clinical.image} alt={pageData.clinical.imageAlt} />
+              : <span class="about-figure__placeholder">{pageData.clinical.placeholder}</span>}
           </div>
-          <figcaption class="about-figure__caption">{pageData.clinical.caption}</figcaption>
+          {pageData.clinical.caption && <figcaption class="about-figure__caption">{pageData.clinical.caption}</figcaption>}
         </figure>
       </Reveal>
     </div>

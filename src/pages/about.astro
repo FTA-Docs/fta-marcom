@@ -116,22 +116,33 @@ import { emotionPaths } from '../lib/emotions';
     </div>
   </Panel>
 
-  <!-- Our Technology — intro + "Five Structural Layers" table -->
+  <!-- Our Technology — graphic left, headline/copy + "Five Structural Layers" table right -->
   <Panel background="surface" class="about-pad">
-    <div class="about-section">
-      <Reveal><h2>{pageData.technology.heading}</h2></Reveal>
-      <Reveal delay={100}>
-        <div class="prose about-prose-narrow">
-          <TechnologyContent />
-        </div>
-      </Reveal>
-      <Reveal delay={150}>
-        <div class="tech-layers">
-          <p class="tech-layers__intro">
-            {techData.layersIntro}{' '}
-            <button type="button" class="tech-inline-link" data-open-tech>{techData.linkText}</button>
-          </p>
-        </div>
+    <div class="about-split about-split--reverse">
+      <div class="about-split__text">
+        <Reveal><h2>{pageData.technology.heading}</h2></Reveal>
+        <Reveal delay={100}>
+          <div class="prose about-prose-narrow">
+            <TechnologyContent />
+          </div>
+        </Reveal>
+        <Reveal delay={150}>
+          <div class="tech-layers">
+            <p class="tech-layers__intro">
+              {techData.layersIntro}{' '}
+              <button type="button" class="tech-inline-link" data-open-tech>{techData.linkText}</button>
+            </p>
+          </div>
+        </Reveal>
+      </div>
+      <Reveal delay={150} class="about-split__visual">
+        <figure class="about-figure">
+          <div class="about-figure__frame">
+            {pageData.technology.image
+              ? <img src={pageData.technology.image} alt={pageData.technology.imageAlt} />
+              : <span class="about-figure__placeholder">{pageData.technology.placeholder}</span>}
+          </div>
+        </figure>
       </Reveal>
     </div>
 
@@ -453,6 +464,26 @@ import { emotionPaths } from '../lib/emotions';
   }
   .tech-inline-link:hover { opacity: 0.7; }
   .tech-inline-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Same button styled inline within TechnologyContent (markdown-rendered,
+     so scoped selectors above don't reach it — needs :global()). */
+  .prose :global(.tech-inline-link) {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+  }
+  .prose :global(.tech-inline-link:hover) { opacity: 0.7; }
+  .prose :global(.tech-inline-link:focus-visible) {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
     border-radius: 2px;

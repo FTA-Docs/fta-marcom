@@ -4,23 +4,23 @@
       "id": "michael-rich",
       "name": "Michael Rich",
       "title": "Co-Founder",
-      "headshot": "",
-      "linkedin": "https://linkedin.com/in/placeholder",
+      "headshot": "/headshots/michael.jpg",
+      "linkedin": "https://www.linkedin.com/in/michael-rich-48a323/",
       "bio": "Placeholder bio for Michael Rich. Background, experience, and role at alignd to be added here."
     },
     {
       "id": "dave-batista",
       "name": "Dave Batista",
       "title": "Co-Founder",
-      "headshot": "",
-      "linkedin": "https://linkedin.com/in/placeholder",
+      "headshot": "/headshots/dave.jpg",
+      "linkedin": "https://www.linkedin.com/in/dave-batista-b24504/",
       "bio": "Placeholder bio for Dave Batista. Background, experience, and role at alignd to be added here."
     },
     {
       "id": "joe-ranft",
       "name": "Joe Ranft",
       "title": "Co-Founder",
-      "headshot": "",
+      "headshot": "/headshots/joe.jpg",
       "linkedin": "https://www.linkedin.com/in/joeranft/",
       "bio": "Placeholder bio for Joe Ranft. Background, experience, and role at alignd to be added here."
     },
@@ -28,24 +28,24 @@
       "id": "christine-pillsbury",
       "name": "Christine Pillsbury",
       "title": "Co-Founder",
-      "headshot": "",
-      "linkedin": "https://linkedin.com/in/placeholder",
+      "headshot": "/headshots/christine.jpg",
+      "linkedin": "https://www.linkedin.com/in/christinepillsbury/",
       "bio": "Placeholder bio for Christine Pillsbury. Background, experience, and role at alignd to be added here."
     },
     {
       "id": "buddy-williams",
       "name": "Buddy Williams",
       "title": "Co-Founder",
-      "headshot": "",
-      "linkedin": "https://linkedin.com/in/placeholder",
+      "headshot": "/headshots/buddy.jpg",
+      "linkedin": "https://www.linkedin.com/in/buddylwilliams/",
       "bio": "Placeholder bio for Buddy Williams. Background, experience, and role at alignd to be added here."
     },
     {
       "id": "scott-nejadlik",
       "name": "Scott Nejadlik",
       "title": "Co-Founder",
-      "headshot": "",
-      "linkedin": "https://linkedin.com/in/placeholder",
+      "headshot": "/headshots/scott.jpg",
+      "linkedin": "https://www.linkedin.com/in/sniejadlik/",
       "bio": "Placeholder bio for Scott Nejadlik. Background, experience, and role at alignd to be added here."
     }
   ]

@@ -11,7 +11,8 @@
   "clinical": {
     "heading": "Clinical Experience",
     "placeholder": "Photo",
-    "caption": "Dr. Michael Rich, in clinic"
+    "image": "/provenapproach-father-son.png",
+    "imageAlt": "A father and son sitting together"
   },
   "comb": {
     "heading": "About COM-B"

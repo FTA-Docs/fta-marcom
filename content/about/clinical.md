@@ -1,3 +1,3 @@
-alignd is built on a foundation of child and adolescent psychology, family therapy, and digital wellness research. That expertise shapes every part of the product — how plans are structured, how progress is measured, and the guidance Ali delivers.
+At the heart Aligned is the knowledge and experience of co-founder Dr. Michael Rich. Known as the “Mediatrician”, Michael is not only a leading digital health researcher and renowned author. He’s a devoted clinician who has spent over 30 years working closely with thousands of parents and kids to improve their digital health.  
 
-We're not a clinical service, but we're built like one should be: careful, evidence-led, and centered on what actually helps families change.
+Over this time, he and his team at the Digital Wellness Center at Boston Children’s Hospital have gained deep  insight into the causes and perpetuators of unhealthy technology use, the cycles that need to be broken and the unique combinations of strategies and tactics that can be best deployed to benefit any one child.

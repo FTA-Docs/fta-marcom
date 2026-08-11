@@ -9,16 +9,19 @@
     "imageAlt": "Teenagers playing music together"
   },
   "clinical": {
-    "heading": "Clinical Experience",
+    "heading": "Clinical Knowledge",
     "placeholder": "Photo",
     "image": "/provenapproach-father-son.png",
     "imageAlt": "A father and son sitting together"
   },
   "comb": {
-    "heading": "About COM-B"
+    "heading": "A COM-B Framework"
   },
   "technology": {
-    "heading": "Our Technology"
+    "heading": "Built to Help at Scale",
+    "placeholder": "Graphic",
+    "image": "",
+    "imageAlt": "Diagram of the alignd technology architecture"
   },
   "team": {
     "heading": "Founding Team",

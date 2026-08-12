@@ -209,6 +209,7 @@ collections:
         name: faqs
         file: content/faqs.json
         fields:
+          - { label: Heading, name: heading, widget: string }
           - { label: Eyebrow, name: eyebrow, widget: string }
           - { label: Intro Text, name: intro, widget: string }
           - { label: Contact Note, name: contactNote, widget: string }
@@ -249,6 +250,54 @@ collections:
   - name: about
     label: About Page
     files:
+      - label: Page Content (headings & meta)
+        name: page
+        file: content/about/page.json
+        fields:
+          - label: Meta
+            name: meta
+            widget: object
+            fields:
+              - { label: Page Title, name: title, widget: string }
+              - { label: Meta Description, name: description, widget: text }
+          - label: Mission
+            name: mission
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Heading, name: heading, widget: string }
+              - { label: Image Alt Text, name: imageAlt, widget: string }
+          - label: Clinical
+            name: clinical
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Image Placeholder Text, name: placeholder, widget: string }
+              - { label: Image Path, name: image, widget: string, required: false }
+              - { label: Image Alt Text, name: imageAlt, widget: string }
+          - label: COM-B
+            name: comb
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+          - label: Technology
+            name: technology
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Image Placeholder Text, name: placeholder, widget: string }
+              - { label: Image Path, name: image, widget: string, required: false }
+              - { label: Image Alt Text, name: imageAlt, widget: string }
+          - label: Team
+            name: team
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Bio Button Label, name: bioButton, widget: string }
+              - { label: Bio Button Aria Label, name: bioButtonAria, widget: string }
+              - { label: Modal Close Aria Label, name: modalCloseAria, widget: string }
+              - { label: LinkedIn Label, name: linkedinLabel, widget: string }
+
       - label: Mission
         name: mission
         file: content/about/mission.md
@@ -327,10 +376,156 @@ collections:
               - { label: LinkedIn URL, name: linkedin, widget: string, required: false }
               - { label: Bio, name: bio, widget: text }
 
+  # ─── Auth Pages ───────────────────────────────────────────────────────────────
+  - name: auth
+    label: Auth Pages
+    files:
+      - label: Sign In & Sign Up
+        name: auth
+        file: content/auth.json
+        fields:
+          - label: Sign In
+            name: signin
+            widget: object
+            fields:
+              - label: Meta
+                name: meta
+                widget: object
+                fields:
+                  - { label: Page Title, name: title, widget: string }
+                  - { label: Meta Description, name: description, widget: text }
+              - { label: Heading, name: heading, widget: string }
+              - label: Social Buttons
+                name: social
+                widget: object
+                fields:
+                  - { label: Google Button Label, name: google, widget: string }
+                  - { label: Microsoft Button Label, name: microsoft, widget: string }
+              - { label: Divider Text, name: divider, widget: string }
+              - label: Fields
+                name: fields
+                widget: object
+                fields:
+                  - label: Email Field
+                    name: email
+                    widget: object
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Placeholder, name: placeholder, widget: string }
+                  - label: Password Field
+                    name: password
+                    widget: object
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Placeholder, name: placeholder, widget: string }
+              - label: Password Toggle
+                name: passwordToggle
+                widget: object
+                fields:
+                  - { label: Show Label, name: show, widget: string }
+                  - { label: Hide Label, name: hide, widget: string }
+              - { label: Forgot Password Link Text, name: forgot, widget: string }
+              - { label: Submit Button Label, name: submit, widget: string }
+              - label: Switch to Sign Up
+                name: switch
+                widget: object
+                fields:
+                  - { label: Prompt Text, name: prompt, widget: string }
+                  - { label: Link Text, name: link, widget: string }
+          - label: Sign Up
+            name: signup
+            widget: object
+            fields:
+              - label: Meta
+                name: meta
+                widget: object
+                fields:
+                  - { label: Page Title, name: title, widget: string }
+                  - { label: Meta Description, name: description, widget: text }
+              - { label: Heading, name: heading, widget: string }
+              - label: Social Buttons
+                name: social
+                widget: object
+                fields:
+                  - { label: Google Button Label, name: google, widget: string }
+                  - { label: Microsoft Button Label, name: microsoft, widget: string }
+              - { label: Divider Text, name: divider, widget: string }
+              - label: Fields
+                name: fields
+                widget: object
+                fields:
+                  - label: First Name Field
+                    name: firstName
+                    widget: object
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Placeholder, name: placeholder, widget: string }
+                  - label: Email Field
+                    name: email
+                    widget: object
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Placeholder, name: placeholder, widget: string }
+                  - label: Password Field
+                    name: password
+                    widget: object
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Hint, name: hint, widget: text }
+                      - { label: Placeholder, name: placeholder, widget: string }
+              - label: Password Toggle
+                name: passwordToggle
+                widget: object
+                fields:
+                  - { label: Show Label, name: show, widget: string }
+                  - { label: Hide Label, name: hide, widget: string }
+              - label: Password Strength Levels
+                name: strengthLevels
+                widget: list
+                field: { label: Level, name: level, widget: string }
+              - { label: Submit Button Label, name: submit, widget: string }
+              - label: Switch to Sign In
+                name: switch
+                widget: object
+                fields:
+                  - { label: Prompt Text, name: prompt, widget: string }
+                  - { label: Link Text, name: link, widget: string }
+
+  # ─── 404 Page ─────────────────────────────────────────────────────────────────
+  - name: not-found
+    label: 404 Page
+    files:
+      - label: 404 Page Content
+        name: not-found
+        file: content/404.json
+        fields:
+          - { label: Error Code, name: code, widget: string }
+          - { label: Heading, name: heading, widget: string }
+          - { label: Body, name: body, widget: text }
+          - { label: Home Button Label, name: homeLabel, widget: string }
+          - { label: Support Button Label, name: supportLabel, widget: string }
+
   # ─── Legal ────────────────────────────────────────────────────────────────────
   - name: legal
     label: Legal
     files:
+      - label: Page Headings
+        name: pages
+        file: content/legal/pages.json
+        fields:
+          - label: Terms
+            name: terms
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Last Updated Text, name: lastUpdated, widget: string }
+          - label: Privacy
+            name: privacy
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Last Updated Text, name: lastUpdated, widget: string }
+
       - label: Privacy Policy
         name: privacy
         file: content/legal/privacy.md

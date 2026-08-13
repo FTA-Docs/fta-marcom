@@ -339,10 +339,8 @@ collections:
         name: technology-data
         file: content/about/technology.json
         fields:
-          - { label: Modal Link Text, name: linkText, widget: string }
           - { label: Link Phrase (highlighted words), name: linkPhrase, widget: string }
           - { label: Modal Heading, name: modalHeading, widget: string }
-          - { label: Layers Intro, name: layersIntro, widget: text }
           - label: Table Column Headers
             name: cols
             widget: list

@@ -54,7 +54,7 @@ import { emotionPaths } from '../lib/emotions';
         </Reveal>
       </div>
       <Reveal delay={150} class="about-split__visual">
-        <figure class="about-figure about-figure--circle">
+        <figure class="about-figure about-figure--tint">
           <div class="about-figure__frame">
             {pageData.clinical.image
               ? <img src={pageData.clinical.image} alt={pageData.clinical.imageAlt} />
@@ -124,14 +124,6 @@ import { emotionPaths } from '../lib/emotions';
         <Reveal delay={100}>
           <div class="prose about-prose-narrow">
             <TechnologyContent />
-          </div>
-        </Reveal>
-        <Reveal delay={150}>
-          <div class="tech-layers">
-            <p class="tech-layers__intro">
-              {techData.layersIntro}{' '}
-              <button type="button" class="tech-inline-link" data-open-tech>{techData.linkText}</button>
-            </p>
           </div>
         </Reveal>
       </div>
@@ -204,7 +196,7 @@ import { emotionPaths } from '../lib/emotions';
               <span class="team-title">{member.title}</span>
               <button
                 class="team-bio-btn"
-                data-id={member.id}
+                data-bio-id={member.id}
                 aria-label={pageData.team.bioButtonAria.replace('{name}', member.name)}
               >{pageData.team.bioButton}</button>
             </div>
@@ -322,8 +314,11 @@ import { emotionPaths } from '../lib/emotions';
     justify-content: center;
   }
 
-  /* Spring-leaf tint over the Mission photo — matches the homepage hero card */
-  .about-hero .about-figure__frame::before {
+  /* Spring-leaf tint — matches the homepage hero card. Applied to the Mission
+     photo by section, and reused via the modifier class on other photos that
+     should read with the same light, warm-green cast (e.g. Clinical). */
+  .about-hero .about-figure__frame::before,
+  .about-figure--tint .about-figure__frame::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -336,15 +331,6 @@ import { emotionPaths } from '../lib/emotions';
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  /* Circular portrait variant — centered, sized down from the full column */
-  .about-figure--circle {
-    max-width: 360px;
-    margin-inline: auto;
-  }
-  .about-figure--circle .about-figure__frame {
-    border-radius: var(--radius-full);
   }
 
   .about-figure__placeholder {
@@ -441,16 +427,9 @@ import { emotionPaths } from '../lib/emotions';
   /* ── Technology "Five Structural Layers" table ──
      Borrows the homepage comparison table's striping + typography; no
      highlighted (green) column here — every row is an Alignd layer. */
-  .tech-layers { margin-top: var(--space-8); }
 
-  .tech-layers__intro {
-    color: var(--color-text);
-    line-height: var(--leading-normal);
-    max-width: 64ch;
-    margin: 0;
-  }
-
-  /* Inline "Take a closer look" link at the end of the intro copy */
+  /* Inline link opening the five-structural-layers modal (used within
+     TechnologyContent markdown) */
   .tech-inline-link {
     background: none;
     border: none;
@@ -484,6 +463,26 @@ import { emotionPaths } from '../lib/emotions';
   }
   .prose :global(.tech-inline-link:hover) { opacity: 0.7; }
   .prose :global(.tech-inline-link:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Inline bio trigger within markdown content (e.g. "Dr. Michael Rich" in
+     Clinical Knowledge) — opens the same bio modal as the Founding Team cards. */
+  .prose :global(.bio-inline-link) {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+  }
+  .prose :global(.bio-inline-link:hover) { opacity: 0.7; }
+  .prose :global(.bio-inline-link:focus-visible) {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
     border-radius: 2px;
@@ -893,13 +892,14 @@ import { emotionPaths } from '../lib/emotions';
     return { open, close };
   }
 
-  // ── Founding-team bio modal ──
+  // ── Bio modal — triggered from the Founding Team cards and from inline
+  // mentions elsewhere on the page (e.g. Dr. Michael Rich in Clinical Knowledge) ──
   const bioModalEl = document.getElementById('bio-modal');
   if (bioModalEl) {
     const bioModal = createModal(bioModalEl);
-    document.querySelectorAll('.team-bio-btn').forEach(btn => {
+    document.querySelectorAll('[data-bio-id]').forEach(btn => {
       btn.addEventListener('click', () => {
-        const member = teamData.members.find(m => m.id === btn.dataset.id);
+        const member = teamData.members.find(m => m.id === btn.dataset.bioId);
         if (!member) return;
         bioModalEl.querySelector('.bio-modal__name').textContent = member.name;
         bioModalEl.querySelector('.bio-modal__title').textContent = member.title;

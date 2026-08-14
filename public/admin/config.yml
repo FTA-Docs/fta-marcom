@@ -263,19 +263,6 @@ collections:
         fields:
           - { label: Body, name: body, widget: markdown }
 
-      - label: COM-B Framework (diagram labels)
-        name: com-b-data
-        file: content/about/com-b.json
-        fields:
-          - { label: Centre Label, name: center, widget: string }
-          - label: Nodes
-            name: nodes
-            widget: list
-            fields:
-              - { label: Key, name: key, widget: string }
-              - { label: Label, name: label, widget: string }
-              - { label: Description, name: desc, widget: string }
-
       - label: Technology (copy)
         name: technology-copy
         file: content/about/technology.md

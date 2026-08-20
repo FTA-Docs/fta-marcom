@@ -29,7 +29,7 @@ const siteUrl = 'https://alignd.care';
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
 // OG/Twitter images must be absolute URLs — resolve relative paths against the site origin.
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
-const fullTitle = title === 'alignd' ? title : title + ' | alignd';
+const fullTitle = title === 'Alignd' ? title : title + ' | Alignd';
 const jsonLd = JSON.stringify([
   {
     '@context': 'https://schema.org',

@@ -209,11 +209,13 @@ import { emotionPaths } from '../lib/emotions';
         <div class="bio-modal__backdrop"></div>
         <div class="bio-modal__panel">
           <button class="bio-modal__close" aria-label={pageData.team.modalCloseAria}>&times;</button>
-          <div class="bio-modal__avatar"></div>
-          <h3 class="bio-modal__name" id="bio-modal-name"></h3>
-          <p class="bio-modal__title"></p>
-          <p class="bio-modal__bio"></p>
-          <a class="bio-modal__linkedin" href="#" target="_blank" rel="noopener noreferrer">{pageData.team.linkedinLabel}</a>
+          <div class="bio-modal__content">
+            <div class="bio-modal__avatar"></div>
+            <h3 class="bio-modal__name" id="bio-modal-name"></h3>
+            <p class="bio-modal__title"></p>
+            <p class="bio-modal__bio"></p>
+            <a class="bio-modal__linkedin" href="#" target="_blank" rel="noopener noreferrer">{pageData.team.linkedinLabel}</a>
+          </div>
         </div>
       </div>
     </div>
@@ -686,11 +688,21 @@ import { emotionPaths } from '../lib/emotions';
     padding: var(--space-10);
     max-width: 480px;
     width: calc(100% - var(--space-8));
+    max-height: min(85vh, 640px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .bio-modal__content {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: var(--space-3);
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .bio-modal__close {

@@ -11,7 +11,16 @@ import faqData from '../../content/faqs.json';
   <Panel size="sm">
     <Reveal><p class="eyebrow">{faqData.eyebrow}</p></Reveal>
     <Reveal delay={100}><h1>{faqData.heading}</h1></Reveal>
-    <Reveal delay={150}><p class="lead">{faqData.intro} {faqData.contactNote} <a href={`mailto:${faqData.contactEmail}`}>{faqData.contactEmail}</a>. {faqData.responseTime}</p></Reveal>
+    <Reveal delay={150}>
+      <div class="lead">
+        <p>
+          {faqData.intro} {faqData.contactNote.includes(faqData.contactEmail) ? (
+            <Fragment>{faqData.contactNote.split(faqData.contactEmail)[0]}<a href={`mailto:${faqData.contactEmail}`}>{faqData.contactEmail}</a>{faqData.contactNote.split(faqData.contactEmail)[1]}</Fragment>
+          ) : faqData.contactNote}
+        </p>
+        <p>{faqData.responseTime}</p>
+      </div>
+    </Reveal>
   </Panel>
 
   <Panel background="default" size="sm" class="faqs-panel">
@@ -40,7 +49,15 @@ import faqData from '../../content/faqs.json';
     font-size: var(--text-base);
     line-height: var(--leading-normal);
     color: var(--color-text);
+  }
+
+  .lead p {
+    margin: 0;
     white-space: pre-line;
+  }
+
+  .lead p + p {
+    margin-top: var(--space-4);
   }
 
   :global(.faqs-panel) {

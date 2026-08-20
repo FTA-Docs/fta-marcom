@@ -211,10 +211,10 @@ collections:
         fields:
           - { label: Heading, name: heading, widget: string }
           - { label: Eyebrow, name: eyebrow, widget: string }
-          - { label: Intro Text, name: intro, widget: string }
-          - { label: Contact Note, name: contactNote, widget: string }
+          - { label: Intro Text, name: intro, widget: text }
+          - { label: Contact Note, name: contactNote, widget: text }
           - { label: Contact Email, name: contactEmail, widget: string }
-          - { label: Response Time Note, name: responseTime, widget: string }
+          - { label: Response Time Note, name: responseTime, widget: text }
           - label: Categories
             name: categories
             widget: list

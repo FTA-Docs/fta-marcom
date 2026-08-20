@@ -3,50 +3,50 @@
     {
       "id": "michael-rich",
       "name": "Michael Rich",
-      "title": "Co-Founder",
+      "title": "Chief Guidance Officer",
       "headshot": "/headshots/michael.jpg",
       "linkedin": "https://www.linkedin.com/in/michael-rich-48a323/",
-      "bio": "Placeholder bio for Michael Rich. Background, experience, and role at alignd to be added here."
+      "bio": "Michael founded and directs the Digital Wellness Lab at Boston Children’s Hospital, where for over 30 years he and his team have conducted research to understand how children’s physical, mental, and social health are affected, in positive and negative ways, by the media they use and how they use them. \n\nHe is Associate Professor of Pediatrics at Harvard Medical School and of Social and Behavioral Sciences at Harvard T.H. Chan School of Public Health. He is also the author of The Mediatrician’s Guide: A Joyful Approach to Raising Healthy, Smart, Kind Kids in a Screen-Saturated World.\n"
     },
     {
       "id": "dave-batista",
       "name": "Dave Batista",
-      "title": "Co-Founder",
+      "title": "President",
       "headshot": "/headshots/dave.jpg",
       "linkedin": "https://www.linkedin.com/in/dave-batista-b24504/",
-      "bio": "Placeholder bio for Dave Batista. Background, experience, and role at alignd to be added here."
+      "bio": "Dave has spent his career at the intersection of design, technology and marketing, co-founding two leading digital agencies (Euro RSCG Circle and BEAM). Both were steered to successful exits. \n\nDave and his teams helped create the Truth anti-smoking campaign and introduce the MINI automobile to the US market. They also defined and designed successful digital products/services for Fidelity Investments, Athenahealth and Nike, among others.\n\nMore recently, Dave co-founded a growing AI-enabled digital health start-up (EO Care) for which he has helped raise over $14M from investors including the former CEOs of Blue Cross Blue Shield and AON-Hewitt, a former Surgeon General of the United States and partners at Bessemer Venture Partners and 7-Wire Ventures. \n"
     },
     {
       "id": "joe-ranft",
       "name": "Joe Ranft",
-      "title": "Co-Founder",
+      "title": "Product Lead",
       "headshot": "/headshots/joe.jpg",
       "linkedin": "https://www.linkedin.com/in/joeranft/",
-      "bio": "Placeholder bio for Joe Ranft. Background, experience, and role at alignd to be added here."
+      "bio": "Joe is a user experience and product leader who, for over 25 years, has designed digital and Human+AI products and experiences that help people make better decisions about their health, their money, and their lives. He ground his work in user research, Design Thinking, and continuous product discovery.\n\nHis career has featured 3 paths: full-time leadership roles at large companies including Fidelity Investments and Nuveen; startup leadership as co-founder of Cinch Financial and as VP of Product and Design at  Allurion, which grew from an early-stage startup through its IPO during his tenure; and independent consulting for clients across healthcare and financial services, including AthenaHealth, SmartHeart, and Motley Fool.\n"
     },
     {
       "id": "christine-pillsbury",
       "name": "Christine Pillsbury",
-      "title": "Co-Founder",
+      "title": "CX Lead",
       "headshot": "/headshots/christine.jpg",
       "linkedin": "https://www.linkedin.com/in/christinepillsbury/",
-      "bio": "Placeholder bio for Christine Pillsbury. Background, experience, and role at alignd to be added here."
+      "bio": "Christine is an award-winning founder, product strategist and CX leader focused on designing human+AI products and complex guidance experiences. Previously, she founded altr, a top-ranked digital product innovation and design firm, which she led through its successful exit to consulting/design firm Delve.\n\nChristine has defined and designed products, platforms and ecosystems for dozens of category leaders and innovators, including Abbott, Humana, CLEAR, BD, Athenahealth, Erewhon, Converse,  and Fidelity. Her healthcare work spans diabetes care, digital health, MedTech and benefits provisioning. Most recently, Christine has focused on AI-enabled experience design, including EO Care’s clinician-backed Human+AI healthcare platform and Humana’s Human+AI care and benefits ecosystem. \n\nShe holds an MFA in Design and Technology from the Massachusetts College of Art & Design and a certification in Human/AI Interaction design from Stanford University. \n"
     },
     {
       "id": "buddy-williams",
       "name": "Buddy Williams",
-      "title": "Co-Founder",
+      "title": "AI Architect",
       "headshot": "/headshots/buddy.jpg",
       "linkedin": "https://www.linkedin.com/in/buddylwilliams/",
-      "bio": "Placeholder bio for Buddy Williams. Background, experience, and role at alignd to be added here."
+      "bio": "Buddy has spent more than 25 years architecting and building enterprise software, working across the full technology lifecycle—from product strategy and systems architecture through development, deployment and scale. A four-time founder, he has designed durable software platforms and technology stacks across industry verticals,  including  healthcare, insurance, logistics, analytics and enterprise collaboration.\n\nFor the last 5+ years, Buddy has focused almost  entirely on AI architecture and innovation, designing AI-augmented enterprise platforms and new approaches to AI-enabled software development. As Chief AI Innovation Officer at Nevo Technologies, he developed agentic systems, specification-driven development frameworks and AI-human orchestration platforms—including Refine, a production system that coordinates teams and AI agents to build and evolve software with radically greater efficiency and effectiveness.\n"
     },
     {
       "id": "scott-nejadlik",
       "name": "Scott Nejadlik",
-      "title": "Co-Founder",
+      "title": "Software Architect & Developer",
       "headshot": "/headshots/scott.jpg",
       "linkedin": "https://www.linkedin.com/in/sniejadlik/",
-      "bio": "Placeholder bio for Scott Nejadlik. Background, experience, and role at alignd to be added here."
+      "bio": "For over 20 years Scott has been defining and building interactive experiences that unite complex underlying technologies with intuitive, engaging human experiences. He began his career as a front-end developer and became a longtime creative technologist at BEAM Interactive, where he helped develop trailblazing products and experiences for MINI, Fidelity, Converse, Athenahealth and others.\n\nMore recently, Scott has led experience innovation at Pegasystems, where he created immersive experiences that bring enterprise technology to life. His work spans AI-driven interfaces, real-time interactive systems, spatial computing, augmented and virtual reality, and large-scale experiential installations—combining hands-on development with a continual exploration of new ways for people to interact with technology.\n"
     }
   ]
 }

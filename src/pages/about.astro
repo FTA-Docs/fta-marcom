@@ -685,7 +685,10 @@ import { emotionPaths } from '../lib/emotions';
     position: relative;
     background: var(--color-surface, var(--white));
     border-radius: var(--radius-md);
-    padding: var(--space-10);
+    /* Right inset matches .bio-modal__close's offset so the content
+       scrollbar lines up directly under the × instead of the wider
+       left/top/bottom padding. */
+    padding: var(--space-10) var(--space-4) var(--space-10) var(--space-10);
     max-width: 480px;
     width: calc(100% - var(--space-8));
     max-height: min(85vh, 640px);

@@ -497,6 +497,7 @@ const SF_MAX_ARCS = 6;
     color: var(--color-text);
     line-height: var(--leading-normal);
     margin: 0;
+    white-space: pre-line;
   }
 
   .hero__actions {
@@ -804,6 +805,7 @@ const SF_MAX_ARCS = 6;
     color: var(--color-text);
     line-height: var(--leading-normal);
     max-width: 46ch;
+    white-space: pre-line;
   }
 
   .sol-text :global(.panel-heading) {
@@ -938,6 +940,7 @@ const SF_MAX_ARCS = 6;
   /* ── Social proof (spring-leaf) — forest eyebrow, white text ── */
 
   :global(#social-proof) .sp-quote__text { color: var(--light-beige); }
+  .sp-quote__text p { white-space: pre-line; }
 
   :global(#social-proof) .sp-quote__attr {
     color: color-mix(in srgb, var(--white) 70%, transparent);
@@ -1039,6 +1042,9 @@ const SF_MAX_ARCS = 6;
     flex-direction: column;
     gap: var(--space-3);
     z-index: 1;
+  }
+  .science-item__text p {
+    white-space: pre-line;
   }
   /* row 1: text fills the rest (wide, short); pull under the image edge */
   .science-item:not(.science-item--rev) .science-item__text {
@@ -1468,6 +1474,7 @@ const SF_MAX_ARCS = 6;
     color: var(--color-text);
     line-height: var(--leading-normal);
     margin: 0;
+    white-space: pre-line;
   }
 
   /* Horizontal pan track */
@@ -1552,6 +1559,7 @@ const SF_MAX_ARCS = 6;
     color: var(--color-text);
     line-height: var(--leading-normal);
     margin: 0;
+    white-space: pre-line;
   }
 
   /* Subtle motion: dots march along the wave; weeks rise in on open */

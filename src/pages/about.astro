@@ -8,7 +8,6 @@ import ComBContent from '../../content/about/com-b.md';
 import TechnologyContent from '../../content/about/technology.md';
 import FoundingTeamContent from '../../content/about/founding-team.md';
 import teamData from '../../content/about/team.json';
-import combData from '../../content/about/com-b.json';
 import techData from '../../content/about/technology.json';
 import pageData from '../../content/about/page.json';
 import { emotionPaths } from '../lib/emotions';
@@ -66,9 +65,9 @@ import { emotionPaths } from '../lib/emotions';
     </div>
   </Panel>
 
-  <!-- About COM-B — text left, line-motif Venn right -->
+  <!-- About COM-B — Venn diagram left, text right -->
   <Panel background="default" class="about-pad">
-    <div class="about-split">
+    <div class="about-split about-split--reverse">
       <div class="about-split__text">
         <Reveal><h2>{pageData.comb.heading}</h2></Reveal>
         <Reveal delay={100}>
@@ -78,47 +77,16 @@ import { emotionPaths } from '../lib/emotions';
         </Reveal>
       </div>
       <Reveal delay={150} class="about-split__visual">
-        <!-- No role="img": the per-node labels/descriptions below are meaningful
-             content and should be read by AT. Only the decorative overlap circles
-             are hidden. -->
-        <div class="comb">
-          <span class="comb__circle comb__circle--cap" aria-hidden="true"></span>
-          <span class="comb__circle comb__circle--opp" aria-hidden="true"></span>
-          <span class="comb__circle comb__circle--mot" aria-hidden="true"></span>
-
-          <div class="comb__label comb__label--cap">
-            <svg class="comb__icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.5.4.9 1 1 1.7l.1.5h5l.1-.5c.1-.7.5-1.3 1-1.7A6 6 0 0 0 12 3z"/>
-            </svg>
-            <span class="comb__title">{combData.nodes[0].label}</span>
-            <span class="comb__desc">{combData.nodes[0].desc}</span>
-          </div>
-
-          <div class="comb__label comb__label--opp">
-            <svg class="comb__icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3zM4 7.5 12 12m0 0 8-4.5M12 12v9"/>
-            </svg>
-            <span class="comb__title">{combData.nodes[1].label}</span>
-            <span class="comb__desc">{combData.nodes[1].desc}</span>
-          </div>
-
-          <div class="comb__label comb__label--mot">
-            <svg class="comb__icon comb__icon--fill" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/>
-            </svg>
-            <span class="comb__title">{combData.nodes[2].label}</span>
-            <span class="comb__desc">{combData.nodes[2].desc}</span>
-          </div>
-
-          <span class="comb__center">{combData.center}</span>
-        </div>
+        <figure class="about-figure about-figure--plain">
+          <img src={pageData.comb.image} alt={pageData.comb.imageAlt} />
+        </figure>
       </Reveal>
     </div>
   </Panel>
 
-  <!-- Our Technology — graphic left, headline/copy + "Five Structural Layers" table right -->
+  <!-- Our Technology — headline/copy + "Five Structural Layers" table left, graphic right -->
   <Panel background="surface" class="about-pad">
-    <div class="about-split about-split--reverse">
+    <div class="about-split">
       <div class="about-split__text">
         <Reveal><h2>{pageData.technology.heading}</h2></Reveal>
         <Reveal delay={100}>
@@ -128,12 +96,11 @@ import { emotionPaths } from '../lib/emotions';
         </Reveal>
       </div>
       <Reveal delay={150} class="about-split__visual">
-        <figure class="about-figure">
-          <div class="about-figure__frame">
-            {pageData.technology.image
-              ? <img src={pageData.technology.image} alt={pageData.technology.imageAlt} />
-              : <span class="about-figure__placeholder">{pageData.technology.placeholder}</span>}
-          </div>
+        <figure class="about-figure about-figure--plain about-figure--wide">
+          <picture>
+            <source media="(max-width: 768px)" srcset={pageData.technology.imageMobile} />
+            <img src={pageData.technology.image} alt={pageData.technology.imageAlt} />
+          </picture>
         </figure>
       </Reveal>
     </div>
@@ -349,82 +316,17 @@ import { emotionPaths } from '../lib/emotions';
     text-align: center;
   }
 
-  /* ── COM-B Venn (coded, not an image) ── */
-  .comb {
-    position: relative;
+  /* ── Diagram figures that sit directly on the panel (no photo frame) ── */
+  .about-figure--plain img {
+    display: block;
     width: 100%;
-    max-width: 420px;
+    max-width: 560px;
+    height: auto;
     margin-inline: auto;
-    aspect-ratio: 1 / 1;
   }
 
-  /* Filled translucent beige circles — overlaps darken into the Venn shape */
-  .comb__circle {
-    position: absolute;
-    width: 64%;
-    aspect-ratio: 1 / 1;
-    border-radius: var(--radius-full);
-    background: var(--almond-beige);
-    opacity: 0.32;
-  }
-
-  .comb__circle--cap { top: 0; left: 50%; transform: translateX(-50%); }
-  .comb__circle--opp { bottom: 0; left: 0; }
-  .comb__circle--mot { bottom: 0; right: 0; }
-
-  .comb__label {
-    position: absolute;
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: var(--space-1);
-    pointer-events: none;
-  }
-
-  .comb__label--cap { top: 9%;  left: 50%; transform: translateX(-50%); }
-  .comb__label--opp { bottom: 13%; left: 9%; }
-  .comb__label--mot { bottom: 13%; right: 9%; }
-
-  .comb__icon {
-    width: 26px;
-    height: 26px;
-    fill: none;
-    stroke: var(--color-accent);
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .comb__icon--fill {
-    fill: var(--color-accent);
-    stroke: none;
-  }
-
-  .comb__title {
-    font-weight: var(--weight-semibold);
-    font-size: var(--text-base);
-    color: var(--color-text);
-  }
-
-  .comb__desc {
-    font-size: var(--text-xs);
-    line-height: var(--leading-snug);
-    color: var(--color-text-muted);
-  }
-
-  .comb__center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-text);
-  }
+  /* Wide landscape diagrams (e.g. Technology architecture) fill the column */
+  .about-figure--wide img { max-width: 100%; }
 
   /* ── Technology "Five Structural Layers" table ──
      Borrows the homepage comparison table's striping + typography; no

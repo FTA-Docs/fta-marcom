@@ -280,13 +280,15 @@ collections:
             widget: object
             fields:
               - { label: Heading, name: heading, widget: string }
+              - { label: Image Path, name: image, widget: string, required: false }
+              - { label: Image Alt Text, name: imageAlt, widget: string }
           - label: Technology
             name: technology
             widget: object
             fields:
               - { label: Heading, name: heading, widget: string }
-              - { label: Image Placeholder Text, name: placeholder, widget: string }
               - { label: Image Path, name: image, widget: string, required: false }
+              - { label: Mobile Image Path, name: imageMobile, widget: string, required: false }
               - { label: Image Alt Text, name: imageAlt, widget: string }
           - label: Team
             name: team
@@ -315,19 +317,6 @@ collections:
         file: content/about/com-b.md
         fields:
           - { label: Body, name: body, widget: markdown }
-
-      - label: COM-B Framework (diagram labels)
-        name: com-b-data
-        file: content/about/com-b.json
-        fields:
-          - { label: Centre Label, name: center, widget: string }
-          - label: Nodes
-            name: nodes
-            widget: list
-            fields:
-              - { label: Key, name: key, widget: string }
-              - { label: Label, name: label, widget: string }
-              - { label: Description, name: desc, widget: string }
 
       - label: Technology (copy)
         name: technology-copy

@@ -15,13 +15,15 @@
     "imageAlt": "A father and son sitting together"
   },
   "comb": {
-    "heading": "A COM-B Framework"
+    "heading": "A COM-B Framework",
+    "image": "/comb-framework.svg",
+    "imageAlt": "COM-B framework diagram: three overlapping circles — Capability (do they have the skills and know-how?), Opportunity (does their environment make it possible?), and Motivation (do they want to follow through?) — meeting at the center to produce Behavior."
   },
   "technology": {
     "heading": "Built to Help at Scale",
-    "placeholder": "Graphic",
-    "image": "",
-    "imageAlt": "Diagram of the alignd technology architecture"
+    "image": "/tech-architecture-desktop.svg",
+    "imageMobile": "/tech-architecture-mobile.svg",
+    "imageAlt": "The alignd technology architecture as five stacked layers: 1. Corpus Council (multi-persona deliberation), 2. Proprietary Knowledge (corpus + retrieval), 3. Domain Modeling (COM-B program structure), 4. Longitudinal Memory & State, and 5. Lifecycle Engagement Engine."
   },
   "team": {
     "heading": "Founding Team",

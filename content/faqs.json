@@ -2,9 +2,9 @@
   "heading": "Support & FAQs",
   "eyebrow": "Help Center",
   "intro": "We're here to help.",
-  "contactNote": "Contact us anytime at support@alignd.care. Or if you're already a member, you can also message us from within the Alignd web app. ",
+  "contactNote": "<p>Contact us anytime at support@alignd.care. Or if you're already a member, you can also message us from within the Alignd web app.</p> ",
   "contactEmail": "support@alignd.care",
-  "responseTime": "Our team will respond within one business day. And more often within just a few hours. ",
+  "responseTime": "<p>Our team will respond within one business day. And more often within just a few hours.</p> ",
   "categories": [
     {
       "category": "Frequently Asked Questions",

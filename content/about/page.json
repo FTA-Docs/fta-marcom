@@ -1,10 +1,10 @@
 {
   "meta": {
     "title": "About",
-    "description": "Learn about alignd's mission, coaching team, and the behavioral science behind our approach to family digital wellness."
+    "description": "Learn about Alignd's mission, coaching team, and the behavioral science behind our approach to family digital wellness."
   },
   "mission": {
-    "eyebrow": "About alignd",
+    "eyebrow": "About Alignd",
     "heading": "Our Mission",
     "imageAlt": "Teenagers playing music together"
   },
@@ -23,7 +23,7 @@
     "heading": "Built to Help at Scale",
     "image": "/tech-architecture-desktop.svg",
     "imageMobile": "/tech-architecture-mobile.svg",
-    "imageAlt": "The alignd technology architecture as five stacked layers: 1. Corpus Council (multi-persona deliberation), 2. Proprietary Knowledge (corpus + retrieval), 3. Domain Modeling (COM-B program structure), 4. Longitudinal Memory & State, and 5. Lifecycle Engagement Engine."
+    "imageAlt": "The Alignd technology architecture as five stacked layers: 1. Corpus Council (multi-persona deliberation), 2. Proprietary Knowledge (corpus + retrieval), 3. Domain Modeling (COM-B program structure), 4. Longitudinal Memory & State, and 5. Lifecycle Engagement Engine."
   },
   "team": {
     "heading": "Founding Team",

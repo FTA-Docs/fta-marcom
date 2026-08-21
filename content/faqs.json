@@ -7,35 +7,105 @@
   "responseTime": "Our team will respond within one business day. And often within 1-2 hours.",
   "categories": [
     {
-      "category": "Frequently Asked Questions",
+      "category": "The Basics",
       "faqs": [
         {
-          "q": "How does alignd work?",
-          "a": "alignd builds a personalized 8-week plan based on your child's digital habits, well-being, and your family's goals. You work through structured weekly tasks, check in regularly, and get support from our clinician-led team along the way."
+          "q": "How does Alignd work?",
+          "a": "Alignd creates a personalized 8-week behavior change plan based on your child's digital habits, well-being, and your goals for them. Each week you'll complete practical activities, track progress, and receive guidance that's tailored as your situation evolves."
         },
         {
-          "q": "What age range is alignd designed for?",
-          "a": "alignd is designed for parents and caregivers of children ages 6–17. Our intake and planning tools are calibrated to different developmental stages, so the guidance you receive is relevant to your child's age and situation."
+          "q": "Where do Alignd's plans and guidance come from?",
+          "a": "Our plans and guidance are grounded in Dr. Michael Rich's 30+ years in clinical practice and research and his book, *The Mediatrician's Guide — A Joyful Approach to Raising Healthy, Smart, Kind Kids in a Screen-Saturated World*.\n\nMichael is the director of the Digital Wellness Lab at Boston Children's Hospital, an Associate Professor of Pediatrics at Harvard Medical School, and an Associate Professor of Social and Behavioral Sciences at the Harvard T.H. Chan School of Public Health.\n\nThe body of clinical knowledge and research we draw upon is continuously expanding as more qualifying content and best practices are added."
         },
         {
-          "q": "Can I update my plan if things change?",
-          "a": "Yes. Life changes, and your plan can too. Use the chat to let Ali know about new developments — changes in behavior, school, or home dynamics — and your plan can be adjusted to reflect your current situation."
+          "q": "What role does AI play?",
+          "a": "AI plays three basic roles:\n\n1. It helps comprehensively personalize your experience.\n2. It allows us to responsibly guide you, communicate with you, and update your plan at any time, 24/7.\n3. It allows us to continually learn from the experience of all Alignd members to the benefit of each member.\n\nAs useful and important as AI is in delivering the Alignd experience, the underlying content, behavior change frameworks, intervention strategies, and safety protocols that drive our plans and guidance are developed, overseen, and refined by our clinical team."
+        },
+        {
+          "q": "How does my plan get updated?",
+          "a": "Your plan is updated based on your responses to our weekly check-ins. You can also use our AI chat at any time to ask questions and share how things are going — with your plan and with your child overall. If and as appropriate, your plan will be updated right then and there."
+        },
+        {
+          "q": "What should I expect by the end of my 8-week plan?",
+          "a": "The goals for your first 8 weeks are to demonstrate clear, incremental progress in minimizing your child's most concerning digital behaviors while also aligning you both on a shared vision of digital health."
         },
         {
           "q": "What happens after my 8-week plan ends?",
-          "a": "At the end of your 8-week plan, you can extend with a monthly subscription at $15/month. You'll continue to have access to your plan history, the chat, and your clinician-led team for ongoing support."
+          "a": "You can continue with a monthly subscription for just $15 a month to further reduce concerning behaviors and sustain your child's digital health as their relationship with technology continues to evolve."
         },
         {
-          "q": "How is alignd different from screen time blocking apps?",
-          "a": "Screen time blockers restrict access, but they don't change behavior. alignd takes a family-based approach rooted in behavioral science — helping you understand the why behind your child's habits and build sustainable strategies that stick long after the plan ends."
+          "q": "What age range is Alignd designed for?",
+          "a": "Alignd is designed for parents and caregivers of children ages 6–21. Our plans and recommendations are fully personalized to your child and their developmental stage."
         },
         {
-          "q": "Who is behind the alignd clinical team?",
-          "a": "Our team includes licensed clinicians with backgrounds in child psychology, family therapy, and digital wellness. They inform the structure of every plan and review cases that require a higher level of care."
+          "q": "How much time does Alignd take each week?",
+          "a": "Most parents spend about 15–60 minutes each week reviewing their plan and completing the recommended weekly activities. Some weeks may require a slightly larger time commitment. We know you're busy and try to keep all activities as efficient as possible."
+        },
+        {
+          "q": "Can I add another child to my plan?",
+          "a": "Unfortunately, our plans currently support only a single child. Multiple plans may be purchased to address the needs of siblings."
+        },
+        {
+          "q": "Can I share my plan with my spouse or partner?",
+          "a": "Yes. You can invite your spouse or partner into your plan. However, we currently recommend that a single spouse or partner take the lead in executing the plan and providing feedback in order to minimize the potential for confusion and conflicting inputs."
+        }
+      ]
+    },
+    {
+      "category": "Is Alignd Right for Me?",
+      "faqs": [
+        {
+          "q": "Who is Alignd best suited for?",
+          "a": "Alignd is ideal for parents who want to minimize or eliminate specific, concerning technology behaviors, reduce technology-related conflict in the home, and establish a shared definition of digital health."
+        },
+        {
+          "q": "Who is Alignd not the right fit for?",
+          "a": "Alignd is not designed to replace therapy, crisis services, or medical care. Families dealing with severe mental health conditions or situations requiring immediate clinical intervention should seek care from qualified healthcare professionals."
+        },
+        {
+          "q": "What if my child doesn't want to engage or participate?",
+          "a": "Your initial plan will have a sense for your child's likely engagement level via the questions we ask in onboarding, and will include strategies and tactics for enhancing engagement. As their engagement level ebbs and flows over time — as it will — it's always best to describe this to our AI and/or in your weekly feedback so your plan can be updated accordingly."
+        },
+        {
+          "q": "Does Alignd replace therapy?",
+          "a": "No. Alignd complements professional care but does not replace therapy, medical treatment, or psychological evaluation. Many families use Alignd alongside therapists, pediatricians, or school counselors."
+        },
+        {
+          "q": "Can I use Alignd if my child already sees a therapist?",
+          "a": "Absolutely. You can even ask our AI to provide a therapist-friendly overview of your child's progress at any time."
+        },
+        {
+          "q": "Can I pair Alignd with parental monitoring and control software tools?",
+          "a": "Absolutely. Just share the tools you're using and how it's going via onboarding, weekly check-ins, or our AI chat, and we'll include them in your plan."
+        }
+      ]
+    },
+    {
+      "category": "Safety, Privacy & Support",
+      "faqs": [
+        {
+          "q": "How do you know when a family needs more support?",
+          "a": "Our platform includes safety protocols designed to identify situations where families may benefit from evaluation or treatment by a healthcare professional. When appropriate, we'll recommend seeking additional clinical care rather than relying solely on Alignd."
+        },
+        {
+          "q": "What kinds of situations require a higher level of care?",
+          "a": "We encourage families to seek prompt professional evaluation if a child is experiencing concerns such as:\n\n* suicidal thoughts or self-harm\n* threats of violence toward others\n* severe depression or anxiety\n* psychosis or loss of touch with reality\n* eating disorders\n* substance misuse\n* abuse or neglect\n* significant impairment at school, home, or in relationships\n\nAlignd is designed to support families, not manage psychiatric emergencies or serious mental health conditions."
+        },
+        {
+          "q": "Is Alignd available in an emergency?",
+          "a": "No. Alignd does not provide crisis or emergency services. If you believe your child is in immediate danger or experiencing a mental health emergency, contact your local emergency services or an emergency mental health resource immediately."
+        },
+        {
+          "q": "How quickly will someone respond if I send a message?",
+          "a": "Our team reviews messages every business day. We respond within 24 hours, and typically a thoughtful response is provided the same day."
         },
         {
           "q": "Is my information kept private?",
-          "a": "Absolutely. Your data is encrypted and never sold to third parties. You can review our full privacy practices anytime under Account → Terms & Privacy. You may also request deletion of your data at any time."
+          "a": "Protecting your family's privacy is central to our mission. Your information is encrypted, never sold to third parties, and handled according to our [Privacy Policy](/privacy-policy) and HIPAA guidelines. You may request deletion of your account and data at any time."
+        },
+        {
+          "q": "How do I cancel my subscription?",
+          "a": "You can cancel your subscription at any time through your account settings. Your subscription will remain active through the end of your current billing period, and you won't be charged again."
         }
       ]
     }

@@ -225,7 +225,7 @@ collections:
                 widget: list
                 fields:
                   - { label: Question, name: q, widget: string }
-                  - { label: Answer, name: a, widget: text }
+                  - { label: Answer, name: a, widget: markdown }
 
   # ─── Plan Timeline ────────────────────────────────────────────────────────────
   - name: plan-timeline

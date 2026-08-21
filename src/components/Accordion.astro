@@ -1,6 +1,7 @@
 ---
 interface Props {
   question: string;
+  /** Answer as rendered HTML (see renderMarkdown in src/lib/markdown.ts) */
   answer: string;
   open?: boolean;
 }
@@ -37,7 +38,7 @@ const id = question
     hidden={!open}
   >
     <div class="accordion-item__body__inner">
-      <p class="accordion-item__answer">{answer}</p>
+      <div class="accordion-item__answer" set:html={answer} />
     </div>
   </div>
 </div>
@@ -77,9 +78,12 @@ const id = question
     border-radius: var(--radius-sm);
   }
 
+  /* --weight-heading (not semibold): weight must not increase as the hierarchy
+     descends, or the question outweighs the category title above it. Rank is
+     carried by size, not weight. */
   .accordion-item__question {
     font-size: var(--text-lg);
-    font-weight: var(--weight-semibold);
+    font-weight: var(--weight-heading);
     line-height: var(--leading-snug);
   }
 
@@ -120,8 +124,55 @@ const id = question
     padding-bottom: var(--space-5);
     color: var(--color-text);
     line-height: var(--leading-normal);
+  }
+
+  /* Markdown-rendered children: :global because set:html output is not
+     scoped by Astro's style compiler */
+  .accordion-item__answer :global(p),
+  .accordion-item__answer :global(ul),
+  .accordion-item__answer :global(ol) {
     margin: 0;
-    white-space: pre-line;
+    color: inherit;
+    line-height: inherit;
+  }
+
+  .accordion-item__answer :global(* + p),
+  .accordion-item__answer :global(* + ul),
+  .accordion-item__answer :global(* + ol) {
+    margin-top: var(--space-4);
+  }
+
+  /* Restore markers: the global reset clears list-style site-wide */
+  .accordion-item__answer :global(ul) {
+    list-style: disc;
+    padding-left: var(--space-5);
+  }
+
+  .accordion-item__answer :global(ol) {
+    list-style: decimal;
+    padding-left: var(--space-5);
+  }
+
+  .accordion-item__answer :global(li) {
+    padding-left: var(--space-1);
+  }
+
+  .accordion-item__answer :global(li)::marker {
+    color: var(--color-text-muted);
+  }
+
+  .accordion-item__answer :global(li + li) {
+    margin-top: var(--space-1);
+  }
+
+  .accordion-item__answer :global(a) {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .accordion-item__answer :global(a:hover) {
+    color: var(--color-accent);
   }
 </style>
 

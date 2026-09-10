@@ -1,5 +1,5 @@
 {
-  "company": "Family Technology Advisors, Inc.",
+  "company": "Family Technology Advisors, LLC",
   "brand": "Alignd",
   "tagline": "Care coordination made simple.",
   "siteUrl": "https://alignd.care",
@@ -14,7 +14,7 @@
     "getStarted": { "label": "Get Started", "href": "/signup" }
   },
   "footer": {
-    "copyright": "Copyright 2026. All rights reserved. Patents pending. Family Technology Advisors, Inc.",
+    "copyright": "Copyright 2026. All rights reserved. Patents pending. Family Technology Advisors, LLC",
     "links": [
       { "label": "How It Works", "href": "/#solution" },
       { "label": "Plans & Pricing", "href": "/#pricing" },

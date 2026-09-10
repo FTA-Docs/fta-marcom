@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-- Company: Family Technology Advisors, Inc. (brand: alignd)
+- Company: Family Technology Advisors, LLC (brand: alignd)
 - Stack: Astro static site, custom CSS Grid, GSAP for homepage animations
 - Deploy: Vercel (static output)
 - Site URL: https://alignd.care

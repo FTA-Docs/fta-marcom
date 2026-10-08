@@ -839,15 +839,16 @@ const SF_MAX_ARCS = 6;
     justify-content: center;
   }
 
+  /* The screen images are full device mockups (frame included, transparent
+     corners), so the device box matches their aspect ratio and the shadow
+     follows the frame's outline via drop-shadow rather than a box-shadow. */
   .sol-phone-device {
     width: 188px;
-    height: 376px;
+    aspect-ratio: 516 / 1049;
     background: transparent;
     border: none;
-    border-radius: 18px;
     position: relative;
-    overflow: hidden;
-    box-shadow: 0 12px 40px 0 rgb(var(--shadow-color) / 0.12);
+    filter: drop-shadow(0 12px 24px rgb(var(--shadow-color) / 0.14));
     /* GSAP manages scale + opacity */
   }
 
@@ -856,7 +857,7 @@ const SF_MAX_ARCS = 6;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: top center;
   }
 
@@ -1176,8 +1177,7 @@ const SF_MAX_ARCS = 6;
     .sol-phone-device {
       width: auto;
       height: var(--sol-phone-h);     /* full height; the bottom is clipped by the item */
-      aspect-ratio: 1 / 2;
-      border-radius: 22px;
+      aspect-ratio: 516 / 1049;
     }
     /* Faint beige rule the cropped phone sits on — fades out at both ends and
        doubles as the separator to the next step / section. */

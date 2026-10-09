@@ -30,6 +30,8 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
 // OG/Twitter images must be absolute URLs — resolve relative paths against the site origin.
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
 const fullTitle = title === 'Alignd' ? title : title + ' | Alignd';
+// GA4 only loads where the ID is set (Vercel production), so local dev isn't tracked.
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const jsonLd = JSON.stringify([
   {
     '@context': 'https://schema.org',
@@ -92,6 +94,20 @@ const jsonLd = JSON.stringify([
     <script type="application/ld+json" set:html={jsonLd} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Analytics (GA4) -->
+    {gaId && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline define:vars={{ gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          // define:vars wraps this in a function scope, so expose gtag globally for later event calls.
+          window.gtag = function gtag() { dataLayer.push(arguments); };
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      </>
+    )}
   </head>
   <body class={bodyClass}>
     <a class="skip-link" href="#main-content">Skip to main content</a>

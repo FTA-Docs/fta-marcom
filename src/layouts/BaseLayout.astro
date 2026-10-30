@@ -106,6 +106,70 @@ const jsonLd = JSON.stringify([
           gtag('js', new Date());
           gtag('config', gaId);
         </script>
+        <script is:inline>
+          // Site-wide GA events (fta-marcom #14). Sends site text and paths only, never form input.
+          (function () {
+            var APP_HOSTS = ['app.alignd.care', '129.212.188.37'];
+
+            // ui_click: every link or button click, wherever it is on the page.
+            function label(el) {
+              var text = el.getAttribute('data-ga-label') || el.getAttribute('aria-label') ||
+                el.textContent || el.getAttribute('title') || '';
+              return text.replace(/\s+/g, ' ').trim().slice(0, 100) || 'unlabeled';
+            }
+            function target(el) {
+              if (el.tagName !== 'A' || !el.getAttribute('href')) return '';
+              var url;
+              try { url = new URL(el.href, location.href); } catch (e) { return ''; }
+              if (url.protocol === 'mailto:') return 'mailto';
+              if (url.protocol === 'tel:') return 'tel';
+              if (APP_HOSTS.indexOf(url.hostname) !== -1) return 'app';
+              if (url.origin === location.origin) return url.pathname + url.hash;
+              return url.hostname;
+            }
+            function area(el) {
+              var tagged = el.closest('[data-ga-area]');
+              if (tagged) return tagged.getAttribute('data-ga-area');
+              if (el.closest('.masthead')) return 'masthead';
+              if (el.closest('.footer')) return 'footer';
+              var modal = el.closest('[role="dialog"][id]');
+              if (modal) return modal.id;
+              var section = el.closest('section[id]');
+              return section ? section.id : 'main';
+            }
+            document.addEventListener('click', function (e) {
+              var el = e.target.closest && e.target.closest('a, button');
+              if (!el) return;
+              gtag('event', 'ui_click', {
+                click_label: label(el),
+                click_type: el.tagName === 'A' ? 'link' : 'button',
+                click_target: target(el),
+                click_area: area(el),
+              });
+            }, true);
+
+            // scroll_depth: once per page view at each of 25/50/75/100%.
+            var MARKS = [25, 50, 75, 100];
+            var sent = {};
+            function checkScroll() {
+              var doc = document.documentElement;
+              var seen = (window.scrollY + window.innerHeight) / Math.max(doc.scrollHeight, 1) * 100;
+              MARKS.forEach(function (mark) {
+                if (!sent[mark] && seen >= mark - 1) {
+                  sent[mark] = true;
+                  gtag('event', 'scroll_depth', { percent_scrolled: mark });
+                }
+              });
+            }
+            var pending = false;
+            window.addEventListener('scroll', function () {
+              if (pending) return;
+              pending = true;
+              setTimeout(function () { pending = false; checkScroll(); }, 250);
+            }, { passive: true });
+            window.addEventListener('load', checkScroll);
+          })();
+        </script>
       </>
     )}
   </head>

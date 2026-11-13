@@ -11,7 +11,7 @@
   ],
   "cta": {
     "signIn": { "label": "Sign In", "href": "http://129.212.188.37/#/login" },
-    "getStarted": { "label": "Get Started", "href": "http://129.212.188.37/" }
+    "getStarted": { "label": "Get Started", "href": "https://app.alignd.care" }
   },
   "footer": {
     "copyright": "Copyright 2026. All rights reserved. Patents pending. Family Technology Advisors, LLC",

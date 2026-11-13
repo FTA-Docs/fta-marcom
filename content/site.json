@@ -21,6 +21,7 @@
       { "label": "About", "href": "/about" },
       { "label": "Support & FAQs", "href": "/support-faqs" },
       { "label": "Terms & Conditions", "href": "/terms" },
+      { "label": "Health & Safety", "href": "/health-safety" },
       { "label": "Privacy Policy", "href": "/privacy-policy" }
     ],
     "contacts": [

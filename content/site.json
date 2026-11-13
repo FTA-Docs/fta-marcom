@@ -10,7 +10,7 @@
     { "label": "Support & FAQs", "href": "/support-faqs" }
   ],
   "cta": {
-    "signIn": { "label": "Sign In", "href": "http://129.212.188.37/#/login" },
+    "signIn": { "label": "Sign In", "href": "https://app.alignd.care/#/login" },
     "getStarted": { "label": "Get Started", "href": "https://app.alignd.care" }
   },
   "footer": {

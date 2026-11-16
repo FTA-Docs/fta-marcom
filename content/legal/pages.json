@@ -1,14 +1,22 @@
 {
   "terms": {
+    "eyebrow": "Legal",
     "heading": "Terms of Use",
     "lastUpdated": "Effective Date: July 1, 2026"
   },
   "privacy": {
+    "eyebrow": "Legal",
     "heading": "Privacy Policy",
     "lastUpdated": "Effective Date: July 1, 2026"
   },
   "healthSafety": {
+    "eyebrow": "Legal",
     "heading": "Health & Safety Information",
+    "lastUpdated": "Effective Date: July 1, 2026"
+  },
+  "sms": {
+    "eyebrow": "Legal",
+    "heading": "Text Message Notifications",
     "lastUpdated": "Effective Date: July 1, 2026"
   }
 }

@@ -22,7 +22,8 @@
       { "label": "Support & FAQs", "href": "/support-faqs" },
       { "label": "Terms & Conditions", "href": "/terms" },
       { "label": "Health & Safety", "href": "/health-safety" },
-      { "label": "Privacy Policy", "href": "/privacy-policy" }
+      { "label": "Privacy Policy", "href": "/privacy" },
+      { "label": "SMS Notifications", "href": "/sms" }
     ],
     "contacts": [
       { "label": "General", "email": "hello@alignd.care" },

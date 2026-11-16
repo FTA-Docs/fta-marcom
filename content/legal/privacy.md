@@ -72,6 +72,14 @@ Some interactions may be reviewed by authorized members of our team for quality 
 
 We do not use your personal information to train public AI models.
 
+## Text Messages (SMS)
+
+If you agree to receive text messages from Alignd, we use your mobile phone number only to send messages about your plan, such as task reminders and weekly check-ins.
+
+Mobile phone numbers and SMS opt-in information will not be shared with third parties or affiliates for marketing or promotional purposes.
+
+Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time, or HELP for help. See [Text Message Notifications](/sms) for details.
+
 ## Health Information Practices
 
 Although Alignd is not a medical practice or psychotherapy provider, we recognize that families may share sensitive health-related information with us.

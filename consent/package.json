@@ -1,0 +1,13 @@
+{
+  "name": "alignd-consent",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "db:init:local": "wrangler d1 execute alignd-consent --local --file=schema.sql",
+    "db:init:remote": "wrangler d1 execute alignd-consent --remote --file=schema.sql",
+    "records": "wrangler d1 execute alignd-consent --remote --command \"SELECT id, created_at, full_name, email, agreement_version FROM consents ORDER BY id DESC\"",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": { "wrangler": "^4.0.0" }
+}

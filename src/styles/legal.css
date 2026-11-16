@@ -1,0 +1,141 @@
+/* ─── Legal pages (privacy, terms, health-safety, sms) ──────────────────────
+   Copy is rendered from markdown, so this is a plain global stylesheet
+   (not Astro-scoped). It follows the site's established patterns:
+   - Header: eyebrow pill → h1 → muted meta line (Support & FAQs, About).
+   - Body copy: --color-text at --leading-normal, the same as About prose
+     and FAQ answers (not the global muted <p> grey).
+   - Section headings: the FAQ category-title rank (h2 at --text-2xl),
+     separated by an almond hairline, like the FAQ list rules and the
+     dividers in the source Google Docs.
+   - Sub-headings: the FAQ question rank (Lora, --text-lg) so they sit
+     below the h2 instead of the oversized global h3.
+   - Lists: disc bullets with muted markers, matching FAQ answers.
+   - Measure: ~68ch, in line with the site's 60–64ch prose. */
+
+/* ── Header ── */
+.legal-header h1 {
+  margin: 0;
+}
+
+.legal-meta {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.legal-panel {
+  padding-block-start: var(--space-4);
+}
+
+/* ── Body ── */
+.legal-content {
+  max-width: 68ch;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+}
+
+.legal-content > :first-child {
+  margin-top: 0;
+}
+
+.legal-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* Section headings: hairline rule above each one, as in the source docs */
+.legal-content h2 {
+  font-size: var(--text-2xl);
+  margin: var(--space-10) 0 var(--space-4);
+  padding-top: var(--space-10);
+  border-top: 1px solid var(--color-border);
+}
+
+/* No rule above the opening section when the page starts with a heading */
+.legal-content > h2:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.legal-content h3 {
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  margin: var(--space-6) 0 var(--space-2);
+}
+
+.legal-content h2 + h3 {
+  margin-top: var(--space-4);
+}
+
+.legal-content p,
+.legal-content ul,
+.legal-content ol {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0 0 var(--space-4);
+}
+
+.legal-content strong {
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+
+/* Restore markers: the global reset clears list-style site-wide */
+.legal-content ul {
+  list-style: disc;
+  padding-left: var(--space-5);
+}
+
+.legal-content ol {
+  list-style: decimal;
+  padding-left: var(--space-5);
+}
+
+.legal-content li {
+  padding-left: var(--space-1);
+}
+
+.legal-content li::marker {
+  color: var(--color-text-muted);
+}
+
+.legal-content li + li {
+  margin-top: var(--space-1);
+}
+
+/* A lead-in line ("We may collect:") sits tight to its list */
+.legal-content p:has(+ ul),
+.legal-content p:has(+ ol) {
+  margin-bottom: var(--space-2);
+}
+
+.legal-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-content a:hover {
+  opacity: 0.8;
+}
+
+/* ── Figure (SMS opt-in screenshot) ── */
+.legal-content figure {
+  margin: var(--space-8) 0 0;
+}
+
+.legal-content figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.legal-content figcaption {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

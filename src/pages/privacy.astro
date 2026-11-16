@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Panel from '../components/Panel.astro';
+import PrivacyContent from '../../content/legal/privacy.md';
+import legalPages from '../../content/legal/pages.json';
+import '../styles/legal.css';
+
+const { eyebrow, heading, lastUpdated } = legalPages.privacy;
+---
+
+<BaseLayout title="Privacy Policy" description="Privacy Policy for Alignd. We take your privacy seriously.">
+
+  <Panel size="sm" class="legal-header">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{heading}</h1>
+    <p class="legal-meta">{lastUpdated}</p>
+  </Panel>
+
+  <Panel background="default" size="sm" class="legal-panel">
+    <div class="legal-content">
+      <PrivacyContent />
+    </div>
+  </Panel>
+
+</BaseLayout>

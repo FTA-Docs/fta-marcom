@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank You · alignd</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Lora:ital,wght@0,500;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <span class="masthead__logo"><img src="/alignd_logo_fullcolor.svg" alt="alignd" width="196" height="30" /></span>
+    </div>
+  </header>
+
+  <main class="hero thanks">
+    <div class="wrap">
+      <div class="card">
+        <div class="thanks__mark" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.5" fill="none" stroke="#669D5B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="eyebrow">Consent received</p>
+        <h1>Thank you<span id="who"></span>!</h1>
+        <p>We’re so grateful you’re helping us test Alignd. Your signed consent has been recorded, and you’re all set to get started.</p>
+        <a class="btn" href="https://www.alignd.care">Get started at alignd.care</a>
+        <p class="thanks__fine">Questions? Reach Dave at <a href="mailto:dave@alignd.care">dave@alignd.care</a> or Joe at <a href="mailto:joe@alignd.care">joe@alignd.care</a>.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <img src="/alignd_logo_reversed.svg" alt="alignd" width="170" height="26" />
+      <p>© 2026 Family Technology Advisors, LLC</p>
+    </div>
+  </footer>
+  <script>
+    (function () {
+      var n = new URLSearchParams(location.search).get('n');
+      if (n) document.getElementById('who').textContent = ', ' + n.slice(0, 40);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "alignd-consent",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    "AGREEMENT_VERSION": "ff-testing-consent-2026-11-16"
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "alignd-consent", "database_id": "7b6f1107-2b51-4879-9040-dbbc6d0be233" }
+  ],
+  "routes": [{ "pattern": "consent.alignd.care", "custom_domain": true }]
+}
